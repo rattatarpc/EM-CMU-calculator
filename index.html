@@ -69,45 +69,55 @@
 
     <!-- PATIENT PANEL -->
     <div id="patientPanel" class="hidden sticky top-[52px] z-40 px-4 py-3 border-b border-slate-200 bg-white shadow-sm">
-        <div class="grid grid-cols-2 md:grid-cols-6 gap-2 max-w-5xl mx-auto">
-            <div>
-                <div class="text-xs text-slate-500 mb-1 font-semibold">Gender</div>
-                <select id="gender" class="inp" onchange="recalc()">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-            </div>
-            <div>
-                <div class="text-xs text-slate-500 mb-1 font-semibold">Age (yr)</div>
-                <input type="text" inputmode="numeric" pattern="[0-9]*" id="age" class="inp" placeholder="Optional" oninput="recalc()">
-            </div>
-            <div>
-                <div class="text-xs text-slate-500 mb-1 font-semibold">Weight / TBW (kg)</div>
-                <input type="text" inputmode="decimal" id="weight" class="inp" value="70" oninput="recalc()">
-            </div>
-            <div>
-                <div class="text-xs text-slate-500 mb-1 font-semibold">Height (cm)</div>
-                <input type="text" inputmode="decimal" id="height" class="inp" value="165" oninput="recalc()">
-            </div>
-            <div class="col-span-2">
-                <div class="text-xs text-slate-500 mb-1 font-semibold flex items-center justify-between">
-                    <span>Derived Weights</span>
-                    <button onclick="document.getElementById('formulaModal').classList.remove('hidden')" class="text-blue-500 hover:text-blue-600 bg-blue-50 hover:bg-blue-100 rounded px-1.5 py-0.5 transition" title="Show Formulas">
-                        <i class="fas fa-info-circle"></i> Formulas
-                    </button>
+        <div class="flex flex-col gap-3 max-w-5xl mx-auto">
+            <!-- Row 1: Demographics -->
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-2">
+                <div>
+                    <div class="text-xs text-slate-500 mb-1 font-semibold">Gender</div>
+                    <select id="gender" class="inp" onchange="recalc()">
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>
                 </div>
-                <div class="flex gap-2 text-xs">
-                    <div class="bg-blue-50 border border-blue-200 rounded px-2 py-1 flex-1 text-center">
-                        <div class="text-blue-600">IBW</div>
-                        <div class="font-bold text-blue-800" id="ibwDisplay">-</div>
+                <div>
+                    <div class="text-xs text-slate-500 mb-1 font-semibold">Age (yr)</div>
+                    <input type="number" inputmode="decimal" id="age" class="inp" placeholder="Optional" oninput="recalc()">
+                </div>
+                <div>
+                    <div class="text-xs text-slate-500 mb-1 font-semibold">Weight / TBW (kg)</div>
+                    <input type="text" inputmode="decimal" id="weight" class="inp" value="70" oninput="recalc()">
+                </div>
+                <div>
+                    <div class="text-xs text-slate-500 mb-1 font-semibold">Height (cm)</div>
+                    <input type="text" inputmode="decimal" id="height" class="inp" value="165" oninput="recalc()">
+                </div>
+                <div class="col-span-2 relative">
+                    <div class="text-xs text-slate-500 mb-1 font-semibold flex justify-between items-center">
+                        Derived Weights
+                        <button onclick="document.getElementById('formulaModal').classList.remove('hidden')" class="text-blue-600 hover:text-blue-700 bg-blue-50 px-2 py-0.5 rounded text-[10px]"><i class="fas fa-info-circle"></i> Formulas</button>
                     </div>
-                    <div class="bg-emerald-50 border border-emerald-200 rounded px-2 py-1 flex-1 text-center">
-                        <div class="text-emerald-600">LBW</div>
-                        <div class="font-bold text-emerald-800" id="lbwDisplay">-</div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="bg-blue-50/50 border border-blue-100 rounded flex flex-col items-center justify-center p-1">
+                            <span class="text-[10px] font-medium text-blue-600 uppercase">IBW</span>
+                            <span id="ibwDisplay" class="font-bold text-blue-700 leading-none">--</span>
+                        </div>
+                        <div class="bg-emerald-50/50 border border-emerald-100 rounded flex flex-col items-center justify-center p-1">
+                            <span class="text-[10px] font-medium text-emerald-600 uppercase">LBW</span>
+                            <span id="lbwDisplay" class="font-bold text-emerald-700 leading-none">--</span>
+                        </div>
                     </div>
-                    <div id="estWtBox" class="bg-amber-50 border border-amber-200 rounded px-2 py-1 flex-1 text-center">
-                        <div class="text-amber-600">Est.Wt</div>
-                        <div class="font-bold text-amber-800" id="estWtDisplay">-</div>
+                </div>
+            </div>
+            
+            <!-- Row 2: Weight for calculation -->
+            <div class="flex items-center gap-3 pt-2 border-t border-slate-100">
+                <div class="text-sm font-semibold text-slate-700 whitespace-nowrap">Weight for calculate (kg):</div>
+                <div class="flex gap-2">
+                    <input type="number" id="calcWt" class="inp w-[80px] text-orange-600 font-bold text-center" oninput="onManualCalcWtInput()">
+                    <div class="flex gap-1">
+                        <button id="btn-tbw" onclick="setCalcWtMode('tbw')" class="wt-btn bg-slate-50 text-slate-600 px-3 py-1 rounded border border-slate-200 hover:bg-slate-100 font-medium text-sm">TBW</button>
+                        <button id="btn-ibw" onclick="setCalcWtMode('ibw')" class="wt-btn bg-blue-50 text-blue-600 px-3 py-1 rounded border border-blue-200 hover:bg-blue-100 font-medium text-sm">IBW</button>
+                        <button id="btn-lbw" onclick="setCalcWtMode('lbw')" class="wt-btn bg-emerald-50 text-emerald-600 px-3 py-1 rounded border border-emerald-200 hover:bg-emerald-100 font-medium text-sm">LBW</button>
                     </div>
                 </div>
             </div>
@@ -207,8 +217,8 @@
                 <div class="p-4 space-y-4">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="text-xs font-semibold text-slate-500 block mb-1">น้ำหนักผู้ป่วย (kg)</label>
-                            <input type="number" id="mcWt" class="inp max-w-[200px]" oninput="calcRate()">
+                            <label class="text-xs font-semibold text-slate-500 block mb-1">Weight for calculation (kg)</label>
+                            <input type="number" id="mcWt" class="inp" oninput="calcRate()" value="70">
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-slate-500 block mb-1">Dose ที่ต้องการ</label>
@@ -264,14 +274,14 @@
             <div class="card">
                 <div class="card-header bg-purple-600"><i class="fas fa-ban mr-2"></i>Neuromuscular Blockade</div>
                 <div class="overflow-x-auto">
-                    <table><thead><tr><th>Drug</th><th>Weight</th><th>Usual (mg/kg)</th><th>Range (mg/kg)</th><th>Usual Dose</th><th>Range Dose</th></tr></thead>
+                    <table><thead><tr><th>Drug</th><th>Usual (mg/kg)</th><th>Range (mg/kg)</th><th>Usual Dose</th><th>Range Dose</th></tr></thead>
                     <tbody id="rsi-nmb-tbody"></tbody></table>
                 </div>
             </div>
             <div class="card">
                 <div class="card-header bg-green-600"><i class="fas fa-rotate-left mr-2"></i>Reversal Agents</div>
                 <div class="overflow-x-auto">
-                    <table><thead><tr><th>Drug</th><th>Weight</th><th>Dose (mg/kg)</th><th>Calc Dose</th><th>Note</th></tr></thead>
+                    <table><thead><tr><th>Drug</th><th>Dose (mg/kg)</th><th>Calc Dose</th><th>Note</th></tr></thead>
                     <tbody id="rsi-rev-tbody"></tbody></table>
                 </div>
             </div>
@@ -284,6 +294,46 @@
                 <span>ถ้าไม่ทราบน้ำหนัก: กรอกอายุ → น้ำหนักประเมิน = (Age×2)+8 = <b id="estWtPed">?</b> kg</span>
             </div>
             <div id="ped-common-container" class="space-y-4"></div>
+            
+            <!-- Custom Syrup Calculator -->
+            <div class="card mt-4 border-emerald-200 shadow-sm">
+                <div class="card-header bg-emerald-600"><i class="fas fa-flask mr-2"></i>คำนวณยาน้ำเด็ก (Custom Syrup)</div>
+                <div class="p-4 bg-emerald-50/30">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs font-semibold text-slate-500 block mb-1">ส่วนประกอบยา (Preparation)</label>
+                            <div class="flex items-center gap-2">
+                                <input type="number" id="csPrepMg" class="inp flex-1" placeholder="mg" oninput="calcCustomSyrup()">
+                                <span class="text-slate-400 font-bold">/</span>
+                                <input type="number" id="csPrepMl" class="inp flex-1" placeholder="mL" oninput="calcCustomSyrup()">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold text-slate-500 block mb-1">Dose ที่ต้องการ</label>
+                            <div class="flex items-center gap-2">
+                                <input type="number" id="csDose" class="inp flex-1" placeholder="Dose" oninput="calcCustomSyrup()">
+                                <select id="csDoseUnit" class="inp flex-1" onchange="calcCustomSyrup()">
+                                    <option value="mg_kg_dose">mg/kg/dose</option>
+                                    <option value="mg_kg_day">mg/kg/day</option>
+                                    <option value="mg_dose">mg/dose</option>
+                                    <option value="mg_day">mg/day</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 p-3 bg-white border border-emerald-200 rounded-lg flex items-center justify-between">
+                        <div>
+                            <div class="text-xs text-slate-500 mb-1">Calc Dose</div>
+                            <div class="font-bold text-slate-700"><span id="csCalcDose" class="text-lg">0</span> <span class="text-sm">mg</span></div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xs text-slate-500 mb-1">ปริมาตร (Volume)</div>
+                            <div class="font-bold text-emerald-600"><span id="csCalcVol" class="text-2xl">0</span> <span class="text-sm font-medium">mL</span> <span id="csVolUnitLabel" class="text-xs text-emerald-600/70 ml-1">/dose</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- PED EMERGENCY PAGE -->
@@ -413,19 +463,13 @@
 // ============================================================
 // CORE HELPERS
 // ============================================================
-
-// Smart rounding:
-// > 10 => integer
-// 1-10 => 1 decimal
-// < 1  => 2-3 decimals as needed
 function rnd(num) {
-    if (num === 0) return 0;
+    if (num === 0 || isNaN(num)) return 0;
     if (num < 1) return Number(num.toFixed(3)); 
     if (num < 10) return Number(num.toFixed(1));
     return Math.round(num);
 }
 
-// Strip trailing zeros from strings, return as string
 function stripZ(str) {
     return String(str).replace(/\.?0+$/, '');
 }
@@ -433,7 +477,25 @@ function stripZ(str) {
 // ============================================================
 // PATIENT STATE
 // ============================================================
-let P = { tbw:70, ibw:70, lbw:70, height:165, gender:'Male', age:0 };
+let P = { age:0, tbw:70, height:165, ibw:70, lbw:70, calcWt:70 };
+let calcWtMode = 'tbw'; 
+
+function setCalcWtMode(mode) {
+    calcWtMode = mode;
+    recalc();
+}
+
+function onManualCalcWtInput() {
+    calcWtMode = 'manual';
+    P.calcWt = parseFloat(document.getElementById('calcWt').value) || 0;
+    
+    // Remove active highlight from buttons to show manual mode is active
+    document.querySelectorAll('.wt-btn').forEach(btn => {
+        btn.classList.remove('ring-2', 'ring-offset-1', 'ring-orange-400');
+    });
+    
+    renderAll();
+}
 
 function recalc() {
     P.gender = document.getElementById('gender').value;
@@ -447,22 +509,40 @@ function recalc() {
     P.height = htVal ? parseFloat(htVal) : 165;
 
     const h_in = P.height / 2.54;
-    if (P.gender === 'Male') {
-        P.ibw = 50 + 2.3 * (h_in - 60);
-        P.lbw = 0.407 * P.tbw + 0.267 * P.height - 19;
+    let ibw, lbw;
+    if (P.gender === 'M') {
+        ibw = 50 + 2.3 * (h_in - 60);
+        lbw = 0.407 * P.tbw + 0.267 * P.height - 19;
     } else {
-        P.ibw = 45.5 + 2.3 * (h_in - 60);
-        P.lbw = 0.252 * P.tbw + 0.473 * P.height - 48.3;
+        ibw = 45.5 + 2.3 * (h_in - 60);
+        lbw = 0.252 * P.tbw + 0.473 * P.height - 48.3;
     }
-    if (P.ibw < 0) P.ibw = P.tbw;
-    if (P.lbw < 0) P.lbw = P.tbw;
+    P.ibw = ibw < 0 ? P.tbw : ibw;
+    P.lbw = lbw < 0 ? P.tbw : lbw;
 
     document.getElementById('ibwDisplay').innerText = rnd(P.ibw) + ' kg';
     document.getElementById('lbwDisplay').innerText = rnd(P.lbw) + ' kg';
-    const est = P.age > 0 ? rnd((P.age * 2) + 8) + ' kg' : '-';
-    document.getElementById('estWtDisplay').innerText = est;
     const estPed = document.getElementById('estWtPed');
     if (estPed) estPed.innerText = P.age > 0 ? rnd((P.age * 2) + 8) : '?';
+
+    // Apply Calc Weight mode
+    if (calcWtMode === 'tbw') P.calcWt = P.tbw;
+    else if (calcWtMode === 'ibw') P.calcWt = P.ibw;
+    else if (calcWtMode === 'lbw') P.calcWt = P.lbw;
+    
+    if (!P.calcWt || P.calcWt <= 0) P.calcWt = P.tbw;
+    
+    if (calcWtMode !== 'manual') {
+        document.getElementById('calcWt').value = rnd(P.calcWt) || '';
+    }
+
+    document.querySelectorAll('.wt-btn').forEach(btn => {
+        btn.classList.remove('ring-2', 'ring-offset-1', 'ring-orange-400');
+    });
+    if (calcWtMode !== 'manual') {
+        const activeBtn = document.getElementById('btn-' + calcWtMode);
+        if (activeBtn) activeBtn.classList.add('ring-2', 'ring-offset-1', 'ring-orange-400');
+    }
 
     renderAll();
 }
@@ -471,12 +551,9 @@ function togglePatient() {
     document.getElementById('patientPanel').classList.toggle('hidden');
 }
 
-// Close modal when clicking outside
 window.addEventListener('click', function(e) {
     const modal = document.getElementById('formulaModal');
-    if (e.target === modal) {
-        modal.classList.add('hidden');
-    }
+    if (e.target === modal) modal.classList.add('hidden');
 });
 
 // ============================================================
@@ -495,13 +572,6 @@ function navigate(page, title = '') {
         btnBack.classList.remove('hidden');
         catTitle.innerText = title;
         document.getElementById('patientPanel').classList.remove('hidden');
-        
-        // Hide Est.Wt for Adult and RSI pages
-        if (page === 'adult' || page === 'rsi') {
-            document.getElementById('estWtBox').classList.add('hidden');
-        } else {
-            document.getElementById('estWtBox').classList.remove('hidden');
-        }
         if (page === 'manual') setTimeout(onManualEnter, 0);
     }
     renderAll();
@@ -534,9 +604,9 @@ const rsiRev = [
 // --- PED COMMON ---
 const pedCommonGroups = [
     { title:'Supportive / Antipyretic', items: [
-        {name:'Paracetamol Drop (60mg/0.6ml)', min:10, max:15, unit:'mg/kg', concMgMl:100, note:'q 4-6 hr prn'},
-        {name:'Paracetamol Syrup (120mg/5ml)', min:10, max:15, unit:'mg/kg', concMgMl:24,  note:'q 4-6 hr prn'},
-        {name:'Ibuprofen Syrup (100mg/5ml)',   min:5,  max:10, unit:'mg/kg', concMgMl:20,  note:'q 6-8 hr prn'},
+        {name:'Paracetamol Drop (60mg/0.6ml)', min:10, max:15, unit:'mg/kg', maxAdult:500, concMgMl:100, note:'q 4-6 hr prn'},
+        {name:'Paracetamol Syrup (120mg/5ml)', min:10, max:15, unit:'mg/kg', maxAdult:500, concMgMl:24,  note:'q 4-6 hr prn'},
+        {name:'Ibuprofen Syrup (100mg/5ml)',   min:5,  max:10, unit:'mg/kg', maxAdult:400,  concMgMl:20,  note:'q 6-8 hr prn'},
     ]},
     { title:'Skin / Allergy', items: [
         {name:'Chlorpheniramine Syrup (2mg/5ml)', min:0.35, max:0.35, unit:'mg/kg/day', concMgMl:0.4, note:'tid'},
@@ -547,29 +617,29 @@ const pedCommonGroups = [
     ]},
     { title:'Respiratory', items: [
         {name:'Ventolin (Nebulized - intermittent)', fixed:'2.5–5 mg/dose', note:'q 20 min in 1st hr'},
-        {name:'Ventolin (Nebulized - continuous)',  min:0.5, max:0.5, unit:'mg/kg/hr', note:'NB continuous (start 10–15 mg/hr, Max 30)'},
+        {name:'Ventolin (Nebulized - continuous)',  min:0.5, max:0.5, unit:'mg/kg/hr', maxAdult:30, note:'NB continuous (start 10–15 mg/hr, Max 30)'},
         {name:'Budesonide (Nebulized)',             fixed:'0.5–1 mg/dose', note:'q 20 min'},
-        {name:'Epinephrine Nebulized (1:1000, Croup)', min:0.05, max:0.5, unit:'ml/kg', concMgMl:1, note:'Max 5 ml, once'},
-        {name:'Bromhexine Syrup (4mg/5ml)',         min:0.6, max:0.8, unit:'mg/kg/day', concMgMl:0.8, note:'tid'},
-        {name:'Dexamethasone (Croup/Asthma)',       min:0.15, max:0.6, unit:'mg/kg', concMgMl:5, note:'Max 10 mg'},
+        {name:'Epinephrine Nebulized (1:1000, Croup)', min:0.05, max:0.5, unit:'ml/kg', maxAdult:5, concMgMl:1, note:'Max 5 ml, once'},
+        {name:'Bromhexine Syrup (4mg/5ml)',         min:0.6, max:0.8, unit:'mg/kg/day', maxAdult:24, concMgMl:0.8, note:'tid'},
+        {name:'Dexamethasone (Croup/Asthma)',       min:0.15, max:0.6, unit:'mg/kg', maxAdult:10, concMgMl:5, note:'Max 10 mg'},
     ]},
     { title:'GI', items: [
-        {name:'Domperidone Syrup (1mg/ml)',     min:0.1,  max:0.2,  unit:'mg/kg',     concMgMl:1,   note:'tid'},
-        {name:'Ondansetron (IV)',               min:0.15, max:0.15, unit:'mg/kg',     note:'q 6-8 hr, Max 4 mg'},
-        {name:'ORS (Deficit - Mild)',           fixed:'50 ml/kg', note:'PO over 3-4 hr'},
-        {name:'ORS (Deficit - Moderate)',       fixed:'100 ml/kg',note:'PO over 3-4 hr'},
-        {name:'Omeprazole',                     min:1,    max:4,    unit:'mg/kg/day', note:'PO OD'},
+        {name:'Domperidone Syrup (1mg/ml)',     min:0.1,  max:0.2,  unit:'mg/kg',     maxAdult:10, concMgMl:1,   note:'tid (Max 10 mg/dose)'},
+        {name:'Ondansetron (IV)',               min:0.15, max:0.15, unit:'mg/kg',     maxAdult:4,  note:'q 6-8 hr, Max 4 mg'},
+        {name:'ORS (Deficit - Mild)',           fixed:'50 ml/kg', note:'PO over 4 hr'},
+        {name:'ORS (Deficit - Moderate)',       fixed:'100 ml/kg',note:'PO over 4 hr'},
+        {name:'Omeprazole',                     min:1,    max:4,    unit:'mg/kg/day', maxAdult:40, note:'PO OD'},
     ]},
     { title:'Oral Antibiotics', items: [
-        {name:'Amoxicillin (125mg/5ml)',         min:40, max:50, unit:'mg/kg/day', concMgMl:25, note:'bid (Sinusitis/AOM)'},
-        {name:'Amoxicillin HD (250mg/5ml)',      min:80, max:90, unit:'mg/kg/day', concMgMl:50, note:'bid (Severe Sinusitis/Pneumonia)'},
-        {name:'Augmentin (457mg/5ml)',           min:40, max:90, unit:'mg/kg/day', concMgMl:91.4, note:'bid'},
-        {name:'Azithromycin (100mg/5ml)',        min:10, max:20, unit:'mg/kg/day', concMgMl:20, note:'OD'},
-        {name:'Cefixime (100mg/5ml)',            min:8,  max:8,  unit:'mg/kg/day', concMgMl:20, note:'bid'},
-        {name:'Ciprofloxacin (100mg/5ml)',       min:20, max:40, unit:'mg/kg/day', concMgMl:20, note:'div bid'},
-        {name:'Metronidazole (50mg/5ml)',        min:15, max:50, unit:'mg/kg/day', concMgMl:10, note:'div tid-qid'},
-        {name:'Albendazole (250mg/5ml)',         min:15, max:15, unit:'mg/kg/day', concMgMl:50, note:'OD 5–7 days, Max 400 mg'},
-        {name:'Oseltamivir (250mg/5ml)',         min:30, max:30, unit:'mg/dose',   note:'bid 5 days'},
+        {name:'Amoxicillin (125mg/5ml)',         min:40, max:50, unit:'mg/kg/day', maxAdult:1000, concMgMl:25, note:'bid (Sinusitis/AOM)'},
+        {name:'Amoxicillin HD (250mg/5ml)',      min:80, max:90, unit:'mg/kg/day', maxAdult:1000, concMgMl:50, note:'bid (Severe Sinusitis/Pneumonia)'},
+        {name:'Augmentin (457mg/5ml)',           min:40, max:90, unit:'mg/kg/day', maxAdult:1000, concMgMl:91.4, note:'bid'},
+        {name:'Azithromycin (100mg/5ml)',        min:10, max:20, unit:'mg/kg/day', maxAdult:500,  concMgMl:20, note:'OD'},
+        {name:'Cefixime (100mg/5ml)',            min:8,  max:8,  unit:'mg/kg/day', maxAdult:400,  concMgMl:20, note:'bid'},
+        {name:'Ciprofloxacin (100mg/5ml)',       min:20, max:40, unit:'mg/kg/day', maxAdult:1000, concMgMl:20, note:'div bid'},
+        {name:'Metronidazole (50mg/5ml)',        min:15, max:50, unit:'mg/kg/day', maxAdult:1500, concMgMl:10, note:'div tid-qid'},
+        {name:'Albendazole (250mg/5ml)',         min:15, max:15, unit:'mg/kg/day', maxAdult:400,  concMgMl:50, note:'OD 5–7 days, Max 400 mg'},
+        {name:'Oseltamivir (250mg/5ml)',         min:30, max:30, unit:'mg/dose',   maxAdult:75,   note:'bid 5 days (15kg=30, 23kg=45, 40kg=60, >40=75)'},
     ]},
     { title:'IV Antibiotics', items: [
         {name:'Ceftriaxone (IV)',   min:75,  max:100, unit:'mg/kg/day', note:'OD'},
@@ -578,16 +648,16 @@ const pedCommonGroups = [
         {name:'Gentamicin (IV)',    min:5,   max:7,   unit:'mg/kg/day', note:'OD'},
     ]},
     { title:'Neuro / Seizure', items: [
-        {name:'Diazepam (IV)',             min:0.3,  max:0.3,  unit:'mg/kg', concMgMl:5, note:'rate < 2 mg/min'},
-        {name:'Diazepam (Rectal)',         min:0.5,  max:0.5,  unit:'mg/kg', note:''},
-        {name:'Midazolam (IM)',            min:0.2,  max:0.2,  unit:'mg/kg', concMgMl:5, note:'Max 10 mg'},
-        {name:'Midazolam (Intranasal)',    min:0.2,  max:0.2,  unit:'mg/kg', concMgMl:5, note:''},
-        {name:'Midazolam (Buccal)',        min:0.5,  max:0.5,  unit:'mg/kg', concMgMl:5, note:'Max 10 mg'},
-        {name:'Phenytoin (IV)',            min:20,   max:20,   unit:'mg/kg', note:'rate < 1 mg/kg/min, Max 1500 mg'},
-        {name:'Phenobarbital (IV)',        min:20,   max:20,   unit:'mg/kg', note:'rate < 2 mg/kg/min, Max 1000 mg'},
-        {name:'Sodium Valproate (IV)',     min:40,   max:40,   unit:'mg/kg', note:'rate < 3 mg/kg/min'},
-        {name:'Levetiracetam (IV)',        min:40,   max:60,   unit:'mg/kg', note:'infusion > 15 min, Max 4500 mg'},
-        {name:'Lacosamide (IV)',           min:10,   max:20,   unit:'mg/kg', note:''},
+        {name:'Diazepam (IV)',             min:0.3,  max:0.3,  unit:'mg/kg', maxAdult:10,   concMgMl:5, note:'rate < 2 mg/min (Max 10 mg)'},
+        {name:'Diazepam (Rectal)',         min:0.5,  max:0.5,  unit:'mg/kg', maxAdult:20,   note:''},
+        {name:'Midazolam (IM)',            min:0.2,  max:0.2,  unit:'mg/kg', maxAdult:10,   concMgMl:5, note:'Max 10 mg'},
+        {name:'Midazolam (Intranasal)',    min:0.2,  max:0.2,  unit:'mg/kg', maxAdult:10,   concMgMl:5, note:'Max 10 mg'},
+        {name:'Midazolam (Buccal)',        min:0.5,  max:0.5,  unit:'mg/kg', maxAdult:10,   concMgMl:5, note:'Max 10 mg'},
+        {name:'Phenytoin (IV)',            min:20,   max:20,   unit:'mg/kg', maxAdult:1500, note:'rate < 1 mg/kg/min, Max 1500 mg'},
+        {name:'Phenobarbital (IV)',        min:20,   max:20,   unit:'mg/kg', maxAdult:1000, note:'rate < 2 mg/kg/min, Max 1000 mg'},
+        {name:'Sodium Valproate (IV)',     min:40,   max:40,   unit:'mg/kg', maxAdult:3000, note:'rate < 3 mg/kg/min'},
+        {name:'Levetiracetam (IV)',        min:40,   max:60,   unit:'mg/kg', maxAdult:4500, note:'infusion > 15 min, Max 4500 mg'},
+        {name:'Lacosamide (IV)',           min:10,   max:20,   unit:'mg/kg', maxAdult:400,  note:''},
         {name:'Propofol (Seizure, IV)',    min:1,    max:2,    unit:'mg/kg', note:'rate < 0.05 mg/kg/min'},
         {name:'Ketamine (Seizure, IV)',    min:0.5,  max:2,    unit:'mg/kg', note:''},
     ]},
@@ -687,27 +757,14 @@ const adultSed = [
     {name:'Dexmedetomidine',   loading:'1 mcg/kg over 10 min (70 mcg)', maint:'0.2–0.7 mcg/kg/hr', concMgMl:null, prep:'-'},
 ];
 
-// ============================================================
-// RENDER FUNCTIONS
-// ============================================================
-
-function getW(wt) {
-    if (wt === 'ibw') return P.ibw;
-    if (wt === 'lbw') return P.lbw;
-    return P.tbw;
-}
-
-function fmtDose(min, max, w) {
-    const lo = rnd(min * w);
-    const hi = rnd(max * w);
-    return lo === hi ? lo + ' mg' : lo + ' – ' + hi + ' mg';
-}
-
 function routeColor(r) {
     const m = {'IV/IO':'bg-blue-100 text-blue-700','IV':'bg-blue-100 text-blue-700','IM':'bg-amber-100 text-amber-700','PR':'bg-purple-100 text-purple-700','IN/Buccal':'bg-teal-100 text-teal-700','ET':'bg-red-100 text-red-700','Nebulized':'bg-cyan-100 text-cyan-700','External':'bg-rose-100 text-rose-700'};
     return m[r] || 'bg-slate-200 text-slate-700';
 }
 
+// ============================================================
+// RENDER FUNCTIONS
+// ============================================================
 function renderAll() {
     renderRsi();
     renderPedCommon();
@@ -716,61 +773,52 @@ function renderAll() {
     renderAdult();
 }
 
-// RSI
 function renderRsi() {
+    if (!document.getElementById('rsi-sed-tbody')) return;
     let h = '';
     rsiSed.forEach(d => {
-        const w = P.lbw;
-        h += `<tr>
-            <td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td>
-            <td class="font-bold text-blue-600">${d.usual}</td>
-            <td class="text-slate-500">${d.min} – ${d.max}</td>
-            <td class="val-blue text-lg">${rnd(d.usual*w)} mg</td>
-            <td class="text-slate-500">${rnd(d.min*w)} – ${rnd(d.max*w)} mg</td>
-        </tr>`;
+        const w = P.calcWt;
+        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${d.min} – ${d.max}</td><td class="val-blue text-lg">${rnd(d.usual*w)} mg</td><td class="text-slate-500">${rnd(d.min*w)} – ${rnd(d.max*w)} mg</td></tr>`;
     });
     document.getElementById('rsi-sed-tbody').innerHTML = h;
 
     h = '';
     rsiNmb.forEach(d => {
-        const w = getW(d.wt);
-        const range = fmtDose(d.min, d.max, w);
-        h += `<tr>
-            <td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td>
-            <td><span class="badge bg-slate-200 text-slate-600">${d.wt.toUpperCase()}</span></td>
-            <td class="font-bold text-blue-600">${d.usual}</td>
-            <td class="text-slate-500">${d.min} – ${d.max}</td>
-            <td class="val-blue text-lg">${rnd(d.usual*w)} mg</td>
-            <td class="text-slate-500">${range}</td>
-        </tr>`;
+        const w = P.calcWt;
+        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${d.min} – ${d.max}</td><td class="val-blue text-lg">${rnd(d.usual*w)} mg</td><td class="text-slate-500">${rnd(d.min*w)} – ${rnd(d.max*w)} mg</td></tr>`;
     });
     document.getElementById('rsi-nmb-tbody').innerHTML = h;
 
     h = '';
     rsiRev.forEach(d => {
-        const w = getW(d.wt);
-        const dose = d.dose ? rnd(d.dose * w) + ' mg' : fmtDose(d.min, d.max, w);
-        const dStr = d.dose ? d.dose + ' (mg/kg)' : d.min + ' – ' + d.max + ' (mg/kg)';
-        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div></td><td><span class="badge bg-slate-200 text-slate-600">${d.wt.toUpperCase()}</span></td><td>${dStr}</td><td class="val-green">${dose}</td><td class="text-xs text-slate-500">${d.note}</td></tr>`;
+        const w = P.calcWt;
+        const dose = d.dose ? rnd(d.dose * w) + ' mg' : rnd(d.min*w) + ' – ' + rnd(d.max*w) + ' mg';
+        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div></td><td>${d.dose ? d.dose : d.min+'–'+d.max}</td><td class="val-green">${dose}</td><td class="text-xs text-slate-500">${d.note}</td></tr>`;
     });
     document.getElementById('rsi-rev-tbody').innerHTML = h;
 }
 
-// Ped Common
 function renderPedCommon() {
     const c = document.getElementById('ped-common-container');
-    const estPed = document.getElementById('estWtPed');
-    if (estPed) estPed.innerText = P.age > 0 ? rnd((P.age * 2) + 8) : '?';
+    if (!c) return;
     let html = '';
     pedCommonGroups.forEach(g => {
-        html += `<div class="card"><div class="section-title">${g.title}</div><div class="overflow-x-auto"><table><thead><tr><th>Drug</th><th>Dose</th><th>Calc Dose (mg)</th><th>Volume (ml)</th><th>Note</th></tr></thead><tbody>`;
+        html += `<div class="card"><div class="section-title">${g.title}</div><div class="overflow-x-auto"><table><thead><tr><th>Drug</th><th>Dose</th><th>Calc Dose (mg) <span class="text-[0.65rem] text-rose-500 font-normal block">*Max ไม่เกิน Adult</span></th><th>Volume (ml)</th><th>Note</th></tr></thead><tbody>`;
         g.items.forEach(item => {
             if (item.fixed) {
                 html += `<tr><td><div class="font-semibold text-slate-700">${item.name}</div></td><td colspan="3" class="val-blue text-center">${item.fixed}</td><td class="text-xs text-slate-500">${item.note||''}</td></tr>`;
             } else {
+                const w = P.calcWt;
                 const isPerKg = item.unit.includes('kg');
-                const cmin = isPerKg ? rnd(P.tbw * item.min) : rnd(item.min);
-                const cmax = isPerKg ? rnd(P.tbw * item.max) : rnd(item.max);
+                let cmin = isPerKg ? rnd(w * item.min) : rnd(item.min);
+                let cmax = isPerKg ? rnd(w * item.max) : rnd(item.max);
+                
+                let capped = false;
+                if (item.maxAdult) {
+                    if (cmin > item.maxAdult) { cmin = item.maxAdult; capped = true; }
+                    if (cmax > item.maxAdult) { cmax = item.maxAdult; capped = true; }
+                }
+                
                 const dStr = item.min === item.max ? item.min : item.min + '–' + item.max;
                 
                 let displayUnit = item.unit;
@@ -779,8 +827,8 @@ function renderPedCommon() {
                 
                 let vStr = '';
                 if (item.concMgMl) {
-                    const vmin = isPerKg ? rnd(P.tbw * item.min / item.concMgMl) : rnd(item.min / item.concMgMl);
-                    const vmax = isPerKg ? rnd(P.tbw * item.max / item.concMgMl) : rnd(item.max / item.concMgMl);
+                    const vmin = rnd(cmin / item.concMgMl);
+                    const vmax = rnd(cmax / item.concMgMl);
                     vStr = vmin === vmax ? String(vmin) : vmin + '–' + vmax;
                     
                     if (displayUnit.includes('day')) vStr += ' <span class="text-xs font-normal text-slate-500">ml/day</span>';
@@ -788,10 +836,11 @@ function renderPedCommon() {
                     else vStr += ' <span class="text-xs font-normal text-slate-500">ml</span>';
                 }
                 
+                let capBadge = capped ? `<span class="text-rose-500 font-bold ml-1" title="Max Adult Dose">*</span>` : '';
                 html += `<tr>
                     <td><div class="font-semibold text-slate-700">${item.name}</div></td>
                     <td class="text-slate-500 text-xs whitespace-nowrap">${dStr} <span class="font-medium text-slate-600">${displayUnit}</span></td>
-                    <td class="val-blue">${cmin === cmax ? cmin : cmin+'–'+cmax}</td>
+                    <td class="val-blue">${cmin === cmax ? cmin : cmin+'–'+cmax}${capBadge}</td>
                     <td class="val-green whitespace-nowrap">${vStr ? vStr : '-'}</td>
                     <td class="text-xs text-slate-500">${item.note||''}</td>
                 </tr>`;
@@ -800,23 +849,55 @@ function renderPedCommon() {
         html += `</tbody></table></div></div>`;
     });
     c.innerHTML = html;
+    
+    // Update custom syrup calc automatically when weight changes
+    calcCustomSyrup();
 }
 
-// Ped Emergency
-function renderPedEm() {
-    const age = P.age || 0;
-    const wt = P.tbw;
-    // Airway
-    const cuffed  = age > 0 ? ((age/4) + 3.5).toFixed(1) : '-';
-    const uncuffed = age > 0 ? ((age/4) + 4).toFixed(1) : '-';
-    const depth   = age > 0 ? rnd((age/2) + 12) + ' cm' : '-';
-    document.getElementById('ped-airway-tbody').innerHTML = `
-        <tr><td class="font-semibold text-slate-700">ET Tube (Cuffed)</td><td class="val-blue">${cuffed} mm</td></tr>
-        <tr><td class="font-semibold text-slate-700">ET Tube (Uncuffed)</td><td class="val-blue">${uncuffed} mm</td></tr>
-        <tr><td class="font-semibold text-slate-700">Insertion Depth (oral)</td><td class="val-blue">${depth}</td></tr>
-    `;
+function calcCustomSyrup() {
+    const prepMg = parseFloat(document.getElementById('csPrepMg').value) || 0;
+    const prepMl = parseFloat(document.getElementById('csPrepMl').value) || 0;
+    const dose = parseFloat(document.getElementById('csDose').value) || 0;
+    const unit = document.getElementById('csDoseUnit').value;
+    
+    let calcMg = 0;
+    if (unit.includes('kg')) {
+        calcMg = dose * P.calcWt;
+    } else {
+        calcMg = dose;
+    }
+    
+    const doseLabel = document.getElementById('csCalcDose');
+    const volLabel = document.getElementById('csCalcVol');
+    const volUnitLabel = document.getElementById('csVolUnitLabel');
+    
+    if (doseLabel) doseLabel.innerText = dose > 0 ? rnd(calcMg) : '0';
+    
+    if (volUnitLabel) {
+        if (unit.includes('day')) volUnitLabel.innerText = '/day';
+        else volUnitLabel.innerText = '/dose';
+    }
+    
+    if (volLabel) {
+        if (prepMg > 0 && prepMl > 0 && calcMg > 0) {
+            const conc = prepMg / prepMl;
+            const vol = calcMg / conc;
+            volLabel.innerText = rnd(vol);
+        } else {
+            volLabel.innerText = '0';
+        }
+    }
+}
 
-    // Emergency drugs
+function renderPedEm() {
+    if (!document.getElementById('ped-em-tbody')) return;
+    const age = P.age || 0;
+    const wt = P.calcWt;
+    const cuffed = age > 0 ? ((age/4) + 3.5).toFixed(1) : '-';
+    const uncuffed = age > 0 ? ((age/4) + 4).toFixed(1) : '-';
+    const depth = age > 0 ? rnd((age/2) + 12) + ' cm' : '-';
+    document.getElementById('ped-airway-tbody').innerHTML = `<tr><td>ET Tube (Cuffed)</td><td class="val-blue">${cuffed} mm</td></tr><tr><td>ET Tube (Uncuffed)</td><td class="val-blue">${uncuffed} mm</td></tr><tr><td>Depth</td><td class="val-blue">${depth}</td></tr>`;
+
     let h = '';
     pedEmDrugs.forEach(d => {
         let calc, vol;
@@ -846,11 +927,8 @@ function renderPedEm() {
     });
     document.getElementById('ped-em-tbody').innerHTML = h;
 
-    // Drips
     let dc = '';
-    pedDrips.forEach(d => {
-        dc += buildDripCard(d, 'mcg/kg/min', false, 'orange');
-    });
+    pedDrips.forEach(d => { dc += buildDripCard(d, 'mcg/kg/min', false, 'orange'); });
     document.getElementById('ped-drips-container').innerHTML = dc;
     pedDrips.forEach(d => calcDrip(d.id));
 
@@ -863,33 +941,17 @@ function renderPedEm() {
     `;
 }
 
-// Neonatal
 function renderNeonatal() {
+    if (!document.getElementById('neo-drug-tbody')) return;
+    const w = P.calcWt;
     let h = '';
     neoDrugs.forEach(d => {
-        let calc, vol;
-        if (d.isVol) {
-            calc = '-';
-            vol = rnd(P.tbw * d.doseMin) + ' mL';
-        } else {
-            const cmin = rnd(P.tbw * d.doseMin);
-            const cmax = rnd(P.tbw * d.doseMax);
-            calc = cmin === cmax ? cmin + ' mg' : cmin + '–' + cmax + ' mg';
-            
-            if (d.concMgMl) {
-                const vmin = rnd(P.tbw * d.doseMin / d.concMgMl);
-                const vmax = rnd(P.tbw * d.doseMax / d.concMgMl);
-                vol = vmin === vmax ? vmin + ' mL' : vmin + '–' + vmax + ' mL';
-            } else {
-                vol = '-';
-            }
-        }
+        const calc = d.isVol ? '-' : (rnd(P.calcWt * d.doseMin) + '–' + rnd(P.calcWt * d.doseMax));
+        const vol = d.concMgMl ? (rnd(P.calcWt * d.doseMin / d.concMgMl) + '–' + rnd(P.calcWt * d.doseMax / d.concMgMl)) : '-';
         h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-500 mt-0.5">${d.prep}</div></td><td class="text-xs text-slate-600">${d.dose}</td><td class="val-blue">${calc}</td><td class="val-pink">${vol}</td><td><span class="route-tag ${routeColor(d.route)}">${d.route}</span></td></tr>`;
     });
     document.getElementById('neo-drug-tbody').innerHTML = h;
 
-    // Equipment
-    const w = P.tbw;
     let tube = '2.5 mm'; let depth = '6–7 cm'; let uvc = '3.5 Fr'; let suction = '5 Fr';
     if (w > 1.2)  { tube = '2.5 mm'; depth = '7 cm'; }
     if (w > 1.5)  { tube = '3.0 mm'; depth = '7.5 cm'; uvc = '3.5 Fr'; suction = '6 Fr'; }
@@ -912,13 +974,16 @@ function renderNeonatal() {
 
 // Adult
 function renderAdult() {
+    const emTbody = document.getElementById('adult-em-tbody');
+    if (!emTbody) return;
+    
     let h = '';
     adultEmDrugs.forEach(d => {
         let doseStr = d.dose;
-        if (d.dose === '1–1.5 mg/kg') doseStr = `${rnd(P.tbw*1)}–${rnd(P.tbw*1.5)} mg`;
+        if (d.dose === '1–1.5 mg/kg') doseStr = `${rnd(P.calcWt*1)}–${rnd(P.calcWt*1.5)} mg`;
         h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div></td><td class="text-xs text-slate-600">${d.prep}</td><td class="text-xs text-slate-600">${d.dose}</td><td class="val-blue">${doseStr} <br><span class="text-xs text-slate-500 font-normal">${d.note}</span></td><td><span class="route-tag ${routeColor(d.route)}">${d.route}</span></td></tr>`;
     });
-    document.getElementById('adult-em-tbody').innerHTML = h;
+    emTbody.innerHTML = h;
 
     let ic = '';
     adultInotropes.forEach(d => { ic += buildDripCard(d, d.unit || 'mcg/kg/min', d.perMin || false, 'blue'); });
@@ -942,7 +1007,7 @@ function renderAdult() {
         let loadMg = '-';
         const match = d.loading.match(/([\d.]+)[\s\-–]*([\d.]+)\s*mg/);
         if (match) {
-            loadMg = `${rnd(P.tbw * parseFloat(match[1]))}–${rnd(P.tbw * parseFloat(match[2]))} mg`;
+            loadMg = `${rnd(P.calcWt * parseFloat(match[1]))}–${rnd(P.calcWt * parseFloat(match[2]))} mg`;
         } else {
             loadMg = d.loading;
         }
@@ -990,7 +1055,7 @@ function calcDrip(id) {
     if (isPerMin) {
         rate = (dose * 60) / conc;
     } else {
-        rate = (dose * P.tbw * 60) / conc;
+        rate = (dose * P.calcWt * 60) / conc;
     }
     
     // Most infusion pumps support 1 decimal place, we use rnd() for smart formatting
