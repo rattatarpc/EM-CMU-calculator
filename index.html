@@ -46,11 +46,42 @@
         .drug-chip { cursor:pointer; border:1px solid #e2e8f0; border-radius:999px; padding:0.25rem 0.75rem; font-size:0.75rem; font-weight:600; background:#f8fafc; color:#475569; transition:all 0.15s; white-space:nowrap; }
         .drug-chip:hover, .drug-chip.active { background:#2563eb; color:white; border-color:#2563eb; }
         .drug-info-card { background:#f0fdf4; border:1px solid #bbf7d0; border-radius:0.75rem; padding:0.75rem 1rem; margin-top:0.75rem; font-size:0.82rem; }
+        
+        @media print {
+            body { background: white !important; color: black !important; }
+            .glass, #btnBack, .drug-chip, .inp, button:not(.print-btn), #app-nav, #page-manual, #patientPanel, #ped-est-banner, #customSyrupCard { display: none !important; }
+            .print-btn { display: none !important; }
+            .page.active { display: block !important; }
+            .page { display: none; }
+            
+            .card { box-shadow: none !important; border: none !important; margin: 0 !important; border-radius: 0 !important; padding: 0 !important; }
+            .card-header { background: transparent !important; color: black !important; font-size: 1.1rem !important; padding: 0 !important; margin-top: 1rem !important; margin-bottom: 0.5rem !important; border: none !important; display: block !important; font-weight: bold !important; text-align: left !important; }
+            .card-header i, .card-header span { display: none !important; }
+            
+            table { width: 100% !important; border-collapse: collapse !important; border: 1px solid black !important; page-break-inside: avoid !important; }
+            table, th, td { border: 1px solid black !important; color: black !important; }
+            tr, .card { page-break-inside: avoid !important; }
+            th { background: #e5e7eb !important; font-weight: bold !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; padding: 0.4rem !important; font-size: 0.8rem !important; }
+            td { padding: 0.3rem 0.4rem !important; font-size: 0.8rem !important; }
+            
+            .val-blue, .val-green, .val-orange, .val-pink, .text-rose-500, .text-slate-500, .text-slate-600, .text-slate-400, .text-blue-500, .text-teal-500 { color: black !important; font-weight: normal !important; }
+            .font-bold, .font-semibold, .font-medium { font-weight: normal !important; }
+            
+            .route-tag, .badge, .prep-badge { border: none !important; background: transparent !important; color: black !important; padding: 0 !important; font-weight: normal !important; }
+            
+            #printHeader { display: block !important; }
+            header { position: relative !important; border-bottom: none !important; padding: 0 !important; margin: 0 !important; justify-content: flex-start !important; }
+            header > div:first-child { display: none !important; } /* Hide EM CMU Calculator title in print */
+            
+            /* Drip cards print */
+            .drip-card { border: 1px solid black !important; border-radius: 0 !important; padding: 0.5rem !important; margin-bottom: 0.5rem !important; page-break-inside: avoid; }
+            .rate-display { background: transparent !important; border: none !important; padding: 0 !important; margin-top: 0.2rem !important; }
+            .rate-display div:last-child { font-weight: bold !important; }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
 
-    <!-- HEADER -->
     <header class="glass sticky top-0 z-50 px-4 py-3 flex items-center justify-between">
         <div class="flex items-center gap-3">
             <button id="btnBack" class="hidden w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition flex items-center justify-center" onclick="navigate('home')">
@@ -61,11 +92,22 @@
                 <div id="categoryTitle" class="text-xs text-blue-600 mt-0.5"></div>
             </div>
         </div>
-        <button onclick="togglePatient()" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white transition px-3 py-1.5 rounded-full text-xs font-semibold shadow-md">
-            <i class="fas fa-user-edit"></i>
-            <span>Patient</span>
-        </button>
+        <div class="flex items-center gap-2">
+            <button onclick="window.print()" class="print-btn w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition flex items-center justify-center" title="Print this page">
+                <i class="fas fa-print text-sm"></i>
+            </button>
+            <button onclick="togglePatient()" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white transition px-3 py-1.5 rounded-full text-xs font-semibold shadow-md">
+                <i class="fas fa-user-edit"></i>
+                <span>Patient</span>
+            </button>
+        </div>
     </header>
+
+    <!-- PRINT HEADER (Only visible when printing) -->
+    <div id="printHeader" style="display: none; margin-bottom: 1rem; border-bottom: 2px solid black; padding-bottom: 0.5rem;">
+        <h1 style="font-size: 1.5rem; font-weight: bold; text-align: center; margin-bottom: 0.5rem;">Pediatric Resuscitation & Emergency Sheet</h1>
+        <div id="printWeightSummary" style="font-size: 1.1rem; font-weight: bold; display: flex; gap: 2rem; justify-content: center;"></div>
+    </div>
 
     <!-- PATIENT PANEL -->
     <div id="patientPanel" class="hidden sticky top-[52px] z-40 px-4 py-3 border-b border-slate-200 bg-white shadow-sm">
@@ -221,9 +263,11 @@
                             <input type="number" id="mcWt" class="inp" oninput="calcRate()" value="70">
                         </div>
                         <div>
-                            <label class="text-xs font-semibold text-slate-500 block mb-1">Dose ที่ต้องการ</label>
-                            <div class="flex gap-2">
-                                <input type="number" id="mcDose" class="inp flex-1" placeholder="0.0" oninput="calcRate()">
+                            <label class="text-xs font-semibold text-slate-500 flex justify-between mb-1">
+                                <span>Dose ที่ต้องการ</span>
+                            </label>
+                            <div class="flex gap-2 mb-3">
+                                <input type="number" id="mcDose" class="inp flex-1" placeholder="0.0" oninput="syncDoseSlider(); calcRate()">
                                 <select id="mcDoseUnit" class="inp flex-1" onchange="calcRate()">
                                     <option value="mcg_kg_min">mcg/kg/min</option>
                                     <option value="mcg_kg_hr">mcg/kg/hr</option>
@@ -235,6 +279,7 @@
                                     <option value="mEq_hr">mEq/hr</option>
                                 </select>
                             </div>
+                            <input type="range" id="mcDoseSlider" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-teal-600" min="0" max="50" step="0.1" value="0" oninput="syncDoseInput(); calcRate()">
                         </div>
                     </div>
                     <div>
@@ -296,7 +341,7 @@
             <div id="ped-common-container" class="space-y-4"></div>
             
             <!-- Custom Syrup Calculator -->
-            <div class="card mt-4 border-emerald-200 shadow-sm">
+            <div id="customSyrupCard" class="card mt-4 border-emerald-200 shadow-sm">
                 <div class="card-header bg-emerald-600"><i class="fas fa-flask mr-2"></i>คำนวณยาน้ำเด็ก (Custom Syrup)</div>
                 <div class="p-4 bg-emerald-50/30">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -310,8 +355,8 @@
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-slate-500 block mb-1">Dose ที่ต้องการ</label>
-                            <div class="flex items-center gap-2">
-                                <input type="number" id="csDose" class="inp flex-1" placeholder="Dose" oninput="calcCustomSyrup()">
+                            <div class="flex items-center gap-2 mb-2">
+                                <input type="number" id="csDose" class="inp flex-1" placeholder="Dose" oninput="syncCsDoseSlider(); calcCustomSyrup()">
                                 <select id="csDoseUnit" class="inp flex-1" onchange="calcCustomSyrup()">
                                     <option value="mg_kg_dose">mg/kg/dose</option>
                                     <option value="mg_kg_day">mg/kg/day</option>
@@ -319,6 +364,7 @@
                                     <option value="mg_day">mg/day</option>
                                 </select>
                             </div>
+                            <input type="range" id="csDoseSlider" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600" min="0" max="100" step="1" value="0" oninput="syncCsDoseInput(); calcCustomSyrup()">
                         </div>
                     </div>
                     
@@ -547,6 +593,13 @@ function recalc() {
     }
 
     renderAll();
+    
+    const pWt = document.getElementById('printWeightSummary');
+    if (pWt) {
+        pWt.innerHTML = `<div>Total Body Weight: ${P.tbw ? rnd(P.tbw) + ' kg' : '--'}</div>` + 
+                        (P.ibw > 0 ? `<div>Ideal Body Weight: ${rnd(P.ibw)} kg</div>` : '') +
+                        `<div>Calc Wt: ${rnd(P.calcWt)} kg</div>`;
+    }
 }
 
 function togglePatient() {
@@ -605,84 +658,84 @@ const rsiRev = [
 
 // --- PED COMMON ---
 const pedCommonGroups = [
-    { title:'Supportive / Antipyretic', style:'background:#fef08a; color:#854d0e;', items: [
+    { title:'Supportive', items: [
         {name:'Paracetamol Drop', prep:'60 mg / 0.6 ml', route:'PO', min:10, max:15, unit:'mg/kg/dose', maxAdult:500, concMgMl:100, note:'prn q 4-6 hr'},
         {name:'Paracetamol Syrup', prep:'120 mg / 5 ml', route:'PO', min:10, max:15, unit:'mg/kg/dose', maxAdult:500, concMgMl:24,  note:'prn q 4-6 hr'},
-        {name:'Ibuprofen Syrup', prep:'100 mg / 5 ml', route:'PO', min:5,  max:10, unit:'mg/kg/dose', maxAdult:400, concMgMl:20,  note:'prn q 8 hr'},
+        {name:'Ibuprofen Syrup', prep:'100 mg / 5 ml', route:'PO', min:5, max:10, unit:'mg/kg/dose', maxAdult:'Adult Dose', concMgMl:20, note:'prn q 8 hr'}
     ]},
-    { title:'Skin', style:'background:#fca5a5; color:#7f1d1d;', items: [
-        {name:'Chlorpheniramine Syrup', prep:'2 mg / 5 ml', route:'PO', min:0.35, max:0.35, unit:'mg/kg/day', divisor:3, concMgMl:0.4, note:'div tid'},
+    { title:'Skin', style:'background:#fbcfe8; color:#831843;', items: [
+        {name:'Chlorpheniramine Syrup', prep:'2 mg / 5 ml', route:'PO', min:0.35, max:0.35, unit:'mg/kg/day', maxAdult:'Adult Dose', divisor:3, concMgMl:0.4, note:'tid'}
     ]},
-    { title:'Steroid', style:'background:#93c5fd; color:#1e3a8a;', items: [
-        {name:'Prednisolone', prep:'', route:'PO', min:1, max:2, unit:'mg/kg/day', note:'PO — Max: <2y=20mg<br>2-5y=30mg<br>>5y=40mg/day'},
-        {name:'Dexamethasone', prep:'', route:'PO', min:0.15, max:0.6, unit:'mg/kg/dose', note:'OD ≤ 2 days'},
-        {name:'Dexamethasone', prep:'5 mg / ml', route:'IM/IV', min:0.6, max:0.6, unit:'mg/kg/dose', concMgMl:5, note:'OD single dose'},
-        {name:'Methylprednisolone', prep:'', route:'IV', min:1, max:1, unit:'mg/kg/dose', note:'q 6 hr (Max 60 mg/dose)'},
-        {name:'Hydrocortisone', prep:'', route:'IV', min:5, max:5, unit:'mg/kg/dose', note:'q 6 hr (Max 250 mg/dose)'},
+    { title:'Steroid', style:'background:#fef08a; color:#854d0e;', items: [
+        {name:'Prednisolone (oral)', prep:'', route:'PO', min:1, max:2, unit:'mg/kg/day', note:'PO — Max: <2y=20mg<br>2-5y=30mg<br>>5y=40mg/day'},
+        {name:'Dexamethasone', prep:'', route:'PO', min:0.15, max:0.6, unit:'mg/kg/dose', maxAdult:'Adult Dose', note:'OD ไม่เกิน 2 วัน'},
+        {name:'Dexamethasone', prep:'5 mg / 1 ml', route:'IM/IV', min:0.6, max:0.6, unit:'mg/kg/dose', maxAdult:'Adult Dose', concMgMl:5, note:'OD single dose'},
+        {name:'Methylprednisolone', prep:'', route:'IV', min:1, max:1, unit:'mg/kg/dose', maxAdult:60, note:'q 6 hr'},
+        {name:'Hydrocortisone (IV)', prep:'', route:'IV', min:5, max:5, unit:'mg/kg/dose', maxAdult:250, note:'q 6 hr'},
     ]},
     { title:'Respiratory', style:'background:#a5f3fc; color:#164e63;', items: [
-        {name:'Berodual (Fenoterol+Ipratropium)', prep:'', route:'NB', fixed:'BW < 20 kg: ½ Nebule (1 ml)<br>BW ≥ 20 kg: 1 Nebule (2 ml)', note:'+ NSS up to 4 ml'},
-        {name:'Fluticasone', prep:'50 mcg / dose', route:'NB', fixed:'1 mg/dose', note:'q 20 min (Max 3x)'},
+        {name:'Berodual (Fenoterol+Ipratropium)', prep:'', route:'NB', fixed:'BW < 20 kg: ½ Nebule (1 ml)<br>BW ≥ 20 kg: 1 Nebule (2 ml)', maxAdult:'Adult Dose', note:'+ NSS up to 4 ml'},
+        {name:'Fluticasone', prep:'50 mcg / dose', route:'NB', fixed:'1 mg/dose', maxAdult:'Adult Dose', note:'q 20 min (Max 3x)'},
         {name:'Ventolin', prep:'5 mg / ml', route:'NB', min:0.03, max:0.03, unit:'mg/kg/dose', concMgMl:5, dosePrefix:'Solution 0.5%', doseNote:'(Age < 5 yr: 2.5 mg/dose)', note:'+ NSS up to 4 ml, q 20 min'},
         {name:'Ventolin', prep:'2.5 mg / 2.5 ml', route:'NB', fixed:'2.5 mg/dose (1 NB)<br><span class="text-[10px] text-slate-500 font-normal">(Age < 5 yr: 2.5 mg/dose)</span>', dosePrefix:'Nebule', note:'+ NSS up to 4 ml, q 20 min'},
-        {name:'Pulmicort (Budesonide)', prep:'1 mg / 2 ml', route:'NB', fixed:'0.5–1 mg/dose', note:'q 20 min (Max 3x, Max 2 mg/day)'},
-        {name:'Bromhexine Syrup', prep:'4 mg / 5 ml', route:'PO', min:0.6, max:0.8, unit:'mg/kg/day', divisor:3, concMgMl:0.8, note:'div tid'},
-        {name:'Glyceryl Guaicolate Syrup', prep:'', route:'PO', fixed:'Adult Dose', note:'tid'},
+        {name:'Pulmicort (Budesonide)', prep:'1 mg / 2 ml', route:'NB', fixed:'0.5–1 mg/dose', maxAdult:'2 mg/day', note:'q 20 min (Max 3x, Max 2 mg/day)'},
+        {name:'Bromhexine Syrup', prep:'4 mg / 5 ml', route:'PO', min:0.6, max:0.8, unit:'mg/kg/day', maxAdult:'Adult Dose', divisor:3, concMgMl:0.8, note:'div tid'},
+        {name:'Glyceryl Guaicolate Syrup', prep:'', route:'PO', fixed:'Adult Dose', maxAdult:'Adult Dose', note:'tid'},
     ]},
     { title:'GI', style:'background:#fed7aa; color:#7c2d12;', items: [
-        {name:'Ondansetron', prep:'', route:'PO/IV', min:0.15, max:0.15, unit:'mg/kg/dose', note:'q 6-8 hr'},
-        {name:'Domperidone Syrup', prep:'1 mg / ml', route:'PO', min:0.1, max:0.2, unit:'mg/kg/dose', concMgMl:1, note:'tid'},
-        {name:'Omeprazole', prep:'', route:'PO/IV', min:1, max:1, unit:'mg/kg/day', note:'OD'},
-        {name:'Diosmectite', prep:'', route:'PO', fixed:'6 g/day', note:'div 2-3 doses, 3-5 days'},
-        {name:'ORS', prep:'', route:'PO', min:50, max:50, unit:'ml/kg', dosePrefix:'For Deficit - Mild', note:'ทั้งหมด 1 ซอง+น้ำ 250 ml จิบบ่อยๆ'},
-        {name:'ORS', prep:'', route:'PO', min:100, max:100, unit:'ml/kg', dosePrefix:'For Deficit - Moderate', note:'ทั้งหมด 1 ซอง+น้ำ 250 ml จิบบ่อยๆ'},
-        {name:'ORS', prep:'', route:'PO', min:5, max:5, unit:'ml/kg', dosePrefix:'For Ongoing - vomiting', note:'per vomiting episode'},
-        {name:'ORS', prep:'', route:'PO', min:10, max:10, unit:'ml/kg', dosePrefix:'For Ongoing - watery stool', note:'per watery stool'},
-        {name:'Metoclopramide', prep:'', route:'PO', fixed:'<1 yr: 2.5 ml<br>1-3 yr: 5 ml<br>3-6 yr: 5-10 ml<br>>6 yr: 10-20 ml', note:'Use with caution'},
+        {name:'Ondansetron', prep:'', route:'PO/IV', min:0.15, max:0.15, unit:'mg/kg/dose', maxAdult:'Adult Dose', note:'q 6-8 hr'},
+        {name:'Domperidone Syrup', prep:'1 mg / 1 ml', route:'PO', min:0.1, max:0.2, unit:'mg/kg/dose', maxAdult:'Adult Dose', concMgMl:1, note:'tid'},
+        {name:'omeprazole', prep:'', route:'PO/IV', min:1, max:1, unit:'mg/kg/day', maxAdult:'Adult Dose', note:'OD'},
+        {name:'Diosmectite', prep:'', route:'PO', fixed:'<1 yr: 1 ซอง/วัน<br>1-2 yr: 1-2 ซอง/วัน<br>>2 yr: 2-3 ซอง/วัน', maxAdult:'Adult Dose', note:'div 2-3 doses for 3-5 days'},
+        {name:'ORS', prep:'', route:'PO', fixed:'50 ml/kg', maxAdult:'Adult Dose', dosePrefix:'For Deficit - Mild', note:'1 ซอง ผสมน้ำ 250 ml จิบบ่อยๆ'},
+        {name:'ORS', prep:'', route:'PO', fixed:'100 ml/kg', maxAdult:'Adult Dose', dosePrefix:'For Deficit - Moderate', note:'1 ซอง ผสมน้ำ 250 ml จิบบ่อยๆ'},
+        {name:'ORS', prep:'', route:'PO', fixed:'5 ml/kg', maxAdult:'Adult Dose', dosePrefix:'For ongoing loss', note:'PO per vomitting'},
+        {name:'ORS', prep:'', route:'PO', fixed:'10 ml/kg', maxAdult:'Adult Dose', dosePrefix:'For ongoing loss', note:'PO per watery stool'},
+        {name:'Metoclopramide', prep:'', route:'PO', fixed:'<1 yr: 2.5 ml<br>1-3 yr: 5 ml<br>3-6 yr: 5-10 ml<br>>6 yr: 10-20 ml', maxAdult:'Adult Dose', note:'Use with caution'},
     ]},
     { title:'Oral Antibiotics', style:'background:#d9f99d; color:#3f6212;', items: [
-        {name:'Amoxicillin', prep:'125 mg / 5 ml', route:'PO', min:40, max:40, unit:'mg/kg/day', divisor:2, maxAdult:1000, concMgMl:25, dosePrefix:'Standard dose', doseNote:'Sinusitis/AOM (50 mg/kg/day สำหรับ Pharyngitis)', note:'bid'},
-        {name:'Amoxicillin', prep:'250 mg / 5 ml', route:'PO', min:80, max:80, unit:'mg/kg/day', divisor:2, maxAdult:1000, concMgMl:50, dosePrefix:'High dose', doseNote:'Severe Sinusitis/AOM/Pneumonia', note:'bid'},
-        {name:'Augmentin', prep:'457 mg / 5 ml', route:'PO', min:40, max:40, unit:'mg/kg/day', divisor:2, maxAdult:1000, concMgMl:91.4, note:'bid'},
-        {name:'Ciprofloxacin', prep:'100 mg / 5 ml', route:'PO', min:20, max:20, unit:'mg/kg/day', divisor:2, maxAdult:750, concMgMl:20, note:'div bid'},
-        {name:'Norfloxacin', prep:'250 mg / 5 ml', route:'PO', min:15, max:15, unit:'mg/kg/day', divisor:2, concMgMl:50, note:'div bid'},
-        {name:'Azithromycin', prep:'100 mg / 5 ml', route:'PO', min:10, max:10, unit:'mg/kg/day', divisor:1, maxAdult:500, concMgMl:20, note:'OD'},
-        {name:'Doxycycline', prep:'200 mg / 5 ml', route:'PO', min:4.4, max:4.4, unit:'mg/kg/dose', maxAdult:100, concMgMl:40, note:'once (Max 300 mg)'},
-        {name:'Metronidazole', prep:'50 mg / 5 ml', route:'PO', min:15, max:15, unit:'mg/kg/day', divisor:3, maxAdult:500, concMgMl:10, note:'div tid-qid'},
-        {name:'Vancomycin oral', prep:'200 mg / 5 ml', route:'PO', min:40, max:40, unit:'mg/kg/day', divisor:4, maxAdult:500, concMgMl:40, note:'div qid 10 days'},
-        {name:'Albendazole', prep:'250 mg / 5 ml', route:'PO', min:15, max:15, unit:'mg/kg/day', divisor:1, maxAdult:400, concMgMl:50, note:'OD 5-7 days (Max 400 mg)'},
-        {name:'Tinidazole', prep:'200 mg / 5 ml', route:'PO', min:50, max:50, unit:'mg/kg/day', divisor:1, maxAdult:2000, concMgMl:40, note:'once or OD 5 days (Max 2 g)'},
-        {name:'Cefixime', prep:'457 mg / 5 ml', route:'PO', min:8, max:8, unit:'mg/kg/day', divisor:2, concMgMl:91.4, note:'bid'},
-        {name:'Oseltamivir (<1 yr)', prep:'250 mg / 5 ml', route:'PO', fixed:'0-1mo preterm: 1 mg/kg<br>0-1mo term, 0-8mo, 12mo: 3 mg/kg<br>9-11mo: 3.5 mg/kg', note:'bid 5 days'},
-        {name:'Oseltamivir (≥1 yr)', prep:'250 mg / 5 ml', route:'PO', doseText:'>40kg: 75<br>23-40kg: 60<br>15-23kg: 45<br><15kg: 30', unit:'mg/dose', concMgMl:50, note:'bid 5 days', customCalc: (w) => {
+        {name:'Amoxicillin', prep:'125 mg / 5 ml', route:'PO', min:40, max:50, unit:'mg/kg/day', divisor:2, maxAdult:2000, concMgMl:25, dosePrefix:'Standard dose', doseNote:'Sinusitis/AOM (50 mg/kg/day สำหรับ Pharyngitis)', note:'bid'},
+        {name:'Amoxicillin', prep:'250 mg / 5 ml', route:'PO', min:80, max:90, unit:'mg/kg/day', divisor:2, maxAdult:2000, concMgMl:50, dosePrefix:'High dose', doseNote:'Severe Sinusitis/AOM/Pneumonia', note:'bid'},
+        {name:'Augmentin', prep:'457 mg / 5 ml', route:'PO', min:40, max:90, unit:'mg/kg/day', divisor:2, maxAdult:2000, concMgMl:91.4, note:'bid'},
+        {name:'Ciprofloxacin', prep:'100 mg / 5 ml', route:'PO', min:20, max:40, unit:'mg/kg/day', divisor:2, maxAdult:1500, concMgMl:20, note:'div bid'},
+        {name:'Norfloxacin', prep:'250 mg / 5 ml', route:'PO', min:15, max:20, unit:'mg/kg/day', divisor:2, maxAdult:'Adult Dose', concMgMl:50, note:'div bid'},
+        {name:'Azithromycin', prep:'100 mg / 5 ml', route:'PO', min:10, max:20, unit:'mg/kg/day', maxAdult:500, concMgMl:20, note:'OD'},
+        {name:'Doxycycline', prep:'200 mg / 5 ml', route:'PO', min:4.4, max:4.4, unit:'mg/kg/dose', maxAdult:100, concMgMl:40, note:'once'},
+        {name:'Metronidazole', prep:'50 mg / 5 ml', route:'PO', min:15, max:50, unit:'mg/kg/day', divisor:3, maxAdult:1500, concMgMl:10, note:'div tid-qid'},
+        {name:'Vancomycin (oral)', prep:'200 mg / 5 ml', route:'PO', min:40, max:40, unit:'mg/kg/day', divisor:4, maxAdult:2000, concMgMl:40, note:'div qid 10 days'},
+        {name:'Albendazole', prep:'250 mg / 5 ml', route:'PO', min:15, max:15, unit:'mg/kg/day', maxAdult:400, concMgMl:50, note:'OD 5-7 days'},
+        {name:'Tinidazole', prep:'200 mg / 5 ml', route:'PO', min:50, max:50, unit:'mg/kg/day', maxAdult:2000, concMgMl:40, note:'once or OD 5 days'},
+        {name:'Cefixime', prep:'457 mg / 5 ml', route:'PO', min:8, max:8, unit:'mg/kg/day', divisor:2, maxAdult:'Adult Dose', concMgMl:91.4, note:'bid'},
+        {name:'Oseltamivir (<1 yr)', prep:'250 mg / 5 ml', route:'PO', fixed:'0-1mo preterm: 1 mg/kg<br>0-1mo term, 0-8mo, 12mo: 3 mg/kg<br>9-11mo: 3.5 mg/kg', maxAdult:75, note:'bid 5 days'},
+        {name:'Oseltamivir (≥1 yr)', prep:'250 mg / 5 ml', route:'PO', doseText:'>40kg: 75<br>23-40kg: 60<br>15-23kg: 45<br><15kg: 30', unit:'mg/dose', maxAdult:75, concMgMl:50, note:'bid 5 days', customCalc: (w) => {
             if (w > 40) return 75;
             if (w >= 23) return 60;
             if (w >= 15) return 45;
             return 30;
         }},
     ]},
-    { title:'IV Antibiotics', style:'background:#86efac; color:#14532d;', items: [
-        {name:'Ceftriaxone', prep:'', route:'IV', min:75, max:75, unit:'mg/kg/day', divisor:1, maxAdult:2000, note:'OD'},
-        {name:'Cefotaxime', prep:'', route:'IV', min:100, max:100, unit:'mg/kg/day', divisor:3, note:'q 8 hr'},
-        {name:'Ampicillin', prep:'', route:'IV', min:150, max:150, unit:'mg/kg/day', divisor:4, maxAdult:2000, note:'q 6 hr'},
-        {name:'Gentamicin', prep:'', route:'IV', min:5, max:5, unit:'mg/kg/day', divisor:1, note:'OD'},
+    { title:'IV Antibiotics', style:'background:#bef264; color:#3f6212;', items: [
+        {name:'Ceftriaxone', prep:'', route:'IV', min:50, max:100, unit:'mg/kg/day', maxAdult:2000, note:'OD'},
+        {name:'Cefotaxime', prep:'', route:'IV', min:100, max:200, unit:'mg/kg/day', divisor:3, maxAdult:'Adult Dose', note:'q 8 hr'},
+        {name:'Ampicillin', prep:'', route:'IV', min:150, max:200, unit:'mg/kg/day', divisor:4, maxAdult:8000, note:'q 6 hr'},
+        {name:'Gentamicin', prep:'', route:'IV', min:5, max:5, unit:'mg/kg/day', maxAdult:'Adult Dose', note:'OD'},
     ]},
-    { title:'Neuro / Seizure', style:'background:#d8b4fe; color:#581c87;', items: [
-        {name:'Diazepam', prep:'', route:'IV', min:0.2, max:0.3, unit:'mg/kg/dose', maxAdult:10, concMgMl:5, note:'rate < 2 mg/min, Max 10 mg'},
-        {name:'Diazepam', prep:'', route:'PR', min:0.5, max:0.5, unit:'mg/kg/dose', maxAdult:10, note:'Max 10 mg'},
-        {name:'Midazolam', prep:'', route:'IM', min:0.2, max:0.2, unit:'mg/kg/dose', maxAdult:10, concMgMl:5, note:'Max 10 mg'},
-        {name:'Midazolam', prep:'', route:'IV', min:0.1, max:0.2, unit:'mg/kg/dose', maxAdult:2, concMgMl:5, note:''},
-        {name:'Midazolam', prep:'', route:'IN', min:0.2, max:0.2, unit:'mg/kg/dose', maxAdult:10, concMgMl:5, note:'Max 10 mg'},
-        {name:'Midazolam', prep:'', route:'Buccal', min:0.5, max:0.5, unit:'mg/kg/dose', maxAdult:10, concMgMl:5, note:'Max 10 mg'},
-        {name:'Lorazepam', prep:'', route:'IV', min:0.1, max:0.1, unit:'mg/kg/dose', note:'stat'},
-        {name:'Phenytoin', prep:'', route:'IV', min:20, max:20, unit:'mg/kg/dose', maxAdult:1500, note:'rate < 1 mg/kg/min, Max 1500 mg'},
-        {name:'Phenobarbital', prep:'', route:'IV', min:20, max:20, unit:'mg/kg/dose', maxAdult:1000, note:'rate < 2 mg/kg/min, Max 1000 mg'},
-        {name:'Sodium Valproate', prep:'', route:'IV', min:40, max:40, unit:'mg/kg/dose', maxAdult:3000, note:'rate < 1-3 mg/kg/min, Max 3000 mg'},
-        {name:'Levetiracetam', prep:'', route:'IV', min:20, max:60, unit:'mg/kg/dose', maxAdult:4000, note:'infusion > 15 min, Max 4000 mg'},
-        {name:'Lacosamide', prep:'', route:'IV', min:10, max:10, unit:'mg/kg/dose', maxAdult:400, note:'Max 400 mg'},
-        {name:'Propofol', prep:'', route:'IV', min:1, max:1, unit:'mg/kg/dose', note:'rate < 0.05 mg/kg/min'},
-        {name:'Thiopental', prep:'', route:'IV', min:1, max:1, unit:'mg/kg/dose', note:'rate < 0.05 mg/kg/min'},
-        {name:'Ketamine', prep:'', route:'IV', min:0.5, max:0.5, unit:'mg/kg/dose', note:''},
+    { title:'Neuro', style:'background:#e9d5ff; color:#4c1d95;', items: [
+        {name:'Diazepam', prep:'', route:'IV', min:0.2, max:0.3, unit:'mg/kg/dose', maxAdult:10, note:'stat (rate < 2 mg/min)'},
+        {name:'Diazepam', prep:'', route:'Rectal', min:0.5, max:0.5, unit:'mg/kg/dose', maxAdult:10, note:''},
+        {name:'Midazolam', prep:'5 mg / 1 ml', route:'IM', min:0.2, max:0.2, unit:'mg/kg/dose', maxAdult:10, concMgMl:5, note:''},
+        {name:'Midazolam', prep:'5 mg / 1 ml', route:'IV', min:0.1, max:0.2, unit:'mg/kg/dose', maxAdult:2, concMgMl:5, note:''},
+        {name:'Midazolam', prep:'5 mg / 1 ml', route:'IN', min:0.2, max:0.2, unit:'mg/kg/dose', maxAdult:10, concMgMl:5, note:''},
+        {name:'Midazolam', prep:'5 mg / 1 ml', route:'Buccal', min:0.5, max:0.5, unit:'mg/kg/dose', maxAdult:10, concMgMl:5, note:''},
+        {name:'Lorazepam', prep:'', route:'IV', min:0.1, max:0.1, unit:'mg/kg/dose', maxAdult:'Adult Dose', note:'stat'},
+        {name:'Phenytoin', prep:'', route:'IV', min:20, max:20, unit:'mg/kg/dose', maxAdult:1500, note:'(rate < 1 mg/kg/min)'},
+        {name:'Phenobarbital', prep:'', route:'IV', min:20, max:20, unit:'mg/kg/dose', maxAdult:1000, note:'(rate < 2 mg/kg/min)'},
+        {name:'Sodium Valproate', prep:'', route:'IV', min:40, max:40, unit:'mg/kg/dose', maxAdult:3000, note:'(rate < 1-3 mg/kg/min)'},
+        {name:'Levetiracetam', prep:'', route:'IV', min:20, max:60, unit:'mg/kg/dose', maxAdult:4000, note:'(infusion > 15 min)'},
+        {name:'Lacosamide', prep:'', route:'IV', min:10, max:10, unit:'mg/kg/dose', maxAdult:400, note:''},
+        {name:'Propofol', prep:'', route:'IV', min:1, max:1, unit:'mg/kg/dose', maxAdult:'Adult Dose', note:'(rate < 0.05 mg/kg/min)'},
+        {name:'Thiopental', prep:'', route:'IV', min:1, max:1, unit:'mg/kg/dose', maxAdult:'Adult Dose', note:'(rate < 0.05 mg/kg/min)'},
+        {name:'Ketamine', prep:'', route:'IV', min:0.5, max:0.5, unit:'mg/kg/dose', maxAdult:'Adult Dose', note:''},
     ]},
 ];
 
@@ -827,14 +880,14 @@ function renderPedCommon() {
     let html = '';
     pedCommonGroups.forEach(g => {
         let titleStyle = g.style ? `style="${g.style}"` : '';
-        html += `<div class="card"><div class="section-title" ${titleStyle}>${g.title}</div><div class="overflow-x-auto"><table><thead><tr><th class="w-1/3">Drug</th><th>Recommend Dose</th><th>Dose</th><th>Route</th><th>Note</th></tr></thead><tbody>`;
+        html += `<div class="card"><div class="section-title" ${titleStyle}>${g.title}</div><div class="overflow-x-auto"><table><thead><tr><th class="w-1/3">Drug</th><th>Recommend Dose</th><th>Dose</th><th>Max Dose</th><th>Route</th><th>Note</th></tr></thead><tbody>`;
         g.items.forEach((item, index) => {
             const isSameName = (index > 0 && item.name === g.items[index-1].name);
             const nextIsSame = (index < g.items.length - 1 && g.items[index+1].name === item.name);
             const isGrouped = isSameName || nextIsSame;
             
             if (isGrouped && !isSameName) {
-                html += `<tr><td colspan="5" class="font-semibold text-slate-700 pt-2 pb-1 !border-b-0">${item.name}</td></tr>`;
+                html += `<tr><td colspan="6" class="font-semibold text-slate-700 pt-2 pb-1 !border-b-0">${item.name}</td></tr>`;
             }
             
             let tdBorder = 'pb-2';
@@ -859,12 +912,23 @@ function renderPedCommon() {
                 }
             }
 
+            let maxText = '<span class="text-slate-300">-</span>';
+            if (item.maxAdult) {
+                if (typeof item.maxAdult === 'string' && isNaN(Number(item.maxAdult))) {
+                    maxText = `<span class="text-slate-600 text-xs font-medium">${item.maxAdult}</span>`;
+                } else {
+                    let maxUnit = (item.unit && item.unit.includes('day')) ? 'mg/day' : 'mg/dose';
+                    maxText = `<span class="text-rose-500 text-xs font-medium">${item.maxAdult}</span> <span class="text-[10px] font-normal text-slate-500">${maxUnit}</span>`;
+                }
+            }
+
             if (item.fixed) {
                 let dosePrefixHtml = item.dosePrefix ? `<span class="text-[11px] font-medium text-slate-700 mr-1.5">${item.dosePrefix}</span>` : '';
                 html += `<tr>
                     <td class="${tdClass}">${drugPrepHtml}</td>
-                    <td class="text-slate-600 text-sm ${tdClass}">${dosePrefixHtml}${item.fixed}</td>
+                    <td class="text-slate-600 text-xs ${tdClass}">${dosePrefixHtml}${item.fixed}</td>
                     <td class="text-center ${tdClass}">-</td>
+                    <td class="text-center whitespace-nowrap ${tdClass}">${maxText}</td>
                     <td class="${tdClass}">${rt}</td>
                     <td class="text-xs text-slate-500 ${tdClass}">${item.note||''}</td>
                 </tr>`;
@@ -880,9 +944,9 @@ function renderPedCommon() {
                     let rawMin = isPerKg ? (w * item.min) : item.min;
                     let rawMax = isPerKg ? (w * item.max) : item.max;
                     
-                    if (item.maxAdult) {
-                        rawMin = Math.min(rawMin, item.maxAdult);
-                        rawMax = Math.min(rawMax, item.maxAdult);
+                    if (item.maxAdult && !isNaN(Number(item.maxAdult))) {
+                        rawMin = Math.min(rawMin, Number(item.maxAdult));
+                        rawMax = Math.min(rawMax, Number(item.maxAdult));
                     }
                     
                     cmin = rnd(rawMin);
@@ -906,8 +970,6 @@ function renderPedCommon() {
                 let cStr = cmin === cmax ? String(cmin) : cmin + '–' + cmax;
                 cStr += ` <span class="text-[11px] font-normal text-slate-500">${outUnit}</span>`;
                 
-                let maxBadge = item.maxAdult ? `<span class="text-[10px] text-rose-500 ml-1 font-normal">(Max: ${item.maxAdult} mg)</span>` : '';
-                
                 let dosePrefixHtml = item.dosePrefix ? `<span class="text-[11px] font-medium text-slate-700 mr-1.5">${item.dosePrefix}</span>` : '';
                 let doseNoteHtml = item.doseNote ? `<br><span class="text-[10px] text-slate-500 font-normal">${item.doseNote}</span>` : '';
 
@@ -915,9 +977,10 @@ function renderPedCommon() {
                     <td class="${tdClass}">${drugPrepHtml}</td>
                     <td class="text-slate-500 text-xs whitespace-nowrap ${tdClass}">${dosePrefixHtml}${dStr} <span class="font-medium text-slate-600">${displayUnit}</span>${doseNoteHtml}</td>
                     <td class="${tdClass}">
-                        <div class="val-blue font-bold whitespace-nowrap">${cStr} ${maxBadge}</div>
+                        <div class="val-blue font-bold whitespace-nowrap">${cStr}</div>
                         ${vStr ? `<div class="val-green mt-1.5 whitespace-nowrap">${vStr}</div>` : ''}
                     </td>
+                    <td class="text-center whitespace-nowrap ${tdClass}">${maxText}</td>
                     <td class="${tdClass}">${rt}</td>
                     <td class="text-xs text-slate-500 ${tdClass}">${item.note||''}</td>
                 </tr>`;
@@ -964,6 +1027,24 @@ function calcCustomSyrup() {
             volLabel.innerText = '0';
         }
     }
+}
+
+function syncCsDoseSlider() {
+    const v = parseFloat(document.getElementById('csDose').value) || 0;
+    const s = document.getElementById('csDoseSlider');
+    if (v > parseFloat(s.max)) {
+        s.max = (v * 2).toFixed(1);
+    }
+    if (v > 0) {
+        if (parseFloat(s.max) <= 10) s.step = 0.1;
+        else s.step = 1;
+    }
+    s.value = v;
+}
+
+function syncCsDoseInput() {
+    const s = document.getElementById('csDoseSlider');
+    document.getElementById('csDose').value = s.value;
 }
 
 function renderPedEm() {
@@ -1374,12 +1455,46 @@ function clearDrugSelect() {
     document.querySelectorAll('.drug-chip').forEach(c => c.classList.remove('active'));
 }
 
+function syncDoseSlider() {
+    const v = parseFloat(document.getElementById('mcDose').value) || 0;
+    const s = document.getElementById('mcDoseSlider');
+    if (v > parseFloat(s.max)) {
+        s.max = (v * 2).toFixed(1);
+    }
+    if (v > 0) {
+        if (parseFloat(s.max) <= 2) s.step = 0.01;
+        else if (parseFloat(s.max) <= 20) s.step = 0.1;
+        else s.step = 1;
+    }
+    s.value = v;
+}
+
+function syncDoseInput() {
+    const s = document.getElementById('mcDoseSlider');
+    document.getElementById('mcDose').value = s.value;
+}
+
 function applyDrugToCalc() {
     if (!selectedDrug) return;
     
     // Set Unit and Dose
     if (selectedDrug.unit) document.getElementById('mcDoseUnit').value = selectedDrug.unit;
-    if (selectedDrug.initDoseVal) document.getElementById('mcDose').value = selectedDrug.initDoseVal;
+    if (selectedDrug.initDoseVal) {
+        const v = selectedDrug.initDoseVal;
+        document.getElementById('mcDose').value = v;
+        
+        const slider = document.getElementById('mcDoseSlider');
+        let maxVal = parseFloat(selectedDrug.maxDose);
+        if (!maxVal || isNaN(maxVal)) maxVal = v * 10;
+        
+        let step = 1;
+        if (maxVal <= 2) step = 0.01;
+        else if (maxVal <= 20) step = 0.1;
+        
+        slider.max = maxVal;
+        slider.step = step;
+        slider.value = v;
+    }
     
     // Fill Step 1 if applicable
     if (selectedDrug.stdMg && selectedDrug.stdVol) {
