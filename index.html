@@ -404,6 +404,11 @@
                     <tbody id="ped-airway-tbody"></tbody></table>
                 </div>
             </div>
+            <!-- Equipment Checklist -->
+            <div class="card">
+                <div class="card-header bg-amber-600"><i class="fas fa-tasks mr-2"></i>Equipment Checklist</div>
+                <div class="p-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 text-sm" id="ped-checklist"></div>
+            </div>
             <div class="card">
                 <div class="card-header bg-orange-600"><i class="fas fa-bolt mr-2"></i>Emergency Medications</div>
                 <div class="overflow-x-auto">
@@ -426,6 +431,18 @@
 
         <!-- NEONATAL PAGE -->
         <div id="page-neonatal" class="page space-y-4">
+            <div class="card bg-pink-50 border-pink-200 shadow-sm">
+                <div class="p-3 grid grid-cols-2 gap-4">
+                    <div>
+                        <div class="text-xs text-pink-700 font-bold mb-1">Gestational Age (wk)</div>
+                        <input type="number" id="neoGA" class="inp" placeholder="e.g. 36" oninput="recalcNeo()">
+                    </div>
+                    <div>
+                        <div class="text-xs text-pink-700 font-bold mb-1">Birth Weight (grams)</div>
+                        <input type="number" id="neoWtGrams" class="inp" placeholder="e.g. 2500" oninput="syncNeoWt()">
+                    </div>
+                </div>
+            </div>
             <div class="card">
                 <div class="card-header bg-pink-600"><i class="fas fa-baby mr-2"></i>Resuscitation Drugs (AHA/ERC 2025)</div>
                 <div class="overflow-x-auto">
@@ -434,11 +451,15 @@
                 </div>
             </div>
             <div class="card">
-                <div class="card-header bg-pink-800"><i class="fas fa-ruler mr-2"></i>ET Tube & Equipment (by weight)</div>
+                <div class="card-header bg-pink-800"><i class="fas fa-ruler mr-2"></i>ET Tube & Equipment (by GA / Weight)</div>
                 <div class="overflow-x-auto">
                     <table><thead><tr><th>Item</th><th>Value</th></tr></thead>
                     <tbody id="neo-equip-tbody"></tbody></table>
                 </div>
+            </div>
+            <div class="card">
+                <div class="card-header bg-pink-700"><i class="fas fa-tasks mr-2"></i>Equipment Checklist</div>
+                <div class="p-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 text-sm" id="neo-checklist"></div>
             </div>
             <div>
                 <div class="text-xs font-bold text-pink-600 uppercase tracking-widest mb-3">Continuous Drips (Neonatal)</div>
@@ -513,12 +534,31 @@
                     <div><span class="font-medium text-slate-700">Children:</span> (Age × 2) + 8</div>
                 </div>
             </div>
-            
-            <button onclick="document.getElementById('formulaModal').classList.add('hidden')" class="mt-5 w-full bg-slate-800 text-white font-semibold py-2 rounded-lg hover:bg-slate-700 transition">Close</button>
+        <!-- V/S Reference Modal -->
+        <div id="vsModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
+                <div class="p-4 border-b flex justify-between items-center bg-slate-50">
+                    <h3 class="font-bold text-lg text-slate-800"><i class="fas fa-heartbeat text-blue-500 mr-2"></i>Normal Pediatric Vital Signs</h3>
+                    <button onclick="document.getElementById('vsModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="p-4 overflow-y-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs uppercase bg-slate-100 text-slate-600">
+                            <tr><th class="p-2">Age</th><th class="p-2">HR (bpm)</th><th class="p-2">RR (/min)</th><th class="p-2">MAP (mmHg)</th></tr>
+                        </thead>
+                        <tbody id="vs-modal-tbody"></tbody>
+                    </table>
+                    <div class="mt-4 text-xs text-slate-500 italic">
+                        Reference: Adapted with permission from Pediatrics, Vol. 140, Page e20171904, Copyright © 2017 by the AAP.<br>
+                        (10th to 90th percentile values used for HR and RR. 10th percentile used for MAP).
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
 
-<script>
+        <script>
 // ============================================================
 // CORE HELPERS
 // ============================================================
@@ -556,6 +596,29 @@ function onManualCalcWtInput() {
     renderAll();
 }
 
+function setPage(pid) {
+    document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+    document.getElementById(pid).classList.remove('hidden');
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold'));
+    const b = document.querySelector(`[onclick="setPage('${pid}')"]`);
+    if(b) b.classList.add('bg-white', 'text-slate-900', 'shadow-sm', 'font-bold');
+}
+
+function syncNeoWt() {
+    const neoWtInput = document.getElementById('neoWtGrams');
+    const mainWtInput = document.getElementById('weight');
+    if (neoWtInput.value) {
+        mainWtInput.value = parseFloat(neoWtInput.value) / 1000;
+    } else {
+        mainWtInput.value = '';
+    }
+    recalc();
+}
+
+function recalcNeo() {
+    recalc();
+}
+
 function recalc() {
     P.gender = document.getElementById('gender').value;
     const ageVal = document.getElementById('age').value;
@@ -566,6 +629,16 @@ function recalc() {
     
     const wtVal = document.getElementById('weight').value;
     P.tbw    = wtVal ? parseFloat(wtVal) : 0;
+    
+    // Two-way sync: Update Neonatal weight in grams if user is editing the main kg field
+    const neoWtInput = document.getElementById('neoWtGrams');
+    if (neoWtInput && document.activeElement !== neoWtInput) {
+        if (wtVal) {
+            neoWtInput.value = P.tbw * 1000;
+        } else {
+            neoWtInput.value = '';
+        }
+    }
     
     const htVal = document.getElementById('height').value;
     P.height = htVal ? parseFloat(htVal) : 0;
@@ -591,14 +664,14 @@ function recalc() {
         const textSpan = estPedBanner.querySelector('span');
         if (textSpan) {
             if (P.age <= 0) {
-                textSpan.innerHTML = `น้ำหนักประเมินตามเกณฑ์: กรอกอายุเพื่อคำนวณ (สูตร <1ปี: (ด+9)/2, >=1ปี: (ปx2)+8)`;
+                textSpan.innerHTML = `Estimated Weight: Enter age to calculate`;
             } else if (P.age < 1) {
                 const ageMoTotal = P.age * 12;
                 const wt = rnd((ageMoTotal + 9) / 2);
-                textSpan.innerHTML = `น้ำหนักประเมินตามเกณฑ์ < 1 ปี: (เดือน+9)/2 = <b>${wt}</b> kg`;
+                textSpan.innerHTML = `Estimated Weight = <b>${wt}</b> kg <span class="text-xs text-slate-400 font-normal ml-1">(<1 yr: (mo+9)/2)</span>`;
             } else {
                 const wt = rnd((P.age * 2) + 8);
-                textSpan.innerHTML = `น้ำหนักประเมินตามเกณฑ์ >= 1 ปี: (ปีx2)+8 = <b>${wt}</b> kg`;
+                textSpan.innerHTML = `Estimated Weight = <b>${wt}</b> kg <span class="text-xs text-slate-400 font-normal ml-1">(&ge;1 yr: (yr&times;2)+8)</span>`;
             }
         }
     }
@@ -639,6 +712,8 @@ function togglePatient() {
 window.addEventListener('click', function(e) {
     const modal = document.getElementById('formulaModal');
     if (e.target === modal) modal.classList.add('hidden');
+    const vsModal = document.getElementById('vsModal');
+    if (e.target === vsModal) vsModal.classList.add('hidden');
 });
 
 // ============================================================
@@ -969,8 +1044,11 @@ function renderPedVS() {
     const html = `
         <div class="card border-blue-200 bg-blue-50/40 shadow-sm">
             <div class="p-3">
-                <div class="text-sm font-bold text-blue-800 mb-2 flex items-center gap-2">
-                    <i class="fas fa-heartbeat text-blue-500"></i> Normal Vital Signs (10th-90th Pct)
+                <div class="text-sm font-bold text-blue-800 mb-2 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-heartbeat text-blue-500"></i> Normal Vital Signs (10th-90th Pct)
+                    </div>
+                    <button onclick="showVsModal()" class="text-blue-600 hover:text-blue-800 text-xs"><i class="fas fa-info-circle"></i> Ref Table</button>
                 </div>
                 <div class="grid grid-cols-3 gap-2">
                     <div class="bg-white rounded border border-blue-100 p-2 text-center shadow-sm">
@@ -1002,6 +1080,40 @@ function renderPedVS() {
     });
 }
 
+function showVsModal() {
+    let tbody = '';
+    pedVitalSigns.forEach(v => {
+        let ageLabel = '';
+        if (v.maxMo <= 24) ageLabel = `${v.minMo}-${v.maxMo} months`;
+        else if (v.minMo >= 216) ageLabel = "&ge; 18 years";
+        else ageLabel = `${v.minMo/12}-${v.maxMo/12} years`;
+        tbody += `<tr class="border-b hover:bg-slate-50"><td class="p-2">${ageLabel}</td><td class="p-2">${v.hr}</td><td class="p-2">${v.rr}</td><td class="p-2">${v.map}</td></tr>`;
+    });
+    document.getElementById('vs-modal-tbody').innerHTML = tbody;
+    document.getElementById('vsModal').classList.remove('hidden');
+}
+
+const checklistItems = [
+    "ET Tube (Cuffed)", "ET Tube (Uncuffed)", "NG or OG tube", "Foley tube", 
+    "Chest tube (max size)", "LMA", "Stylet", "Anesthetic Face Mask", 
+    "Self-Inflating Bag", "Oropharyngeal Airway", "Sterile gloves", 
+    "Plastic goggles", "Monitor ET-CO2", "Plaster tape", "Syringe", "IV fluid set"
+];
+
+function renderChecklist(containerId) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    let html = '';
+    checklistItems.forEach((item) => {
+        html += `
+            <label class="flex items-start gap-2 cursor-pointer p-1 hover:bg-slate-50 rounded">
+                <input type="checkbox" class="mt-1 border-slate-300 rounded text-blue-600 focus:ring-blue-500">
+                <span class="text-slate-700 leading-tight">${item}</span>
+            </label>
+        `;
+    });
+    el.innerHTML = html;
+}
 
 function renderRsi() {
     if (!document.getElementById('rsi-sed-tbody')) return;
@@ -1228,21 +1340,51 @@ function syncCsDoseInput() {
 }
 
 function renderPedEm() {
-    if (!document.getElementById('ped-em-tbody')) return;
-    const age = P.age || 0;
-    const wt = P.calcWt;
-    const cuffed = age > 0 ? ((age/4) + 3.5).toFixed(1) : '-';
-    const uncuffed = age > 0 ? ((age/4) + 4).toFixed(1) : '-';
-    const depth = age > 0 ? rnd((age/2) + 12) + ' cm' : '-';
-    document.getElementById('ped-airway-tbody').innerHTML = `<tr><td>ET Tube (Cuffed)</td><td class="val-blue">${cuffed} mm</td></tr><tr><td>ET Tube (Uncuffed)</td><td class="val-blue">${uncuffed} mm</td></tr><tr><td>Depth</td><td class="val-blue">${depth}</td></tr>`;
+    // Airway
+    let uncuffed = P.age > 0 ? (P.age / 4) + 4.0 : 0;
+    let cuffed = P.age > 0 ? (P.age / 4) + 3.5 : 0;
+    let depth = P.age > 0 ? (P.age / 2) + 12 : 0;
+    
+    let uncStr = uncuffed ? rnd(uncuffed) + ' mm' : '-';
+    let cufStr = cuffed ? rnd(cuffed) + ' mm' : '-';
+    let depStr = depth ? rnd(depth) + ' cm' : '-';
 
+    let ngStr = uncuffed ? rnd(uncuffed * 2) + ' Fr' : '-';
+    let foleyStr = uncuffed ? rnd(uncuffed * 2) + ' Fr' : '-';
+    let chestStr = uncuffed ? rnd(uncuffed * 4) + ' Fr' : '-';
+
+    let lmaStr = '-';
+    let w = P.calcWt;
+    if (w > 0) {
+        if (w < 5) lmaStr = '1';
+        else if (w < 10) lmaStr = '1.5';
+        else if (w < 20) lmaStr = '2';
+        else if (w < 30) lmaStr = '2.5';
+        else if (w < 50) lmaStr = '3';
+        else if (w < 70) lmaStr = '4';
+        else lmaStr = '5';
+    }
+
+    document.getElementById('ped-airway-tbody').innerHTML = `
+        <tr><td class="font-semibold text-slate-700">ET Tube (Uncuffed)</td><td class="val-amber">${uncStr}</td></tr>
+        <tr><td class="font-semibold text-slate-700">ET Tube (Cuffed)</td><td class="val-amber">${cufStr}</td></tr>
+        <tr><td class="font-semibold text-slate-700">Insertion Depth</td><td class="val-amber">${depStr}</td></tr>
+        <tr><td class="font-semibold text-slate-700">NG / OG Tube</td><td class="val-amber">${ngStr}</td></tr>
+        <tr><td class="font-semibold text-slate-700">Foley Tube</td><td class="val-amber">${foleyStr}</td></tr>
+        <tr><td class="font-semibold text-slate-700">Chest Tube (Max)</td><td class="val-amber">${chestStr}</td></tr>
+        <tr><td class="font-semibold text-slate-700">LMA</td><td class="val-amber">${lmaStr}</td></tr>
+    `;
+
+    renderChecklist('ped-checklist');
+
+    // Drugs
     let h = '';
     pedEmDrugs.forEach(d => {
         let calc, vol;
         if (d.doseStr) {
             const parts = d.doseStr.split(/[-–]/);
-            let minC = wt * parseFloat(parts[0]);
-            let maxC = wt * parseFloat(parts[1]);
+            let minC = w * parseFloat(parts[0]);
+            let maxC = w * parseFloat(parts[1]);
             if (d.max) {
                 minC = Math.min(minC, d.max);
                 maxC = Math.min(maxC, d.max);
@@ -1254,7 +1396,7 @@ function renderPedEm() {
             }
             vol = '-';
         } else {
-            const raw = d.dose * wt;
+            const raw = d.dose * w;
             const capped = d.max ? Math.min(raw, d.max) : raw;
             if (d.unit === 'J/kg') {
                 calc = `${rnd(capped)} J`;
@@ -1280,14 +1422,6 @@ function renderPedEm() {
     pedDrips.forEach(d => { dc += buildDripCard(d, d.unit || 'mcg/kg/min', d.perMin || false, 'orange'); });
     document.getElementById('ped-drips-container').innerHTML = dc;
     pedDrips.forEach(d => calcDrip(d.id));
-
-    // Equipment
-    document.getElementById('ped-equip-tbody').innerHTML = `
-        <tr><td class="font-semibold text-slate-700">ET Tube (Cuffed)</td><td class="val-blue">${cuffed} mm</td><td class="val-orange">${depth}</td></tr>
-        <tr><td class="font-semibold text-slate-700">ET Tube (Uncuffed)</td><td class="val-blue">${uncuffed} mm</td><td class="val-orange">${depth}</td></tr>
-        <tr><td class="font-semibold text-slate-700">NG/OG Tube</td><td class="text-slate-600">${wt > 10 ? '10–14 Fr' : '6–10 Fr'}</td><td>-</td></tr>
-        <tr><td class="font-semibold text-slate-700">Foley Catheter</td><td class="text-slate-600">${wt > 20 ? '12–14 Fr' : '8–10 Fr'}</td><td>-</td></tr>
-    `;
 }
 
 function renderNeonatal() {
@@ -1295,26 +1429,49 @@ function renderNeonatal() {
     const w = P.calcWt;
     let h = '';
     neoDrugs.forEach(d => {
-        const calc = d.isVol ? '-' : (rnd(P.calcWt * d.doseMin) + '–' + rnd(P.calcWt * d.doseMax));
-        const vol = d.concMgMl ? (rnd(P.calcWt * d.doseMin / d.concMgMl) + '–' + rnd(P.calcWt * d.doseMax / d.concMgMl)) : '-';
+        const calc = d.isVol ? '-' : (rnd(P.calcWt * d.doseMin) + '-' + rnd(P.calcWt * d.doseMax));
+        const vol = d.concMgMl ? (rnd(P.calcWt * d.doseMin / d.concMgMl) + '-' + rnd(P.calcWt * d.doseMax / d.concMgMl)) : '-';
         h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-500 mt-0.5">${d.prep}</div></td><td class="text-xs text-slate-600">${d.dose}</td><td class="val-blue">${calc}</td><td class="val-pink">${vol}</td><td><span class="route-tag ${routeColor(d.route)}">${d.route}</span></td></tr>`;
     });
     document.getElementById('neo-drug-tbody').innerHTML = h;
 
-    let tube = '2.5 mm'; let depth = '6–7 cm'; let uvc = '3.5 Fr'; let suction = '5 Fr';
-    if (w > 1.2)  { tube = '2.5 mm'; depth = '7 cm'; }
-    if (w > 1.5)  { tube = '3.0 mm'; depth = '7.5 cm'; uvc = '3.5 Fr'; suction = '6 Fr'; }
-    if (w > 2.0)  { tube = '3.0 mm'; depth = '8.5 cm'; uvc = '5.0 Fr'; suction = '8 Fr'; }
-    if (w >= 3.0) { tube = '3.5 mm'; depth = '9–10 cm'; uvc = '5.0 Fr'; suction = '8 Fr'; }
+    const gaInput = document.getElementById('neoGA').value;
+    let ga = gaInput ? parseInt(gaInput) : null;
+
+    let tube = '2.5 mm', depth = '6-7 cm', uvc = '3.5 Fr', suction = '5F or 6F', blade = '00', sga = 'Not rec.', io = '15-18G', o2 = '21-30%', pip = '20-25';
+
+    let cat = 1; 
+    if (ga !== null) {
+        if (ga < 28) cat = 1;
+        else if (ga < 34) cat = 2;
+        else if (ga <= 38) cat = 3;
+        else cat = 4;
+    } else {
+        if (w < 1.0) cat = 1;
+        else if (w < 2.0) cat = 2;
+        else if (w <= 3.0) cat = 3;
+        else cat = 4;
+    }
+
+    if (cat === 1) { tube = '2.5 mm'; depth = '6-7 cm'; sga = 'Not rec.'; uvc = '3.5 Fr'; suction = '5F or 6F'; blade = '00'; o2 = '21-30%'; pip = '20-25'; }
+    else if (cat === 2) { tube = '3.0 mm'; depth = '7-8 cm'; sga = 'Not rec.'; uvc = '3.5 Fr'; suction = '6F or 8F'; blade = '0'; o2 = '21-30%'; pip = '20-25'; }
+    else if (cat === 3) { tube = '3.5 mm'; depth = '8-9 cm'; sga = 'Size 1'; uvc = '5.0 Fr'; suction = '8F'; blade = '0 or 1'; o2 = '21%'; pip = '20-25'; }
+    else if (cat === 4) { tube = '3.5-4.0 mm'; depth = '9-10 cm'; sga = 'Size 1'; uvc = '5.0 Fr'; suction = '8F or 10F'; blade = '1'; o2 = '21%'; pip = '20-25'; }
+
     document.getElementById('neo-equip-tbody').innerHTML = `
-        <tr><td class="font-semibold text-slate-700">ET Tube (ID)</td><td class="val-pink">${tube}</td></tr>
+        <tr><td class="font-semibold text-slate-700">Tracheal Tube (ID)</td><td class="val-pink">${tube}</td></tr>
         <tr><td class="font-semibold text-slate-700">Insertion Depth (oral)</td><td class="val-pink">${depth}</td></tr>
-        <tr><td class="font-semibold text-slate-700">UVC</td><td class="val-pink">${uvc}</td></tr>
+        <tr><td class="font-semibold text-slate-700">Laryngeal Mask (SGA)</td><td class="val-pink">${sga}</td></tr>
+        <tr><td class="font-semibold text-slate-700">Umbilical Venous Catheter (UVC)</td><td class="val-pink">${uvc}</td></tr>
+        <tr><td class="font-semibold text-slate-700">Intraosseous (IO) Needle</td><td class="val-pink">${io}</td></tr>
         <tr><td class="font-semibold text-slate-700">Suction Catheter</td><td class="val-pink">${suction}</td></tr>
-        <tr><td class="font-semibold text-slate-700">Laryngoscope Blade</td><td class="val-pink">${w < 2 ? '0 (Preterm)' : '0–1'}</td></tr>
+        <tr><td class="font-semibold text-slate-700">Laryngoscope Blade</td><td class="val-pink">${blade}</td></tr>
+        <tr><td class="font-semibold text-slate-700">Initial O2 Concentration</td><td class="val-pink">${o2}</td></tr>
+        <tr><td class="font-semibold text-slate-700">Initial PIP (cm H2O)</td><td class="val-pink">${pip}</td></tr>
     `;
 
-    // Drips
+    renderChecklist('neo-checklist');
+
     let dc = '';
     neoDrips.forEach(d => { dc += buildDripCard(d, d.unit || 'mcg/kg/min', d.perMin || false, 'pink'); });
     document.getElementById('neo-drips-container').innerHTML = dc;
@@ -1800,5 +1957,8 @@ recalc();
 </script>
 </body>
 </html>
+
+
+
 
 
