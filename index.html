@@ -122,8 +122,11 @@
                     </select>
                 </div>
                 <div>
-                    <div class="text-xs text-slate-500 mb-1 font-semibold">Age (yr)</div>
-                    <input type="number" inputmode="decimal" id="age" class="inp" placeholder="Optional" oninput="recalc()">
+                    <div class="text-xs text-slate-500 mb-1 font-semibold">Age (yr, mo)</div>
+                    <div class="flex gap-1">
+                        <input type="number" inputmode="decimal" id="age" class="inp flex-1 min-w-0" placeholder="yr" oninput="recalc()">
+                        <input type="number" inputmode="decimal" id="ageMo" class="inp flex-1 min-w-0" placeholder="mo" oninput="recalc()">
+                    </div>
                 </div>
                 <div>
                     <div class="text-xs text-slate-500 mb-1 font-semibold">Weight / TBW (kg)</div>
@@ -310,6 +313,13 @@
         <!-- RSI PAGE -->
         <div id="page-rsi" class="page space-y-4">
             <div class="card">
+                <div class="card-header bg-yellow-500"><i class="fas fa-pills mr-2"></i>Premedication</div>
+                <div class="overflow-x-auto">
+                    <table><thead><tr><th>Drug</th><th>Usual (mg/kg)</th><th>Range (mg/kg)</th><th>Usual Dose</th><th>Range Dose</th></tr></thead>
+                    <tbody id="rsi-pre-tbody"></tbody></table>
+                </div>
+            </div>
+            <div class="card">
                 <div class="card-header bg-red-600"><i class="fas fa-syringe mr-2"></i>Sedation / Induction</div>
                 <div class="overflow-x-auto">
                     <table><thead><tr><th>Drug</th><th>Usual (mg/kg)</th><th>Range (mg/kg)</th><th>Usual Dose</th><th>Range Dose</th></tr></thead>
@@ -334,6 +344,7 @@
 
         <!-- PED COMMON PAGE -->
         <div id="page-ped-common" class="page space-y-4">
+            <div id="ped-common-vs-card" class="hidden"></div>
             <div id="ped-est-banner" class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm text-amber-700 flex items-center gap-2">
                 <i class="fas fa-calculator"></i>
                 <span>ถ้าไม่ทราบน้ำหนัก: กรอกอายุ up to น้ำหนักประเมิน = (Age×2)+8 = <b id="estWtPed">?</b> kg</span>
@@ -384,6 +395,7 @@
 
         <!-- PED EMERGENCY PAGE -->
         <div id="page-ped-em" class="page space-y-4">
+            <div id="ped-vs-card" class="hidden"></div>
             <!-- ET Tube info -->
             <div class="card">
                 <div class="card-header bg-amber-700"><i class="fas fa-wind mr-2"></i>Airway / ET Tube</div>
@@ -468,6 +480,7 @@
                     <tbody id="adult-sed-tbody"></tbody></table>
                 </div>
             </div>
+            <div id="adult-neuro-container"></div>
         </div>
     </main>
 
@@ -546,7 +559,10 @@ function onManualCalcWtInput() {
 function recalc() {
     P.gender = document.getElementById('gender').value;
     const ageVal = document.getElementById('age').value;
-    P.age    = ageVal ? parseFloat(ageVal) : 0;
+    const ageMoVal = document.getElementById('ageMo').value;
+    const y = ageVal ? parseFloat(ageVal) : 0;
+    const m = ageMoVal ? parseFloat(ageMoVal) : 0;
+    P.age = y + (m / 12);
     
     const wtVal = document.getElementById('weight').value;
     P.tbw    = wtVal ? parseFloat(wtVal) : 0;
@@ -570,8 +586,22 @@ function recalc() {
 
     document.getElementById('ibwDisplay').innerText = P.ibw > 0 && P.height > 0 ? (rnd(P.ibw) + ' kg') : '--';
     document.getElementById('lbwDisplay').innerText = P.lbw > 0 && P.height > 0 ? (rnd(P.lbw) + ' kg') : '--';
-    const estPed = document.getElementById('estWtPed');
-    if (estPed) estPed.innerText = P.age > 0 ? rnd((P.age * 2) + 8) : '?';
+    const estPedBanner = document.getElementById('ped-est-banner');
+    if (estPedBanner) {
+        const textSpan = estPedBanner.querySelector('span');
+        if (textSpan) {
+            if (P.age <= 0) {
+                textSpan.innerHTML = `น้ำหนักประเมินตามเกณฑ์: กรอกอายุเพื่อคำนวณ (สูตร <1ปี: (ด+9)/2, >=1ปี: (ปx2)+8)`;
+            } else if (P.age < 1) {
+                const ageMoTotal = P.age * 12;
+                const wt = rnd((ageMoTotal + 9) / 2);
+                textSpan.innerHTML = `น้ำหนักประเมินตามเกณฑ์ < 1 ปี: (เดือน+9)/2 = <b>${wt}</b> kg`;
+            } else {
+                const wt = rnd((P.age * 2) + 8);
+                textSpan.innerHTML = `น้ำหนักประเมินตามเกณฑ์ >= 1 ปี: (ปีx2)+8 = <b>${wt}</b> kg`;
+            }
+        }
+    }
 
     // Apply Calc Weight mode
     if (calcWtMode === 'tbw') P.calcWt = P.tbw;
@@ -637,16 +667,19 @@ function navigate(page, title = '') {
 // ============================================================
 
 // --- RSI ---
+const rsiPre = [
+    {name:'Atropine', min:0.02, max:0.02, usual: 0.02, wt:'tbw', note:'Min 0.1 mg, Max 0.5 mg', absMin: 0.1, absMax: 0.5},
+];
 const rsiSed = [
     {name:'Etomidate',   min:0.2, max:0.6, usual: 0.3, wt:'lbw', note:'Use LBW'},
     {name:'Propofol',    min:1.0, max:2.5, usual: 1.5, wt:'lbw', note:'Use LBW<br>Reduced for elderly'},
-    {name:'Ketamine',    min:0.5, max:2.0, usual: 1.5, wt:'lbw', note:'Use LBW'},
-    {name:'Midazolam',   min:0.05, max:0.3, usual: 0.1, wt:'lbw', note:'Use LBW'},
-    {name:'Thiopental',  min:3.0, max:4.0, usual: 3.0, wt:'lbw', note:'Use LBW'},
+    {name:'Ketamine',    min:0.5, max:2.0, usual: 1.0, wt:'lbw', note:'Use LBW'},
+    {name:'Midazolam',   min:0.05, max:0.3, usual: 0.2, wt:'lbw', note:'Use LBW'},
+    {name:'Fentanyl',    min:1.0, max:1.0, usual: 1.0, wt:'lbw', note:'Use LBW', unit:'mcg'},
 ];
 const rsiNmb = [
-    {name:'Succinylcholine', min:1.0, max:1.5, usual: 1.5, wt:'tbw', note:'Use TBW'},
-    {name:'Rocuronium',      min:0.6, max:1.2, usual: 1.0, wt:'lbw', note:'High dose: 0.9–1.2 for RSI'},
+    {name:'Succinylcholine', min:0.6, max:1.5, usual: 1.0, wt:'tbw', note:'Use TBW'},
+    {name:'Rocuronium',      min:0.6, max:1.2, usual: 1.0, wt:'lbw', note:'High dose: 0.9-1.2 for RSI'},
 ];
 const rsiRev = [
     {name:'Sugammadex (Moderate block)', dose:2,  wt:'tbw', note:'TOF count 1–3'},
@@ -686,7 +719,7 @@ const pedCommonGroups = [
         {name:'Ondansetron', prep:'', route:'PO/IV', min:0.15, max:0.15, unit:'mg/kg/dose', maxAdult:'Adult Dose', note:'q 6-8 hr'},
         {name:'Domperidone Syrup', prep:'1 mg / 1 ml', route:'PO', min:0.1, max:0.2, unit:'mg/kg/dose', maxAdult:'Adult Dose', concMgMl:1, note:'tid'},
         {name:'omeprazole', prep:'', route:'PO/IV', min:1, max:1, unit:'mg/kg/day', maxAdult:'Adult Dose', note:'OD'},
-        {name:'Diosmectite', prep:'', route:'PO', fixed:'<1 yr: 1 ซอง/วัน<br>1-2 yr: 1-2 ซอง/วัน<br>>2 yr: 2-3 ซอง/วัน', maxAdult:'Adult Dose', note:'div 2-3 doses for 3-5 days'},
+        {name:'Diosmectite', prep:'', route:'PO', fixed:'6 g/day', maxAdult:'Adult Dose', note:'div 2-3 doses for 3-5 days'},
         {name:'ORS', prep:'', route:'PO', fixed:'50 ml/kg', maxAdult:'Adult Dose', dosePrefix:'For Deficit - Mild', note:'1 ซอง ผสมน้ำ 250 ml จิบบ่อยๆ'},
         {name:'ORS', prep:'', route:'PO', fixed:'100 ml/kg', maxAdult:'Adult Dose', dosePrefix:'For Deficit - Moderate', note:'1 ซอง ผสมน้ำ 250 ml จิบบ่อยๆ'},
         {name:'ORS', prep:'', route:'PO', fixed:'5 ml/kg', maxAdult:'Adult Dose', dosePrefix:'For ongoing loss', note:'PO per vomitting'},
@@ -694,17 +727,17 @@ const pedCommonGroups = [
         {name:'Metoclopramide', prep:'', route:'PO', fixed:'<1 yr: 2.5 ml<br>1-3 yr: 5 ml<br>3-6 yr: 5-10 ml<br>>6 yr: 10-20 ml', maxAdult:'Adult Dose', note:'Use with caution'},
     ]},
     { title:'Oral Antibiotics', style:'background:#d9f99d; color:#3f6212;', items: [
-        {name:'Amoxicillin', prep:'125 mg / 5 ml', route:'PO', min:40, max:50, unit:'mg/kg/day', divisor:2, maxAdult:2000, concMgMl:25, dosePrefix:'Standard dose', doseNote:'Sinusitis/AOM (50 mg/kg/day สำหรับ Pharyngitis)', note:'bid'},
-        {name:'Amoxicillin', prep:'250 mg / 5 ml', route:'PO', min:80, max:90, unit:'mg/kg/day', divisor:2, maxAdult:2000, concMgMl:50, dosePrefix:'High dose', doseNote:'Severe Sinusitis/AOM/Pneumonia', note:'bid'},
+        {name:'Amoxicillin', prep:'125 mg / 5 ml', route:'PO', min:40, max:50, unit:'mg/kg/day', divisor:2, maxAdult:'1000 mg/dose', concMgMl:25, dosePrefix:'Standard dose', doseNote:'Sinusitis/AOM (50 mg/kg/day สำหรับ Pharyngitis)', note:'bid'},
+        {name:'Amoxicillin', prep:'250 mg / 5 ml', route:'PO', min:80, max:90, unit:'mg/kg/day', divisor:2, maxAdult:'1000 mg/dose', concMgMl:50, dosePrefix:'High dose', doseNote:'Severe Sinusitis/AOM/Pneumonia', note:'bid'},
         {name:'Augmentin', prep:'457 mg / 5 ml', route:'PO', min:40, max:90, unit:'mg/kg/day', divisor:2, maxAdult:2000, concMgMl:91.4, note:'bid'},
         {name:'Ciprofloxacin', prep:'100 mg / 5 ml', route:'PO', min:20, max:40, unit:'mg/kg/day', divisor:2, maxAdult:1500, concMgMl:20, note:'div bid'},
         {name:'Norfloxacin', prep:'250 mg / 5 ml', route:'PO', min:15, max:20, unit:'mg/kg/day', divisor:2, maxAdult:'Adult Dose', concMgMl:50, note:'div bid'},
         {name:'Azithromycin', prep:'100 mg / 5 ml', route:'PO', min:10, max:20, unit:'mg/kg/day', maxAdult:500, concMgMl:20, note:'OD'},
         {name:'Doxycycline', prep:'200 mg / 5 ml', route:'PO', min:4.4, max:4.4, unit:'mg/kg/dose', maxAdult:100, concMgMl:40, note:'once'},
         {name:'Metronidazole', prep:'50 mg / 5 ml', route:'PO', min:15, max:50, unit:'mg/kg/day', divisor:3, maxAdult:1500, concMgMl:10, note:'div tid-qid'},
-        {name:'Vancomycin (oral)', prep:'200 mg / 5 ml', route:'PO', min:40, max:40, unit:'mg/kg/day', divisor:4, maxAdult:2000, concMgMl:40, note:'div qid 10 days'},
+        {name:'Vancomycin (oral)', prep:'200 mg / 5 ml', route:'PO', min:40, max:40, unit:'mg/kg/day', divisor:4, maxAdult:'1000 mg/dose', concMgMl:40, note:'div qid 10 days'},
         {name:'Albendazole', prep:'250 mg / 5 ml', route:'PO', min:15, max:15, unit:'mg/kg/day', maxAdult:400, concMgMl:50, note:'OD 5-7 days'},
-        {name:'Tinidazole', prep:'200 mg / 5 ml', route:'PO', min:50, max:50, unit:'mg/kg/day', maxAdult:2000, concMgMl:40, note:'once or OD 5 days'},
+        {name:'Tinidazole', prep:'200 mg / 5 ml', route:'PO', min:50, max:50, unit:'mg/kg/day', maxAdult:'1000 mg/dose', concMgMl:40, note:'once or OD 5 days'},
         {name:'Cefixime', prep:'457 mg / 5 ml', route:'PO', min:8, max:8, unit:'mg/kg/day', divisor:2, maxAdult:'Adult Dose', concMgMl:91.4, note:'bid'},
         {name:'Oseltamivir (<1 yr)', prep:'250 mg / 5 ml', route:'PO', fixed:'0-1mo preterm: 1 mg/kg<br>0-1mo term, 0-8mo, 12mo: 3 mg/kg<br>9-11mo: 3.5 mg/kg', maxAdult:75, note:'bid 5 days'},
         {name:'Oseltamivir (≥1 yr)', prep:'250 mg / 5 ml', route:'PO', doseText:'>40kg: 75<br>23-40kg: 60<br>15-23kg: 45<br><15kg: 30', unit:'mg/dose', maxAdult:75, concMgMl:50, note:'bid 5 days', customCalc: (w) => {
@@ -715,27 +748,44 @@ const pedCommonGroups = [
         }},
     ]},
     { title:'IV Antibiotics', style:'background:#bef264; color:#3f6212;', items: [
-        {name:'Ceftriaxone', prep:'', route:'IV', min:50, max:100, unit:'mg/kg/day', maxAdult:2000, note:'OD'},
+        {name:'Ceftriaxone', prep:'', route:'IV', min:50, max:100, unit:'mg/kg/day', maxAdult:'2000 mg/dose', note:'OD'},
         {name:'Cefotaxime', prep:'', route:'IV', min:100, max:200, unit:'mg/kg/day', divisor:3, maxAdult:'Adult Dose', note:'q 8 hr'},
-        {name:'Ampicillin', prep:'', route:'IV', min:150, max:200, unit:'mg/kg/day', divisor:4, maxAdult:8000, note:'q 6 hr'},
+        {name:'Ampicillin', prep:'', route:'IV', min:150, max:200, unit:'mg/kg/day', divisor:4, maxAdult:'2000 mg/dose', note:'q 6 hr'},
         {name:'Gentamicin', prep:'', route:'IV', min:5, max:5, unit:'mg/kg/day', maxAdult:'Adult Dose', note:'OD'},
     ]},
-    { title:'Neuro', style:'background:#e9d5ff; color:#4c1d95;', items: [
-        {name:'Diazepam', prep:'', route:'IV', min:0.2, max:0.3, unit:'mg/kg/dose', maxAdult:10, note:'stat (rate < 2 mg/min)'},
-        {name:'Diazepam', prep:'', route:'Rectal', min:0.5, max:0.5, unit:'mg/kg/dose', maxAdult:10, note:''},
-        {name:'Midazolam', prep:'5 mg / 1 ml', route:'IM', min:0.2, max:0.2, unit:'mg/kg/dose', maxAdult:10, concMgMl:5, note:''},
-        {name:'Midazolam', prep:'5 mg / 1 ml', route:'IV', min:0.1, max:0.2, unit:'mg/kg/dose', maxAdult:2, concMgMl:5, note:''},
-        {name:'Midazolam', prep:'5 mg / 1 ml', route:'IN', min:0.2, max:0.2, unit:'mg/kg/dose', maxAdult:10, concMgMl:5, note:''},
+    { title:'Neuro (5-10 min)', style:'background:#e9d5ff; color:#4c1d95;', items: [
+        {name:'Lorazepam', prep:'', route:'IV', min:0.1, max:0.1, unit:'mg/kg/dose', maxAdult:4, note:'stat'},
+        {name:'Diazepam', prep:'10 mg / 2 ml', route:'IV', min:0.3, max:0.3, unit:'mg/kg/dose', maxAdult:10, concMgMl:5, note:'stat (rate < 2 mg/min)'},
+        {name:'Diazepam', prep:'', route:'Rectal', min:0.5, max:0.5, unit:'mg/kg/dose', maxAdult:10, note:'Do not dilute'},
+        {name:'Midazolam', prep:'5 mg / 1 ml', route:'IM', doseText:'<13kg: 0.2 mg/kg<br>13-40kg: 5 mg<br>>40kg: 10 mg', unit:'mg/dose', maxAdult:10, concMgMl:5, note:'Do not dilute', customCalc: (w) => {
+            if (w > 40) return 10;
+            if (w >= 13) return 5;
+            return w * 0.2;
+        }},
+        {name:'Midazolam', prep:'5 mg / 1 ml', route:'IV', min:0.1, max:0.2, unit:'mg/kg/dose', maxAdult:4, concMgMl:5, note:'(rate 2-5 mg/min)'},
+        {name:'Midazolam', prep:'5 mg / 1 ml', route:'IN', min:0.2, max:0.2, unit:'mg/kg/dose', maxAdult:4, concMgMl:5, note:''},
         {name:'Midazolam', prep:'5 mg / 1 ml', route:'Buccal', min:0.5, max:0.5, unit:'mg/kg/dose', maxAdult:10, concMgMl:5, note:''},
-        {name:'Lorazepam', prep:'', route:'IV', min:0.1, max:0.1, unit:'mg/kg/dose', maxAdult:'Adult Dose', note:'stat'},
-        {name:'Phenytoin', prep:'', route:'IV', min:20, max:20, unit:'mg/kg/dose', maxAdult:1500, note:'(rate < 1 mg/kg/min)'},
-        {name:'Phenobarbital', prep:'', route:'IV', min:20, max:20, unit:'mg/kg/dose', maxAdult:1000, note:'(rate < 2 mg/kg/min)'},
-        {name:'Sodium Valproate', prep:'', route:'IV', min:40, max:40, unit:'mg/kg/dose', maxAdult:3000, note:'(rate < 1-3 mg/kg/min)'},
-        {name:'Levetiracetam', prep:'', route:'IV', min:20, max:60, unit:'mg/kg/dose', maxAdult:4000, note:'(infusion > 15 min)'},
-        {name:'Lacosamide', prep:'', route:'IV', min:10, max:10, unit:'mg/kg/dose', maxAdult:400, note:''},
-        {name:'Propofol', prep:'', route:'IV', min:1, max:1, unit:'mg/kg/dose', maxAdult:'Adult Dose', note:'(rate < 0.05 mg/kg/min)'},
-        {name:'Thiopental', prep:'', route:'IV', min:1, max:1, unit:'mg/kg/dose', maxAdult:'Adult Dose', note:'(rate < 0.05 mg/kg/min)'},
-        {name:'Ketamine', prep:'', route:'IV', min:0.5, max:0.5, unit:'mg/kg/dose', maxAdult:'Adult Dose', note:''},
+    ]},
+    { title:'Neuro (10-30 min)', style:'background:#d8b4fe; color:#4c1d95;', items: [
+        {name:'Phenytoin', prep:'250 mg / 5 ml', route:'IV', min:20, max:20, unit:'mg/kg/dose', maxAdult:1500, concMgMl:50, dosePrefix:'Loading', note:'in NSS (rate < 1 mg/kg/min)'},
+        {name:'Phenytoin', prep:'', route:'IV', min:5, max:8, unit:'mg/kg/day', divisor:3, concMgMl:50, dosePrefix:'Maintenance', note:'in NSS q 8 hr'},
+        {name:'Phenobarbital', prep:'200 mg / 1 ml', route:'IV', min:20, max:20, unit:'mg/kg/dose', maxAdult:1000, concMgMl:200, dosePrefix:'Loading', note:'(rate < 2 mg/kg/min)'},
+        {name:'Phenobarbital', prep:'', route:'IV', min:4, max:6, unit:'mg/kg/day', divisor:2, concMgMl:200, dosePrefix:'Maintenance', note:'q 12 hr'},
+        {name:'Sodium Valproate', prep:'400 mg / 4 ml', route:'IV', min:20, max:40, unit:'mg/kg/dose', concMgMl:100, dosePrefix:'Loading', note:'(rate < 1-3 mg/kg/min)'},
+        {name:'Sodium Valproate', prep:'', route:'IV', min:1, max:5, unit:'mg/kg/hr', concMgMl:100, dosePrefix:'Maintenance', doseNote:'Rate (mg/hr)', note:'IV infusion'},
+        {name:'Levetiracetam', prep:'500 mg / 5 ml', route:'IV', min:20, max:60, unit:'mg/kg/dose', maxAdult:4000, concMgMl:100, dosePrefix:'Loading', note:'(infusion > 15 min)'},
+        {name:'Levetiracetam', prep:'', route:'IV', min:10, max:30, unit:'mg/kg/dose', concMgMl:100, dosePrefix:'Maintenance', note:'q 12 hr'},
+        {name:'Lacosamide', prep:'200 mg / 20 ml', route:'IV', min:10, max:10, unit:'mg/kg/dose', maxAdult:400, concMgMl:10, doseNote:'Max 20 mg/kg', note:''},
+    ]},
+    { title:'Neuro (Refractory)', style:'background:#c084fc; color:#4c1d95;', items: [
+        {name:'Midazolam', prep:'5 mg / 1 ml', route:'IV', min:0.2, max:0.2, unit:'mg/kg/dose', doseNote:'Max 2 mg/kg', concMgMl:5, dosePrefix:'Loading', note:'(Maintenance phase)'},
+        {name:'Midazolam', prep:'', route:'IV', min:0.02, max:0.4, unit:'mg/kg/hr', concMgMl:5, dosePrefix:'Maintenance', doseNote:'Rate (mg/hr)', note:''},
+        {name:'Propofol', prep:'200 mg / 20 ml', route:'IV', min:1, max:2, unit:'mg/kg/dose', concMgMl:10, dosePrefix:'Loading', note:'no dilution (rate < 0.05 mg/kg/min)'},
+        {name:'Propofol', prep:'', route:'IV', min:4, max:6, unit:'mg/kg/day', divisor:2, concMgMl:10, dosePrefix:'Maintenance', note:'no dilution q 12 hr'},
+        {name:'Thiopental', prep:'1 g / vial', route:'IV', min:1, max:2, unit:'mg/kg/dose', dosePrefix:'Loading', note:'2.5% solution (rate < 0.05 mg/kg/min)'},
+        {name:'Thiopental', prep:'', route:'IV', min:3, max:5, unit:'mg/kg/hr', dosePrefix:'Maintenance', doseNote:'Rate (mg/hr)', note:'2.5% solution'},
+        {name:'Ketamine', prep:'500 mg / 10 ml', route:'IV', min:0.5, max:2, unit:'mg/kg/dose', concMgMl:50, dosePrefix:'Loading', note:'dilute to ≤ 2 mg/ml'},
+        {name:'Ketamine', prep:'', route:'IV', min:0.04, max:0.04, unit:'mg/kg/min', concMgMl:50, dosePrefix:'Maintenance', doseNote:'Rate (mg/min)', note:'dilute to ≤ 2 mg/ml'},
     ]},
 ];
 
@@ -749,14 +799,14 @@ const pedEmDrugs = [
     {name:'Atropine',                      dose:0.02, max:0.5, prep:'Min 0.1 mg',                             unit:'mg/kg', concMgMl:null, route:'IV/IO'},
     {name:'Adenosine (1st dose)',          dose:0.1,  max:6,   prep:'',                                       unit:'mg/kg', concMgMl:null, route:'IV/IO'},
     {name:'Adenosine (2nd dose)',          dose:0.2,  max:12,  prep:'',                                       unit:'mg/kg', concMgMl:null, route:'IV/IO'},
-    {name:'Midazolam (IN/Buccal)',         dose:0.3,  max:10,  prep:'',                                       unit:'mg/kg', concMgMl:null, route:'IN/Buccal'},
-    {name:'Midazolam (IV/IO)',             dose:0.15, max:10,  prep:'',                                       unit:'mg/kg', concMgMl:null, route:'IV/IO'},
-    {name:'Diazepam (Rectal)',             dose:0.5,  max:20,  prep:'',                                       unit:'mg/kg', concMgMl:null, route:'PR'},
-    {name:'Lorazepam (IV/IO)',             dose:0.1,  max:4,   prep:'',                                       unit:'mg/kg', concMgMl:null, route:'IV/IO'},
-    {name:'Levetiracetam',                 doseStr:'40–60',   max:4500, prep:'',                              unit:'mg/kg', concMgMl:null, route:'IV/IO'},
-    {name:'Phenytoin',                     dose:20,   max:1500, prep:'rate < 1 mg/kg/min',                   unit:'mg/kg', concMgMl:null, route:'IV'},
-    {name:'Phenobarbital',                 dose:20,   max:1000, prep:'rate < 2 mg/kg/min',                   unit:'mg/kg', concMgMl:null, route:'IV'},
-    {name:'Valproic Acid',                 dose:40,   max:3000, prep:'',                                     unit:'mg/kg', concMgMl:null, route:'IV'},
+    {name:'Levetiracetam',                 doseStr:'40–60',   max:4500, prep:'',                              unit:'mg/kg', concMgMl:null, route:'IV/IO', dosePrefix:'Loading'},
+    {name:'Levetiracetam',                 doseStr:'10–30',   max:3000, prep:'q 12 hr',                       unit:'mg/kg', concMgMl:null, route:'IV/IO', dosePrefix:'Maintenance'},
+    {name:'Phenytoin',                     dose:20,   max:1500, prep:'rate < 1 mg/kg/min',                   unit:'mg/kg', concMgMl:null, route:'IV', dosePrefix:'Loading'},
+    {name:'Phenytoin',                     dose:5,    max:null, prep:'q 8 hr',                               unit:'mg/kg', concMgMl:null, route:'IV', dosePrefix:'Maintenance'},
+    {name:'Phenobarbital',                 dose:20,   max:1000, prep:'rate < 2 mg/kg/min',                   unit:'mg/kg', concMgMl:null, route:'IV', dosePrefix:'Loading'},
+    {name:'Phenobarbital',                 dose:4,    max:null, prep:'q 12 hr',                              unit:'mg/kg', concMgMl:null, route:'IV', dosePrefix:'Maintenance'},
+    {name:'Valproic Acid',                 dose:40,   max:3000, prep:'rate < 3 mg/kg/min',                   unit:'mg/kg', concMgMl:null, route:'IV', dosePrefix:'Loading'},
+    {name:'Valproic Acid',                 dose:1,    max:null, prep:'Rate (mg/kg/hr)',                      unit:'mg/kg/hr', concMgMl:null, route:'IV', dosePrefix:'Maintenance'},
     {name:'Defibrillation (1st)',          dose:2,    max:null, prep:'',                                     unit:'J/kg',  concMgMl:null, route:'External'},
     {name:'Defibrillation (2nd+)',         dose:4,    max:null, prep:'',                                     unit:'J/kg',  concMgMl:null, route:'External'},
     {name:'Cardioversion (1st)',           dose:0.5,  max:null, prep:'',                                    unit:'J/kg',  concMgMl:null, route:'External'},
@@ -769,7 +819,7 @@ const pedDrips = [
     {id:'pd-dop',  name:'Dopamine', initMin:2, initMax:20, max:30,           concMcgMl:2000, prep:'200 mg (8 mL) + NSS/D5W 92 mL (2 mg/mL) (2000 mcg/mL)'},
     {id:'pd-dob',  name:'Dobutamine', initMin:2, initMax:20, max:20,         concMcgMl:1000, prep:'1 vial (250 mg) + สารน้ำ up to ปริมาตร 250 mL (1000 mcg/mL)'},
     {id:'pd-mil',  name:'Milrinone', initMin:0.25, initMax:0.75, max:0.75,   concMcgMl:100,  prep:'10 mg (10 mL) + สารน้ำ up to ปริมาตร 100 mL (100 mcg/mL)'},
-    {id:'pd-iso',  name:'Isoproterenol', initMin:0.02, initMax:0.5, max:2,   concMcgMl:4,    prep:'10 mL (2 mg) + D5W/NSS up to ปริมาตร 500 mL (4 mcg/mL)'},
+    {id:'pd-iso',  name:'Isoproterenol', initMin:0.02, initMax:0.5, max:2,   concMcgMl:4,    prep:'10 mL (2 mg) + D5W/NSS up to ปริมาตร 500 mL (4 mcg/mL)', unit:'mcg/min', perMin:true},
 ];
 
 // --- NEONATAL ---
@@ -777,14 +827,15 @@ const neoDrugs = [
     {name:'Epinephrine 1:10,000 (IV/IO)', dose:'0.01–0.03 mg/kg', doseMin:0.01, doseMax:0.03, concMgMl:0.1, route:'IV/IO', prep:'Adrenaline (1:1000) 1 mg + NSS 9 mL (0.1 mg/mL)'},
     {name:'Epinephrine 1:10,000 (ET)',    dose:'0.05–0.1 mg/kg',  doseMin:0.05, doseMax:0.1,  concMgMl:0.1, route:'ET',   prep:'Same prep as above'},
     {name:'Glucose 10% (100 mg/mL)',      dose:'200 mg/kg',        doseMin:200,  doseMax:200,  concMgMl:100, route:'IV/IO', prep:'D10W'},
-    {name:'NSS / O Rh-neg Blood (Bolus)', dose:'10 mL/kg',         doseMin:10,   isVol:true,               route:'IV/IO', prep:'Normal Saline 0.9%'},
+    {name:'Normal Saline (0.9% NaCl)',    dose:'10 mL/kg',         doseMin:10,   isVol:true,               route:'IV/IO', prep:'Normal Saline 0.9%'},
+    {name:'O Rh-negative blood',          dose:'10 mL/kg',         doseMin:10,   isVol:true,               route:'IV/IO', prep:''},
 ];
 
 const neoDrips = [
     {id:'nd-nor', name:'Norepinephrine (PHT/Septic)', initMin:0.2, initMax:2, max:2,    concMcgMl:16,   prep:'1 vial (4 mg) + D5W 246 mL (16 mcg/mL)'},
     {id:'nd-dop', name:'Dopamine', initMin:2, initMax:20, max:30,              concMcgMl:2000, prep:'200 mg (8 mL) + NSS/D5W 92 mL (2 mg/mL)'},
     {id:'nd-dob', name:'Dobutamine', initMin:2, initMax:25, max:25,            concMcgMl:1000, prep:'1 vial + สารน้ำ 70–500 mL (1000 mcg/mL)'},
-    {id:'nd-iso', name:'Isoproterenol', initMin:0.02, initMax:0.5, max:2,      concMcgMl:4,    prep:'10 mL (2 mg) + D5W/NSS 500 mL (4 mcg/mL)'},
+    {id:'nd-iso', name:'Isoproterenol', initMin:0.02, initMax:0.5, max:2,      concMcgMl:4,    prep:'10 mL (2 mg) + D5W/NSS 500 mL (4 mcg/mL)', unit:'mcg/min', perMin:true},
     {id:'nd-mil', name:'Milrinone', initMin:0.375, initMax:0.75, max:0.75,     concMcgMl:100,  prep:'10 mg (10 mL) + สารน้ำ up to 100 mL (100 mcg/mL)'},
 ];
 
@@ -825,12 +876,36 @@ const adultAntiArr = [
     {name:'Amiodarone (AF)',  init:'150–300 mg over 30–60 min', max:'900–1200 mg/24hr', initRate:'-', maxRate:'-', mix:'150 mg in 250 mL D5W over 30–60 min'},
 ];
 
+const adultNeuroGroups = [
+    { title: 'Neuro & Anti-epileptics', style: 'background:#7e22ce; color:#fff;', items: [
+        {name:'Diazepam', prep:'10 mg/2mL', route:'IV', min:0.3, max:0.3, unit:'mg/kg/dose', maxAdult:10, dosePrefix:'Loading', note:'rate <2 mg/min (Do not dilute)'},
+        {name:'Midazolam', prep:'5 mg/1mL', route:'IM/IV', min:0.2, max:0.2, unit:'mg/kg/dose', maxAdult:10, dosePrefix:'Loading (Bolus)', note:''},
+        {name:'Midazolam', prep:'5 mg/1mL', route:'IV', min:0.1, max:0.3, unit:'mg/kg/dose', maxAdult:10, dosePrefix:'Loading (Drip)', note:'mix in NSS, 5%DW (rate <4 mg/min)'},
+        {name:'Midazolam', prep:'', route:'IV', min:0.05, max:0.4, unit:'mg/kg/hr', dosePrefix:'Maintenance', note:'mix in NSS, 5%DW'},
+        {name:'Phenytoin', prep:'250 mg/5mL', route:'IV', min:20, max:30, unit:'mg/kg/dose', maxAdult:1500, dosePrefix:'Loading', note:'mix in 0.9%NSS only (rate <50 mg/min)'},
+        {name:'Phenytoin', prep:'', route:'IV', min:5, max:8, unit:'mg/kg/day', divisor:3, dosePrefix:'Maintenance', note:'mix in 0.9%NSS only (div q8h)'},
+        {name:'Phenobarbital', prep:'200 mg/1mL', route:'IV', fixed:'300 - 500 mg/day', maxAdult:1000, dosePrefix:'Maintenance', note:'mix in SWI 10 ml then NSS, RL, 5%DW (div q8h)'},
+        {name:'Sodium Valproate', prep:'400 mg/4mL', route:'IV', min:20, max:30, unit:'mg/kg/dose', dosePrefix:'Loading', note:'mix in 0.9%NSS, 5%DW (rate <100 mg/min)'},
+        {name:'Sodium Valproate', prep:'', route:'IV', min:1, max:2, unit:'mg/kg/hr', dosePrefix:'Maintenance', note:'mix in 0.9%NSS, 5%DW'},
+        {name:'Levetiracetam', prep:'500 mg/5mL', route:'IV', min:30, max:40, unit:'mg/kg/dose', maxAdult:4000, dosePrefix:'Loading', note:'mix in 0.9%NSS, RL, 5%DW (>15 min)'},
+        {name:'Levetiracetam', prep:'', route:'IV', min:10, max:30, unit:'mg/kg/dose', dosePrefix:'Maintenance', note:'mix in 0.9%NSS, RL, 5%DW (q 12h)'},
+        {name:'Lacosamide', prep:'200 mg/20mL', route:'IV', fixed:'400 mg', maxAdult:400, dosePrefix:'Loading', note:'mix in 0.9%NSS, RL, 5%DW'},
+        {name:'Lacosamide', prep:'', route:'IV', min:200, max:400, unit:'mg/day', maxAdult:400, dosePrefix:'Maintenance', note:'mix in 0.9%NSS, RL, 5%DW (fixed)'},
+        {name:'Propofol', prep:'200 mg/20mL', route:'IV', min:2, max:2, unit:'mg/kg/dose', dosePrefix:'Loading', note:'no dilution (rate <0.05 mg/kg/min)'},
+        {name:'Thiopental', prep:'1 g/vial', route:'IV', min:2, max:2, unit:'mg/kg/dose', dosePrefix:'Loading', note:'mix in NSS, 5%DW, SWI to 2.5% solution (rate <0.05 mg/kg/min)'},
+        {name:'Thiopental', prep:'', route:'IV', min:3, max:5, unit:'mg/kg/hr', dosePrefix:'Maintenance', note:'mix in NSS, 5%DW, SWI to 2.5% solution'},
+        {name:'Ketamine', prep:'500 mg/10mL', route:'IV', min:1, max:2, unit:'mg/kg/dose', dosePrefix:'Loading', note:'mix in NSS, 5%DW, SWI to <= 2 mg/ml'},
+        {name:'Ketamine', prep:'', route:'IV', min:0.6, max:5, unit:'mg/kg/hr', dosePrefix:'Maintenance', note:'mix in NSS, 5%DW, SWI to <= 2 mg/ml'},
+    ]}
+];
+
 const adultSed = [
     {name:'Midazolam',         loading:'0.01–0.05 mg/kg (0.7–3.5 mg)', maint:'0.02–0.1 mg/kg/hr', concMgMl:0.5, prep:'Midazolam 50 mg + NSS up to 100 mL (0.5 mg/mL, Max 5 mg/mL)'},
     {name:'Lorazepam',         loading:'0.02–0.04 mg/kg (max 2 mg)',    maint:'0.02–0.06 mg/kg q2-6h PRN', concMgMl:null, prep:'-'},
     {name:'Diazepam',          loading:'5–10 mg (fixed)',               maint:'0.03–0.1 mg/kg q0.5-6h PRN',concMgMl:null, prep:'-'},
     {name:'Propofol',          loading:'5 mcg/kg/min over 5 min',       maint:'5–50 mcg/kg/min',    concMgMl:10, prep:'Propofol 200 mg/20 mL (ไม่ผสม)'},
     {name:'Dexmedetomidine',   loading:'1 mcg/kg over 10 min (70 mcg)', maint:'0.2–0.7 mcg/kg/hr', concMgMl:null, prep:'-'},
+    {name:'Fentanyl',          loading:'1–2 mcg/kg',                    maint:'0.5–2 mcg/kg/hr',            concMgMl:null, prep:'-'},
 ];
 
 function routeColor(r) {
@@ -847,21 +922,122 @@ function renderAll() {
     renderPedEm();
     renderNeonatal();
     renderAdult();
+    renderPedVS();
 }
+
+const pedVitalSigns = [
+    { minMo: 0, maxMo: 1, rr: '34-57', hr: '107-181', map: '42' },
+    { minMo: 1, maxMo: 3, rr: '34-57', hr: '107-181', map: '44' },
+    { minMo: 3, maxMo: 6, rr: '33-55', hr: '104-175', map: '47' },
+    { minMo: 6, maxMo: 9, rr: '31-52', hr: '98-168', map: '52' },
+    { minMo: 9, maxMo: 12, rr: '30-50', hr: '93-161', map: '52' },
+    { minMo: 12, maxMo: 18, rr: '28-46', hr: '88-156', map: '56' },
+    { minMo: 18, maxMo: 24, rr: '25-40', hr: '82-149', map: '56' },
+    { minMo: 24, maxMo: 36, rr: '22-34', hr: '76-142', map: '56' },
+    { minMo: 36, maxMo: 48, rr: '21-29', hr: '70-136', map: '55' },
+    { minMo: 48, maxMo: 60, rr: '20-27', hr: '65-131', map: '55' },
+    { minMo: 60, maxMo: 72, rr: '20-27', hr: '65-131', map: '56' },
+    { minMo: 72, maxMo: 84, rr: '18-24', hr: '59-123', map: '58' },
+    { minMo: 84, maxMo: 96, rr: '18-24', hr: '59-123', map: '59' },
+    { minMo: 96, maxMo: 108, rr: '16-22', hr: '52-115', map: '59' },
+    { minMo: 108, maxMo: 120, rr: '16-22', hr: '52-115', map: '59' },
+    { minMo: 120, maxMo: 132, rr: '16-22', hr: '52-115', map: '59' },
+    { minMo: 132, maxMo: 144, rr: '16-22', hr: '52-115', map: '59' },
+    { minMo: 144, maxMo: 156, rr: '15-21', hr: '47-108', map: '59' },
+    { minMo: 156, maxMo: 168, rr: '15-21', hr: '47-108', map: '59' },
+    { minMo: 168, maxMo: 180, rr: '15-21', hr: '47-108', map: '60' },
+    { minMo: 180, maxMo: 192, rr: '13-19', hr: '43-104', map: '60' },
+    { minMo: 192, maxMo: 204, rr: '13-19', hr: '43-104', map: '61' },
+    { minMo: 204, maxMo: 216, rr: '13-19', hr: '43-104', map: '62' },
+    { minMo: 216, maxMo: 9999, rr: '12-20', hr: '60-100', map: '65' }
+];
+
+function renderPedVS() {
+    const ageVal = document.getElementById('age').value;
+    const ageMoVal = document.getElementById('ageMo').value;
+    const ageMo = P.age * 12;
+    let vs = pedVitalSigns.find(v => ageMo >= v.minMo && ageMo < v.maxMo);
+    if (!vs) vs = pedVitalSigns[pedVitalSigns.length-1];
+
+    let hrStr = '--', rrStr = '--', mapStr = '--';
+    if (ageVal !== '' || ageMoVal !== '') {
+        hrStr = vs.hr;
+        rrStr = vs.rr;
+        mapStr = vs.map;
+    }
+
+    const html = `
+        <div class="card border-blue-200 bg-blue-50/40 shadow-sm">
+            <div class="p-3">
+                <div class="text-sm font-bold text-blue-800 mb-2 flex items-center gap-2">
+                    <i class="fas fa-heartbeat text-blue-500"></i> Normal Vital Signs (10th-90th Pct)
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="bg-white rounded border border-blue-100 p-2 text-center shadow-sm">
+                        <div class="text-[10px] text-blue-500 font-bold uppercase tracking-wider mb-0.5">MAP (10th)</div>
+                        <div class="font-bold text-slate-800 leading-tight">${mapStr}</div>
+                        <div class="text-[9px] text-slate-400 mt-0.5">mmHg</div>
+                    </div>
+                    <div class="bg-white rounded border border-blue-100 p-2 text-center shadow-sm">
+                        <div class="text-[10px] text-blue-500 font-bold uppercase tracking-wider mb-0.5">Heart Rate</div>
+                        <div class="font-bold text-slate-800 leading-tight">${hrStr}</div>
+                        <div class="text-[9px] text-slate-400 mt-0.5">bpm</div>
+                    </div>
+                    <div class="bg-white rounded border border-blue-100 p-2 text-center shadow-sm">
+                        <div class="text-[10px] text-blue-500 font-bold uppercase tracking-wider mb-0.5">Resp Rate</div>
+                        <div class="font-bold text-slate-800 leading-tight">${rrStr}</div>
+                        <div class="text-[9px] text-slate-400 mt-0.5">/min</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    ['ped-vs-card', 'ped-common-vs-card'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.innerHTML = html;
+            el.classList.remove('hidden');
+        }
+    });
+}
+
 
 function renderRsi() {
     if (!document.getElementById('rsi-sed-tbody')) return;
     let h = '';
+
+    if (document.getElementById('rsi-pre-tbody')) {
+        rsiPre.forEach(d => {
+            const w = (d.wt === 'lbw' && P.lbw > 0) ? P.lbw : P.calcWt;
+            const u = d.unit || 'mg';
+            let cUsual = d.usual * w;
+            let cMin = d.min * w;
+            let cMax = d.max * w;
+            if (d.absMin) { cUsual = Math.max(cUsual, d.absMin); cMin = Math.max(cMin, d.absMin); cMax = Math.max(cMax, d.absMin); }
+            if (d.absMax) { cUsual = Math.min(cUsual, d.absMax); cMin = Math.min(cMin, d.absMax); cMax = Math.min(cMax, d.absMax); }
+            let rangeMg = (d.min === d.max) ? d.min : `${d.min} - ${d.max}`;
+            let rangeDose = (cMin === cMax) ? `${rnd(cMin)} ${u}` : `${rnd(cMin)} - ${rnd(cMax)} ${u}`;
+            h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${rangeMg}</td><td class="val-blue text-lg">${rnd(cUsual)} ${u}</td><td class="text-slate-500">${rangeDose}</td></tr>`;
+        });
+        document.getElementById('rsi-pre-tbody').innerHTML = h;
+    }
+
+    h = '';
     rsiSed.forEach(d => {
-        const w = P.calcWt;
-        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${d.min} – ${d.max}</td><td class="val-blue text-lg">${rnd(d.usual*w)} mg</td><td class="text-slate-500">${rnd(d.min*w)} – ${rnd(d.max*w)} mg</td></tr>`;
+        const w = (d.wt === 'lbw' && P.lbw > 0) ? P.lbw : P.calcWt;
+        const u = d.unit || 'mg';
+        let rangeMg = (d.min === d.max) ? d.min : `${d.min} - ${d.max}`;
+        let rangeDose = (d.min === d.max) ? `${rnd(d.min*w)} ${u}` : `${rnd(d.min*w)} - ${rnd(d.max*w)} ${u}`;
+        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${rangeMg}</td><td class="val-blue text-lg">${rnd(d.usual*w)} ${u}</td><td class="text-slate-500">${rangeDose}</td></tr>`;
     });
     document.getElementById('rsi-sed-tbody').innerHTML = h;
 
     h = '';
     rsiNmb.forEach(d => {
-        const w = P.calcWt;
-        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${d.min} – ${d.max}</td><td class="val-blue text-lg">${rnd(d.usual*w)} mg</td><td class="text-slate-500">${rnd(d.min*w)} – ${rnd(d.max*w)} mg</td></tr>`;
+        const w = (d.wt === 'lbw' && P.lbw > 0) ? P.lbw : P.calcWt;
+        const u = d.unit || 'mg';
+        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${d.min} - ${d.max}</td><td class="val-blue text-lg">${rnd(d.usual*w)} ${u}</td><td class="text-slate-500">${rnd(d.min*w)} - ${rnd(d.max*w)} ${u}</td></tr>`;
     });
     document.getElementById('rsi-nmb-tbody').innerHTML = h;
 
@@ -874,11 +1050,11 @@ function renderRsi() {
     document.getElementById('rsi-rev-tbody').innerHTML = h;
 }
 
-function renderPedCommon() {
-    const c = document.getElementById('ped-common-container');
+function renderDrugGroups(groupsArray, containerId) {
+    const c = document.getElementById(containerId);
     if (!c) return;
     let html = '';
-    pedCommonGroups.forEach(g => {
+    groupsArray.forEach(g => {
         let titleStyle = g.style ? `style="${g.style}"` : '';
         html += `<div class="card"><div class="section-title" ${titleStyle}>${g.title}</div><div class="overflow-x-auto"><table><thead><tr><th class="w-1/3">Drug</th><th>Recommend Dose</th><th>Dose</th><th>Max Dose</th><th>Route</th><th>Note</th></tr></thead><tbody>`;
         g.items.forEach((item, index) => {
@@ -994,6 +1170,10 @@ function renderPedCommon() {
     calcCustomSyrup();
 }
 
+function renderPedCommon() {
+    renderDrugGroups(pedCommonGroups, 'ped-common-container');
+}
+
 function calcCustomSyrup() {
     const prepMg = parseFloat(document.getElementById('csPrepMg').value) || 0;
     const prepMl = parseFloat(document.getElementById('csPrepMl').value) || 0;
@@ -1060,7 +1240,18 @@ function renderPedEm() {
     pedEmDrugs.forEach(d => {
         let calc, vol;
         if (d.doseStr) {
-            calc = `${rnd(wt*40)}–${rnd(wt*60)} mg`;
+            const parts = d.doseStr.split(/[-–]/);
+            let minC = wt * parseFloat(parts[0]);
+            let maxC = wt * parseFloat(parts[1]);
+            if (d.max) {
+                minC = Math.min(minC, d.max);
+                maxC = Math.min(maxC, d.max);
+            }
+            if (minC === maxC) {
+                calc = `${rnd(minC)} mg`;
+            } else {
+                calc = `${rnd(minC)}-${rnd(maxC)} mg`;
+            }
             vol = '-';
         } else {
             const raw = d.dose * wt;
@@ -1086,7 +1277,7 @@ function renderPedEm() {
     document.getElementById('ped-em-tbody').innerHTML = h;
 
     let dc = '';
-    pedDrips.forEach(d => { dc += buildDripCard(d, 'mcg/kg/min', false, 'orange'); });
+    pedDrips.forEach(d => { dc += buildDripCard(d, d.unit || 'mcg/kg/min', d.perMin || false, 'orange'); });
     document.getElementById('ped-drips-container').innerHTML = dc;
     pedDrips.forEach(d => calcDrip(d.id));
 
@@ -1125,7 +1316,7 @@ function renderNeonatal() {
 
     // Drips
     let dc = '';
-    neoDrips.forEach(d => { dc += buildDripCard(d, 'mcg/kg/min', false, 'pink'); });
+    neoDrips.forEach(d => { dc += buildDripCard(d, d.unit || 'mcg/kg/min', d.perMin || false, 'pink'); });
     document.getElementById('neo-drips-container').innerHTML = dc;
     neoDrips.forEach(d => calcDrip(d.id));
 }
@@ -1172,6 +1363,7 @@ function renderAdult() {
         h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div></td><td class="text-xs text-slate-600">${d.loading}</td><td class="text-xs text-slate-600">${d.maint}</td><td class="val-blue">${loadMg}</td><td class="text-xs text-slate-500">${d.prep}</td></tr>`;
     });
     document.getElementById('adult-sed-tbody').innerHTML = h;
+    renderDrugGroups(adultNeuroGroups, 'adult-neuro-container');
 }
 
 // ============================================================
@@ -1208,7 +1400,12 @@ function calcDrip(id) {
     const dose = parseFloat(doseEl.value) || 0;
     const conc = parseFloat(concEl.value) || 1;
     
-    const isPerMin = id === 'ai-iso';
+    // Find the drug object across all drip arrays
+    const d = pedDrips.find(x => x.id === id) 
+           || neoDrips.find(x => x.id === id) 
+           || adultInotropes.find(x => x.id === id);
+    const isPerMin = d && d.perMin;
+
     let rate;
     if (isPerMin) {
         rate = (dose * 60) / conc;
@@ -1603,3 +1800,5 @@ recalc();
 </script>
 </body>
 </html>
+
+
