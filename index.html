@@ -756,7 +756,7 @@ const rsiSed = [
     {name:'Fentanyl',    min:1.0, max:1.0, usual: 1.0, wt:'lbw', note:'Use LBW', unit:'mcg', prep:'100 mcg / 2 ml'},
 ];
 const rsiNmb = [
-    {name:'Succinylcholine', min:0.6, max:1.5, usual: 1.0, wt:'tbw', note:'Use TBW', prep:'-'},
+    {name:'Succinylcholine', min:0.6, max:1.5, usual: 1.5, wt:'tbw', note:'Use TBW', prep:'-'},
     {name:'Rocuronium',      min:0.6, max:1.2, usual: 1.0, wt:'lbw', note:'High dose: 0.9-1.2 for RSI', prep:'-'},
 ];
 const rsiRev = [
@@ -1230,7 +1230,7 @@ function renderRsi() {
             if (d.absMax) { cUsual = Math.min(cUsual, d.absMax); cMin = Math.min(cMin, d.absMax); cMax = Math.min(cMax, d.absMax); }
             let rangeMg = (d.min === d.max) ? d.min : `${d.min} - ${d.max}`;
             let rangeDose = (cMin === cMax) ? `${rnd(cMin)} ${u}` : `${rnd(cMin)} - ${rnd(cMax)} ${u}`;
-            h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${rangeMg}</td><td class="val-blue text-lg">${rnd(cUsual)} ${u}</td><td class="text-slate-500">${rangeDose}</td></tr>`;
+            h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${rangeMg}</td><td class="text-slate-600 font-bold text-blue-700">${d.prep || '-'}</td><td class="val-blue text-lg">${rnd(cUsual)} ${u}</td><td class="text-slate-500">${rangeDose}</td></tr>`;
         });
         document.getElementById('rsi-pre-tbody').innerHTML = h;
     }
@@ -1241,7 +1241,7 @@ function renderRsi() {
         const u = d.unit || 'mg';
         let rangeMg = (d.min === d.max) ? d.min : `${d.min} - ${d.max}`;
         let rangeDose = (d.min === d.max) ? `${rnd(d.min*w)} ${u}` : `${rnd(d.min*w)} - ${rnd(d.max*w)} ${u}`;
-        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${rangeMg}</td><td class="val-blue text-lg">${rnd(d.usual*w)} ${u}</td><td class="text-slate-500">${rangeDose}</td></tr>`;
+        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${rangeMg}</td><td class="text-slate-600 font-bold text-blue-700">${d.prep || '-'}</td><td class="val-blue text-lg">${rnd(d.usual*w)} ${u}</td><td class="text-slate-500">${rangeDose}</td></tr>`;
     });
     document.getElementById('rsi-sed-tbody').innerHTML = h;
 
@@ -1249,7 +1249,7 @@ function renderRsi() {
     rsiNmb.forEach(d => {
         const w = (d.wt === 'lbw' && P.lbw > 0) ? P.lbw : P.calcWt;
         const u = d.unit || 'mg';
-        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${d.min} - ${d.max}</td><td class="text-slate-600 text-sm">${d.prep || '-'}</td><td class="val-blue text-lg">${rnd(d.usual*w)} ${u}</td><td class="text-slate-500">${rnd(d.min*w)} - ${rnd(d.max*w)} ${u}</td></tr>`;
+        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${d.min} - ${d.max}</td><td class="text-slate-600 font-bold text-blue-700 text-sm">${d.prep || '-'}</td><td class="val-blue text-lg">${rnd(d.usual*w)} ${u}</td><td class="text-slate-500">${rnd(d.min*w)} - ${rnd(d.max*w)} ${u}</td></tr>`;
     });
     document.getElementById('rsi-nmb-tbody').innerHTML = h;
 
