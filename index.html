@@ -49,7 +49,7 @@
         
         @media print {
             body { background: white !important; color: black !important; }
-            .glass, #btnBack, .drug-chip, .inp, button:not(.print-btn), #app-nav, #page-manual, #patientPanel, #ped-est-banner, #customSyrupCard { display: none !important; }
+            .glass, #btnBack, .drug-chip, .inp, button:not(.print-btn), #app-nav, #page-manual, #patientPanel, .est-weight-banner, #customSyrupCard { display: none !important; }
             .print-btn { display: none !important; }
             .page.active { display: block !important; }
             .page { display: none; }
@@ -203,6 +203,32 @@
                     <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-white/20 shrink-0"><i class="fas fa-flask-vial text-2xl"></i></div>
                     <div><div class="font-bold text-xl">Manual Calculator</div><div class="text-teal-100 text-sm">Concentration · Drip Rate · Drug Search</div></div>
                 </button>
+                <button onclick="navigate('antidote','Common Antidote')" class="flex items-center gap-4 p-5 rounded-2xl text-left hover:-translate-y-1 transition-all shadow-md hover:shadow-lg text-white bg-purple-600 hover:bg-purple-700 border border-purple-700">
+                    <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-white/20 shrink-0">
+                        <svg viewBox="0 0 64 64" class="w-8 h-8 text-white" fill="currentColor" stroke="none">
+                            <defs>
+                                <mask id="flaskMask">
+                                    <rect x="0" y="0" width="64" height="64" fill="white" />
+                                    <!-- Cut out exclamation -->
+                                    <path d="M32,36 L32,44" stroke="black" stroke-width="4" stroke-linecap="round" />
+                                    <circle cx="32" cy="51" r="2.5" fill="black" />
+                                    <!-- Cut out Bubble -->
+                                    <circle cx="50" cy="22" r="14" fill="black" />
+                                </mask>
+                                <mask id="plusMask">
+                                    <rect x="0" y="0" width="64" height="64" fill="white" />
+                                    <path d="M44,22 H56 M50,16 V28" stroke="black" stroke-width="4" stroke-linecap="round" />
+                                </mask>
+                            </defs>
+                            <!-- Flask Solid -->
+                            <path d="M40,20 V12 H44 V6 H20 V12 H24 V20 A 18 18 0 1 0 40 20 Z" mask="url(#flaskMask)" />
+                            
+                            <!-- Bubble Solid -->
+                            <circle cx="50" cy="22" r="12" mask="url(#plusMask)" />
+                        </svg>
+                    </div>
+                    <div><div class="font-bold text-xl">Common Antidote</div><div class="text-purple-100 text-sm">Antidote Reversal</div></div>
+                </button>
             </div>
         </div>
 
@@ -242,15 +268,15 @@
                             <input type="number" id="mcDrugMg" class="inp" placeholder="เช่น 200" oninput="calcConc()">
                         </div>
                         <div>
-                            <label class="text-xs font-semibold text-slate-500 block mb-1">ปริมาณสารละลาย (mL)</label>
+                            <label class="text-xs font-semibold text-slate-500 block mb-1">ปริมาณสารละลาย (ml)</label>
                             <input type="number" id="mcVolMl" class="inp" placeholder="เช่น 100" oninput="calcConc()">
                         </div>
                     </div>
                     <div id="concResult" class="calc-result">
                         <div class="text-xs text-blue-500 font-semibold mb-1">ความเข้มข้น</div>
                         <div class="flex gap-4 flex-wrap">
-                            <div><span class="text-2xl font-extrabold text-blue-700" id="concMgMl">0</span><span class="text-sm text-blue-500 ml-1">mg/mL</span></div>
-                            <div><span class="text-2xl font-extrabold text-blue-700" id="concMcgMl">0</span><span class="text-sm text-blue-500 ml-1">mcg/mL</span></div>
+                            <div><span class="text-2xl font-extrabold text-blue-700" id="concMgMl">0</span><span class="text-sm text-blue-500 ml-1">mg/ml</span></div>
+                            <div><span class="text-2xl font-extrabold text-blue-700" id="concMcgMl">0</span><span class="text-sm text-blue-500 ml-1">mcg/ml</span></div>
                         </div>
                     </div>
                 </div>
@@ -290,10 +316,10 @@
                         <div class="flex gap-2 max-w-sm">
                             <input type="number" id="mcConc" class="inp flex-1" placeholder="0" oninput="calcRate()">
                             <select id="mcConcUnit" class="inp flex-1" onchange="calcRate()">
-                                <option value="mcg_mL">mcg/mL</option>
-                                <option value="mg_mL">mg/mL</option>
-                                <option value="unit_mL">unit/mL</option>
-                                <option value="mEq_mL">mEq/mL</option>
+                                <option value="mcg_mL">mcg/ml</option>
+                                <option value="mg_mL">mg/ml</option>
+                                <option value="unit_mL">unit/ml</option>
+                                <option value="mEq_mL">mEq/ml</option>
                             </select>
                         </div>
                     </div>
@@ -301,7 +327,7 @@
                         <div class="bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-xl p-4 text-center mt-2 shadow-inner">
                             <div class="text-sm opacity-90 mb-1 font-semibold">Drip Rate</div>
                             <div class="text-5xl font-extrabold tracking-tight" id="mcRate">0</div>
-                            <div class="text-base opacity-90 mt-1 font-medium">mL/hr</div>
+                            <div class="text-base opacity-90 mt-1 font-medium">ml/hr</div>
                         </div>
                         <div id="mcRateSanity" class="text-xs text-center text-orange-600 font-bold mt-2 h-4"></div>
                     </div>
@@ -312,40 +338,47 @@
 
         <!-- RSI PAGE -->
         <div id="page-rsi" class="page space-y-4">
-            <div class="card">
-                <div class="card-header bg-yellow-500"><i class="fas fa-pills mr-2"></i>Premedication</div>
-                <div class="overflow-x-auto">
-                    <table><thead><tr><th>Drug</th><th>Usual (mg/kg)</th><th>Range (mg/kg)</th><th>Preparation</th><th>Usual Dose</th><th>Range Dose</th></tr></thead>
-                    <tbody id="rsi-pre-tbody"></tbody></table>
-                </div>
+            <div class="est-weight-banner bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm text-amber-700 flex items-center gap-2 mb-4">
+                <i class="fas fa-calculator"></i>
+                <span>Estimated Weight: Enter age to calculate</span>
             </div>
             <div class="card">
                 <div class="card-header bg-red-600"><i class="fas fa-syringe mr-2"></i>Sedation / Induction</div>
                 <div class="overflow-x-auto">
-                    <table><thead><tr><th>Drug</th><th>Usual (mg/kg)</th><th>Range (mg/kg)</th><th>Preparation</th><th>Usual Dose</th><th>Range Dose</th></tr></thead>
+                    <table><thead><tr><th>Drug</th><th>Usual (mg/kg)</th><th>Range (mg/kg)</th><th>Usual Dose</th><th>Range Dose</th></tr></thead>
                     <tbody id="rsi-sed-tbody"></tbody></table>
                 </div>
             </div>
             <div class="card">
                 <div class="card-header bg-purple-600"><i class="fas fa-ban mr-2"></i>Neuromuscular Blockade</div>
                 <div class="overflow-x-auto">
-                    <table><thead><tr><th>Drug</th><th>Usual (mg/kg)</th><th>Range (mg/kg)</th><th>Preparation</th><th>Usual Dose</th><th>Range Dose</th></tr></thead>
+                    <table><thead><tr><th>Drug</th><th>Usual (mg/kg)</th><th>Range (mg/kg)</th><th>Usual Dose</th><th>Range Dose</th></tr></thead>
                     <tbody id="rsi-nmb-tbody"></tbody></table>
                 </div>
             </div>
             <div class="card">
                 <div class="card-header bg-teal-600"><i class="fas fa-rotate-left mr-2"></i>Reversal Agents</div>
                 <div class="overflow-x-auto">
-                    <table><thead><tr><th>Drug</th><th>Dose (mg/kg)</th><th>Preparation</th><th>Calc Dose</th><th>Note</th></tr></thead>
+                    <table><thead><tr><th>Drug</th><th>Dose (mg/kg)</th><th>Calc Dose</th><th>Note</th></tr></thead>
                     <tbody id="rsi-rev-tbody"></tbody></table>
                 </div>
             </div>
+
+            <!-- Pre-optimization drug -->
+            <div class="card">
+                <div class="card-header bg-yellow-500"><i class="fas fa-pills mr-2"></i>Pre-optimization drug</div>
+                <div class="overflow-x-auto">
+                    <table><thead><tr><th>Drug</th><th>Usual (mg/kg)</th><th>Range (mg/kg)</th><th>Usual Dose</th><th>Range Dose</th></tr></thead>
+                    <tbody id="rsi-pre-tbody"></tbody></table>
+                </div>
+            </div>
+
         </div>
 
         <!-- PED COMMON PAGE -->
         <div id="page-ped-common" class="page space-y-4">
             <div id="ped-common-vs-card" class="hidden"></div>
-            <div id="ped-est-banner" class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm text-amber-700 flex items-center gap-2">
+            <div class="est-weight-banner bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm text-amber-700 flex items-center gap-2 mb-4">
                 <i class="fas fa-calculator"></i>
                 <span>ถ้าไม่ทราบน้ำหนัก: กรอกอายุ up to น้ำหนักประเมิน = (Age×2)+8 = <b id="estWtPed">?</b> kg</span>
             </div>
@@ -361,7 +394,7 @@
                             <div class="flex items-center gap-2">
                                 <input type="number" id="csPrepMg" class="inp flex-1" placeholder="mg" oninput="calcCustomSyrup()">
                                 <span class="text-slate-400 font-bold">/</span>
-                                <input type="number" id="csPrepMl" class="inp flex-1" placeholder="mL" oninput="calcCustomSyrup()">
+                                <input type="number" id="csPrepMl" class="inp flex-1" placeholder="ml" oninput="calcCustomSyrup()">
                             </div>
                         </div>
                         <div>
@@ -386,7 +419,7 @@
                         </div>
                         <div class="text-right">
                             <div class="text-xs text-slate-500 mb-1">ปริมาตร (Volume)</div>
-                            <div class="font-bold text-emerald-600"><span id="csCalcVol" class="text-2xl">0</span> <span class="text-sm font-medium">mL</span> <span id="csVolUnitLabel" class="text-xs text-emerald-600/70 ml-1">/dose</span></div>
+                            <div class="font-bold text-emerald-600"><span id="csCalcVol" class="text-2xl">0</span> <span class="text-sm font-medium">ml</span> <span id="csVolUnitLabel" class="text-xs text-emerald-600/70 ml-1">/dose</span></div>
                         </div>
                     </div>
                 </div>
@@ -395,6 +428,10 @@
 
         <!-- PED EMERGENCY PAGE -->
         <div id="page-ped-em" class="page space-y-4">
+            <div class="est-weight-banner bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm text-amber-700 flex items-center gap-2 mb-4">
+                <i class="fas fa-calculator"></i>
+                <span>Estimated Weight: Enter age to calculate</span>
+            </div>
             <div id="ped-vs-card" class="hidden"></div>
             <!-- ET Tube info -->
             <div class="card">
@@ -472,7 +509,7 @@
             <div class="card">
                 <div class="card-header bg-blue-600"><i class="fas fa-heart-pulse mr-2"></i>Emergency Medications (ACLS)</div>
                 <div class="overflow-x-auto">
-                    <table><thead><tr><th>Drug</th><th>Prep</th><th>Dose</th><th>Calc / Notes</th><th>Route</th></tr></thead>
+                    <table><thead><tr><th class="w-1/3">Drug</th><th>Recommend Dose</th><th>Calc Dose</th><th>Route</th></tr></thead>
                     <tbody id="adult-em-tbody"></tbody></table>
                 </div>
             </div>
@@ -502,6 +539,33 @@
                 </div>
             </div>
             <div id="adult-neuro-container"></div>
+        </div>
+
+        <!-- ANTIDOTE PAGE -->
+        <div id="page-antidote" class="page space-y-4">
+            <div class="card">
+                <div class="card-header bg-purple-700 flex justify-between items-center cursor-pointer" onclick="toggleAntidoteList()">
+                    <div><i class="fas fa-search mr-2"></i>Search Antidotes</div>
+                    <i class="fas fa-chevron-up" id="antidoteListChevron"></i>
+                </div>
+                <div id="antidoteListWrap">
+                    <div class="p-4 bg-slate-50 border-b border-slate-200">
+                        <input type="text" id="antidoteSearch" class="inp w-full" placeholder="ค้นหาชื่อ Antidote..." oninput="filterAntidotes()">
+                    </div>
+                    <div class="p-4 bg-slate-50" id="antidoteSearchBody">
+                        <div id="antidoteListContainer" class="grid grid-cols-2 md:grid-cols-4 gap-2 items-start">
+                            <!-- List populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="antidoteDetailCard" class="card hidden border-purple-200 shadow-lg">
+                <div class="card-header bg-purple-600 text-lg font-bold" id="adTitle"><i class="fas fa-prescription-bottle-medical mr-2"></i>Antidote Details</div>
+                <div class="p-0 bg-white" id="adContent">
+                    <!-- Dynamic content depending on drug selected -->
+                </div>
+            </div>
         </div>
     </main>
 
@@ -561,6 +625,78 @@
             </div>
         </div>
 
+    <!-- Phenytoin Modal -->
+    <div id="phenytoinModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg flex flex-col overflow-hidden">
+            <div class="p-4 border-b flex justify-between items-center bg-blue-50">
+                <h3 class="font-bold text-lg text-slate-800"><i class="fas fa-calculator text-blue-600 mr-2"></i>Phenytoin Calculator</h3>
+                <button onclick="document.getElementById('phenytoinModal').classList.add('hidden')" class="text-slate-400 hover:text-slate-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-4 bg-slate-50 border-b flex gap-2">
+                <button id="tab-pheny-naive" onclick="switchPhenyTab('naive')" class="flex-1 py-2 rounded-lg text-sm font-bold bg-blue-600 text-white shadow">Naïve Patient</button>
+                <button id="tab-pheny-topup" onclick="switchPhenyTab('topup')" class="flex-1 py-2 rounded-lg text-sm font-bold bg-white text-slate-600 border hover:bg-slate-50">Previously on Phenytoin</button>
+            </div>
+            
+            <!-- Naive Tab -->
+            <div id="pheny-naive-content" class="p-5 space-y-4">
+                <div class="bg-blue-50/50 p-4 rounded-lg border border-blue-100">
+                    <div class="text-sm text-blue-700 font-bold mb-1">Loading Dose (15 - 20 mg/kg)</div>
+                    <div class="text-xs text-slate-500 mb-4">For patients who have never received Phenytoin.</div>
+                    
+                    <label class="text-xs text-slate-500 font-semibold mb-1 block">Weight (kg)</label>
+                    <input type="number" id="pheny-wt" class="inp w-full mb-4" oninput="calcPhenyNaive()" value="0">
+                    
+                    <div class="bg-white p-3 rounded border shadow-sm border-blue-200">
+                        <div class="text-[10px] text-blue-400 font-bold uppercase tracking-wide">Calculated Dose</div>
+                        <div class="text-2xl font-bold text-blue-700 mt-1" id="pheny-naive-res">0 - 0 mg</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topup Tab -->
+            <div id="pheny-topup-content" class="p-5 space-y-4 hidden">
+                <div class="bg-orange-50/50 p-4 rounded-lg border border-orange-100">
+                    <div class="text-sm text-orange-700 font-bold mb-1">Top-up Dose Calculation</div>
+                    <div class="text-xs text-slate-500 mb-4">For patients previously on Phenytoin but not at target.</div>
+                    
+                    <label class="text-xs text-slate-500 font-semibold mb-1 block">Weight (kg)</label>
+                    <input type="number" id="pheny-topup-wt" class="inp w-full mb-3" oninput="calcPhenyTopup()">
+
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <div>
+                            <label class="text-xs text-slate-500 font-semibold mb-1 block">Measured Level (mg/L)</label>
+                            <input type="number" id="pheny-level" class="inp w-full" oninput="calcPhenyTopup()" placeholder="e.g. 8">
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-500 font-semibold mb-1 block">Albumin (g/dL)</label>
+                            <input type="number" id="pheny-albumin" class="inp w-full" oninput="calcPhenyTopup()" placeholder="e.g. 3.5">
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center bg-white p-2 rounded border border-orange-200 mb-4">
+                        <span class="text-xs font-semibold text-slate-600">Corrected Level:</span>
+                        <span class="text-sm font-bold text-orange-600"><span id="pheny-corrected-res">0.00</span> <span class="text-xs font-normal">mg/L</span></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="text-xs text-slate-500 font-semibold mb-1 block">Target Concentration (mg/L)</label>
+                        <input type="number" id="pheny-target" class="inp w-full" value="20" oninput="calcPhenyTopup()">
+                    </div>
+                    
+                    <div class="bg-white p-3 rounded border shadow-sm border-blue-200 flex justify-between items-center">
+                        <div class="text-[10px] text-blue-500 font-bold uppercase tracking-wide">Top-up Dose</div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-blue-700" id="pheny-topup-res">0</div>
+                            <div class="text-xs text-blue-500 font-semibold">mg</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
         <script>
 // ============================================================
 // CORE HELPERS
@@ -597,6 +733,8 @@ function onManualCalcWtInput() {
     });
     
     renderAll();
+    renderAntidotes();
+    if (typeof calcNac === 'function') calcNac();
 }
 
 function setPage(pid) {
@@ -699,6 +837,8 @@ function recalc() {
     }
 
     renderAll();
+    renderAntidotes(); // Refresh antidotes UI if open
+    if (typeof calcNac === 'function') calcNac();
     
     const pWt = document.getElementById('printWeightSummary');
     if (pWt) {
@@ -738,11 +878,61 @@ function navigate(page, title = '') {
         if (page === 'manual') setTimeout(onManualEnter, 0);
     }
     renderAll();
+    renderAntidotes();
+    if (typeof calcNac === 'function') calcNac();
 }
 
 // ============================================================
 // DATABASES
 // ============================================================
+
+const antidoteList = [
+    { name: 'N-ACETYLCYSTEINE' },
+    { name: 'ACTIVATED CHARCOAL' },
+    { name: 'ANTIVENOM FOR NORTH AMERICAN VENOMOUS SNAKES (CROTALINE AND ELAPID)' },
+    { name: 'ANTIVENOM: SCORPION' },
+    { name: 'ANTIVENOM: SPIDER' },
+    { name: 'ATROPINE' },
+    { name: 'BENZODIAZEPINES' },
+    { name: 'BOTULINUM ANTITOXIN' },
+    { name: 'CALCIUM' },
+    { name: 'L-CARNITINE' },
+    { name: 'DANTROLENE SODIUM' },
+    { name: 'DEFEROXAMINE' },
+    { name: 'DEXTROSE (D-GLUCOSE)' },
+    { name: 'DIGOXIN-SPECIFIC ANTIBODY FRAGMENTS' },
+    { name: 'DIMERCAPROL (BRITISH ANTI-LEWISITE OR BAL)' },
+    { name: 'EDETATE CALCIUM DISODIUM (CaNa2EDTA)' },
+    { name: 'ETHANOL' },
+    { name: 'FLUMAZENIL' },
+    { name: 'FOLATES: LEUCOVORIN (FOLINIC ACID) AND FOLIC ACID' },
+    { name: 'FOMEPIZOLE' },
+    { name: 'GLUCAGON' },
+    { name: 'GLUCARPIDASE (CARBOXYPEPTIDASE G2)' },
+    { name: 'HIGH-DOSE INSULIN (HDI)' },
+    { name: 'HYDROXOCOBALAMIN' },
+    { name: 'HYPERBARIC OXYGEN' },
+    { name: 'LIPID EMULSION' },
+    { name: 'MAGNESIUM' },
+    { name: 'METHYLENE BLUE' },
+    { name: 'NITRITES (AMYL AND SODIUM) AND SODIUM THIOSULFATE' },
+    { name: 'OCTREOTIDE' },
+    { name: 'OPIOID ANTAGONISTS' },
+    { name: 'PENTETIC ACID OR PENTETATE (ZINC OR CALCIUM) TRISODIUM (DTPA)' },
+    { name: 'PHYSOSTIGMINE SALICYLATE' },
+    { name: 'POTASSIUM IODIDE' },
+    { name: 'PRALIDOXIME' },
+    { name: 'PROTAMINE' },
+    { name: 'PROTHROMBIN COMPLEX CONCENTRATES AND DIRECT ORAL ANTICOAGULANT ANTIDOTES' },
+    { name: 'PRUSSIAN BLUE' },
+    { name: 'PYRIDOXINE' },
+    { name: 'SODIUM BICARBONATE' },
+    { name: 'SUCCIMER (2,3-DIMERCAPTOSUCCINIC ACID) AND DMPS' },
+    { name: 'THIAMINE HYDROCHLORIDE' },
+    { name: 'URIDINE TRIACETATE' },
+    { name: 'VITAMIN K1' },
+    { name: 'WHOLE-BOWEL IRRIGATION AND OTHER INTESTINAL EVACUANTS' }
+];
 
 // --- RSI ---
 const rsiPre = [
@@ -750,7 +940,7 @@ const rsiPre = [
 ];
 const rsiSed = [
     {name:'Etomidate',   min:0.2, max:0.6, usual: 0.3, wt:'lbw', note:'Use LBW', prep:'-'},
-    {name:'Propofol',    min:1.0, max:2.5, usual: 1.5, wt:'lbw', note:'Use LBW<br>Reduced for elderly', prep:'200 mg / 20 ml'},
+    {name:'Propofol',    min:1.0, max:2.5, usual: 1.5, wt:'lbw', note:'Use LBW, Reduced for elderly', prep:'200 mg / 20 ml'},
     {name:'Ketamine',    min:0.5, max:2.0, usual: 1.0, wt:'lbw', note:'Use LBW', prep:'500 mg / 10 ml'},
     {name:'Midazolam',   min:0.05, max:0.3, usual: 0.2, wt:'lbw', note:'Use LBW', prep:'5 mg / 1 ml'},
     {name:'Fentanyl',    min:1.0, max:1.0, usual: 1.0, wt:'lbw', note:'Use LBW', unit:'mcg', prep:'100 mcg / 2 ml'},
@@ -790,7 +980,7 @@ const pedCommonGroups = [
         {name:'Ventolin', prep:'5 mg / ml', route:'NB', min:0.03, max:0.03, unit:'mg/kg/dose', concMgMl:5, dosePrefix:'Solution 0.5%', doseNote:'(Age < 5 yr: 2.5 mg/dose)', note:'+ NSS up to 4 ml, q 20 min'},
         {name:'Ventolin', prep:'2.5 mg / 2.5 ml', route:'NB', fixed:'2.5 mg/dose (1 NB)<br><span class="text-[10px] text-slate-500 font-normal">(Age < 5 yr: 2.5 mg/dose)</span>', dosePrefix:'Nebule', note:'+ NSS up to 4 ml, q 20 min'},
         {name:'Pulmicort (Budesonide)', prep:'1 mg / 2 ml', route:'NB', fixed:'0.5–1 mg/dose', maxAdult:'2 mg/day', note:'q 20 min (Max 3x, Max 2 mg/day)'},
-        {name:'Adrenaline [croup]', prep:'1 mg/mL (1:1000)', route:'NB', min:0.05, max:0.5, unit:'ml/kg/dose', maxAdult:'Age < 4 yr: 2.5 ml<br>Age > 4 yr: 5 ml', concMgMl:1, note:'+ NSS up to 4 ml NB'},
+        {name:'Adrenaline [croup]', prep:'1 mg/ml (1:1000)', route:'NB', min:0.05, max:0.5, unit:'ml/kg/dose', maxAdult:'Age < 4 yr: 2.5 ml<br>Age > 4 yr: 5 ml', concMgMl:1, note:'+ NSS up to 4 ml NB'},
         {name:'Bromhexine Syrup', prep:'4 mg / 5 ml', route:'PO', min:0.6, max:0.8, unit:'mg/kg/day', maxAdult:'Adult Dose', divisor:3, concMgMl:0.8, note:'div tid'},
         {name:'Glyceryl Guaicolate Syrup', prep:'', route:'PO', fixed:'Adult Dose', maxAdult:'Adult Dose', note:'tid'},
     ]},
@@ -894,12 +1084,12 @@ const pedEmDrugs = [
     {name:'Epinephrine (Anaphylaxis IM)',  dose:0.01, max:0.5, prep:'Adrenaline 1:1000',                     unit:'mg/kg', concMgMl:1,   route:'IM'},
     {name:'Epinephrine (Croup NB)',        dose:0.5,  max:5,   prep:'Adrenaline 1:1000',                     unit:'ml/kg', concMgMl:1,   route:'Nebulized'},
     {name:'Amiodarone',                    dose:5,    max:300, prep:'150 mg/3 ml',                                       unit:'mg/kg', concMgMl:null, route:'IV/IO'},
-    {name:'Lidocaine 1% (10mg/ml)',        dose:1,    max:100, prep:'2%w/v 10 mL (200 mg/10 mL)',                                       unit:'mg/kg', concMgMl:10,  route:'IV/IO'},
+    {name:'Lidocaine 1% (10mg/ml)',        dose:1,    max:100, prep:'2%w/v 10 ml (200 mg/10 ml)',                                       unit:'mg/kg', concMgMl:10,  route:'IV/IO'},
     {name:'Atropine',                      dose:0.02, max:0.5, prep:'Min 0.1 mg',                             unit:'mg/kg', concMgMl:null, route:'IV/IO'},
     {name:'Adenosine (1st dose)',          dose:0.1,  max:6,   prep:'2 mg/2 ml',                                       unit:'mg/kg', concMgMl:null, route:'IV/IO'},
     {name:'Adenosine (2nd dose)',          dose:0.2,  max:12,  prep:'2 mg/2 ml',                                       unit:'mg/kg', concMgMl:null, route:'IV/IO'},
-    {name:'MgSO4',                         doseStr:'25-50', max:null, prep:'50% Magnesium sulfate 2 mL/Ampule', unit:'mg/kg', concMgMl:null, route:'IV/IO'},
-    {name:'Sodium bicarbonate',            dose:1,    max:null, prep:'Sodium bicarbonate 7.5 % (0.892 mEq/mL)', unit:'mEq/kg', concMgMl:null, route:'IV/IO', dosePrefix:'max 10 mEq/min'},
+    {name:'MgSO4',                         doseStr:'25-50', max:null, prep:'50% Magnesium sulfate 2 ml/Ampule', unit:'mg/kg', concMgMl:null, route:'IV/IO'},
+    {name:'Sodium bicarbonate',            dose:1,    max:null, prep:'Sodium bicarbonate 7.5 % (0.892 mEq/ml)', unit:'mEq/kg', concMgMl:null, route:'IV/IO', dosePrefix:'max 10 mEq/min'},
     {name:'10% Ca gluconate',              dose:60,   max:null, prep:'10% Calcium gluconate injection 10 ml', unit:'mg/kg', concMgMl:null, route:'IV/IO'},
     {name:'Midazolam',                     dose:0.3,  max:10,  prep:'5 mg / 1 ml', unit:'mg/kg', concMgMl:null, route:'IN/Buccal'},
     {name:'Midazolam',                     doseStr:'0.1-0.2', max:10, prep:'5 mg / 1 ml', unit:'mg/kg', concMgMl:null, route:'IV/IO'},
@@ -911,174 +1101,180 @@ const pedEmDrugs = [
 ];
 
 const pedDrips = [
-    {id:'pd-epi',  name:'Epinephrine (Inotrope)', initMin:0.05, initMax:0.5,  max:1,    concMcgMl:10,  prep:'ผสมยา 1 mg (1 mL) ใน NSS, D5W 100 mL (10 mcg/mL)', mixes: [
-        { prep: 'ผสมยา 1 mg (1 mL) ใน NSS, D5W 100 mL (10 mcg/mL)', conc: 10 },
-        { prep: 'ผสมยา 4 mg (4 mL) ใน NSS, D5W 250 mL (16 mcg/mL)', conc: 16 },
-        { prep: 'ผสมยา 8 mg (8 mL) ใน NSS, D5W 250 mL (32 mcg/mL)', conc: 32 }
+    {id:'pd-epi',  name:'Epinephrine (Inotrope)', initMin:0.05, initMax:0.5,  max:1,    concMcgMl:10,  prep:'ผสมยา 1 mg (1 ml) ใน NSS, D5W 100 ml (10 mcg/ml)', mixes: [
+        { prep: 'ผสมยา 1 mg (1 ml) ใน NSS, D5W 100 ml (10 mcg/ml)', conc: 10 },
+        { prep: 'ผสมยา 4 mg (4 ml) ใน NSS, D5W 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ผสมยา 8 mg (8 ml) ใน NSS, D5W 250 ml (32 mcg/ml)', conc: 32 }
     ]},
-    {id:'pd-nor',  name:'Norepinephrine (Pressor)', initMin:0.05, initMax:0.1, max:2,   concMcgMl:16,  prep:'ผสมยา 4 mg (4 mL) ใน D5W, D5S 250 mL (16 mcg/mL)', mixes: [
-        { prep: 'ผสมยา 2 mg (2 mL) ใน D5W, D5S 250 mL (8 mcg/mL)', conc: 8 },
-        { prep: 'ผสมยา 4 mg (4 mL) ใน D5W, D5S 250 mL (16 mcg/mL)', conc: 16 },
-        { prep: 'ผสมยา 8 mg (8 mL) ใน D5W, D5S 250 mL (32 mcg/mL)', conc: 32 }
+    {id:'pd-nor',  name:'Norepinephrine (Pressor)', initMin:0.05, initMax:0.1, max:2,   concMcgMl:16,  prep:'ผสมยา 4 mg (4 ml) ใน D5W, D5S 250 ml (16 mcg/ml)', mixes: [
+        { prep: 'ผสมยา 2 mg (2 ml) ใน D5W, D5S 250 ml (8 mcg/ml)', conc: 8 },
+        { prep: 'ผสมยา 4 mg (4 ml) ใน D5W, D5S 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ผสมยา 8 mg (8 ml) ใน D5W, D5S 250 ml (32 mcg/ml)', conc: 32 }
     ]},
-    {id:'pd-dop',  name:'Dopamine', initMin:2, initMax:20, max:30,           concMcgMl:2000, prep:'ยา 200 mg (8 mL) + D5W หรือ NSS 92 mL (2000 mcg/mL)', mixes: [
-        { prep: 'ยา 100 mg (4 mL) + D5W หรือ NSS 96 mL (1000 mcg/mL)', conc: 1000 },
-        { prep: 'ยา 200 mg (8 mL) + D5W หรือ NSS 92 mL (2000 mcg/mL)', conc: 2000 }
+    {id:'pd-dop',  name:'Dopamine', initMin:2, initMax:20, max:30,           concMcgMl:2000, prep:'ยา 200 mg (8 ml) + D5W หรือ NSS 92 ml (2000 mcg/ml)', mixes: [
+        { prep: 'ยา 100 mg (4 ml) + D5W หรือ NSS 96 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 1 vial (250 mg) + D5W upto 250 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 200 mg (8 ml) + D5W หรือ NSS 92 ml (2000 mcg/ml)', conc: 2000 },
+        { prep: 'ยา 1 vial (250 mg) + D5W upto 125 ml (2000 mcg/ml)', conc: 2000 }
     ]},
-    {id:'pd-dob',  name:'Dobutamine', initMin:2, initMax:20, max:20,         concMcgMl:1000, prep:'ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL (1000 mcg/mL)', mixes: [
-        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL (1000 mcg/mL)', conc: 1000 },
-        { prep: 'ยา 2 vial (500 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL (2000 mcg/mL)', conc: 2000 },
-        { prep: 'ยา 4 vial (1000 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL (4000 mcg/mL)', conc: 4000 }
+    {id:'pd-dob',  name:'Dobutamine', initMin:2, initMax:20, max:20,         concMcgMl:1000, prep:'ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (1000 mcg/ml)', mixes: [
+        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 2 vial (500 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (2000 mcg/ml)', conc: 2000 },
+        { prep: 'ยา 4 vial (1000 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (4000 mcg/ml)', conc: 4000 }
     ]},
-    {id:'pd-mil',  name:'Milrinone', initMin:0.25, initMax:0.75, max:0.75,   concMcgMl:100,  prep:'ยา 10 mg (10 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL (100 mcg/mL)', mixes: [
-        { prep: 'ยา 10 mg (10 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL (100 mcg/mL)', conc: 100 },
-        { prep: 'ยา 15 mg (15 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL (150 mcg/mL)', conc: 150 },
-        { prep: 'ยา 10 mg (10 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 50 mL (200 mcg/mL)', conc: 200 }
+    {id:'pd-mil',  name:'Milrinone', initMin:0.25, initMax:0.75, max:0.75,   concMcgMl:100,  prep:'ยา 10 mg (10 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (100 mcg/ml)', mixes: [
+        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (100 mcg/ml)', conc: 100 },
+        { prep: 'ยา 15 mg (15 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (150 mcg/ml)', conc: 150 },
+        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 50 ml (200 mcg/ml)', conc: 200 }
     ]},
-    {id:'pd-iso',  name:'Isoproterenol', initMin:0.02, initMax:0.5, max:2,   concMcgMl:4,    prep:'ยา 10 mL (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 mL (4 mcg/mL)', unit:'mcg/min', perMin:true, mixes: [
-        { prep: 'ยา 10 mL (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 mL (4 mcg/mL)', conc: 4 },
-        { prep: 'ยา 10 mL (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL (20 mcg/mL)', conc: 20 }
+    {id:'pd-iso',  name:'Isoproterenol', initMin:0.02, initMax:0.5, max:2,   concMcgMl:4,    prep:'ยา 10 ml (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 ml (4 mcg/ml)', unit:'mcg/min', perMin:true, mixes: [
+        { prep: 'ยา 10 ml (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 ml (4 mcg/ml)', conc: 4 },
+        { prep: 'ยา 10 ml (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (20 mcg/ml)', conc: 20 }
     ]},
 ];
 
 // --- NEONATAL ---
 const neoDrugs = [
-    {name:'Epinephrine 1:10,000 (IV/IO)', dose:'0.01–0.03 mg/kg', doseMin:0.01, doseMax:0.03, concMgMl:0.1, route:'IV/IO', prep:'Adrenaline (1:1000) 1 mg + NSS 9 mL (0.1 mg/mL)'},
+    {name:'Epinephrine 1:10,000 (IV/IO)', dose:'0.01–0.03 mg/kg', doseMin:0.01, doseMax:0.03, concMgMl:0.1, route:'IV/IO', prep:'Adrenaline (1:1000) 1 mg + NSS 9 ml (0.1 mg/ml)'},
     {name:'Epinephrine 1:10,000 (ET)',    dose:'0.05–0.1 mg/kg',  doseMin:0.05, doseMax:0.1,  concMgMl:0.1, route:'ET',   prep:'Same prep as above'},
-    {name:'Glucose 10% (100 mg/mL)',      dose:'200 mg/kg',        doseMin:200,  doseMax:200,  concMgMl:100, route:'IV/IO', prep:'D10W'},
-    {name:'Normal Saline (0.9% NaCl)',    dose:'10 mL/kg',         doseMin:10,   isVol:true,               route:'IV/IO', prep:'Normal Saline 0.9%'},
-    {name:'O Rh-negative blood',          dose:'10 mL/kg',         doseMin:10,   isVol:true,               route:'IV/IO', prep:''},
+    {name:'Glucose 10% (100 mg/ml)',      dose:'200 mg/kg',        doseMin:200,  doseMax:200,  concMgMl:100, route:'IV/IO', prep:'D10W'},
+    {name:'Normal Saline (0.9% NaCl)',    dose:'10 ml/kg',         doseMin:10,   isVol:true,               route:'IV/IO', prep:'Normal Saline 0.9%'},
+    {name:'O Rh-negative blood',          dose:'10 ml/kg',         doseMin:10,   isVol:true,               route:'IV/IO', prep:''},
 ];
 
 const neoDrips = [
-    {id:'nd-epi',  name:'Epinephrine', initMin:0.05, initMax:1,  max:1,    concMcgMl:10, prep:'ผสมยา 1 mg (1 mL) ใน NSS, D5W 100 mL (10 mcg/mL)', mixes: [
-        { prep: 'ผสมยา 1 mg (1 mL) ใน NSS, D5W 100 mL (10 mcg/mL)', conc: 10 },
-        { prep: 'ผสมยา 4 mg (4 mL) ใน NSS, D5W 250 mL (16 mcg/mL)', conc: 16 },
-        { prep: 'ผสมยา 8 mg (8 mL) ใน NSS, D5W 250 mL (32 mcg/mL)', conc: 32 }
+    {id:'nd-epi',  name:'Epinephrine', initMin:0.05, initMax:1,  max:1,    concMcgMl:10, prep:'ผสมยา 1 mg (1 ml) ใน NSS, D5W 100 ml (10 mcg/ml)', mixes: [
+        { prep: 'ผสมยา 1 mg (1 ml) ใน NSS, D5W 100 ml (10 mcg/ml)', conc: 10 },
+        { prep: 'ผสมยา 4 mg (4 ml) ใน NSS, D5W 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ผสมยา 8 mg (8 ml) ใน NSS, D5W 250 ml (32 mcg/ml)', conc: 32 }
     ]},
-    {id:'nd-nor', name:'Norepinephrine (PHT/Septic)', initMin:0.2, initMax:2, max:2,    concMcgMl:16,   prep:'ผสมยา 4 mg (4 mL) ใน D5W, D5S 250 mL (16 mcg/mL)', mixes: [
-        { prep: 'ผสมยา 2 mg (2 mL) ใน D5W, D5S 250 mL (8 mcg/mL)', conc: 8 },
-        { prep: 'ผสมยา 4 mg (4 mL) ใน D5W, D5S 250 mL (16 mcg/mL)', conc: 16 },
-        { prep: 'ผสมยา 8 mg (8 mL) ใน D5W, D5S 250 mL (32 mcg/mL)', conc: 32 }
+    {id:'nd-nor', name:'Norepinephrine (PHT/Septic)', initMin:0.2, initMax:2, max:2,    concMcgMl:16,   prep:'ผสมยา 4 mg (4 ml) ใน D5W, D5S 250 ml (16 mcg/ml)', mixes: [
+        { prep: 'ผสมยา 2 mg (2 ml) ใน D5W, D5S 250 ml (8 mcg/ml)', conc: 8 },
+        { prep: 'ผสมยา 4 mg (4 ml) ใน D5W, D5S 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ผสมยา 8 mg (8 ml) ใน D5W, D5S 250 ml (32 mcg/ml)', conc: 32 }
     ]},
-    {id:'nd-dop', name:'Dopamine', initMin:2, initMax:20, max:30,              concMcgMl:2000, prep:'ยา 200 mg (8 mL) + D5W หรือ NSS 92 mL (2000 mcg/mL)', mixes: [
-        { prep: 'ยา 100 mg (4 mL) + D5W หรือ NSS 96 mL (1000 mcg/mL)', conc: 1000 },
-        { prep: 'ยา 200 mg (8 mL) + D5W หรือ NSS 92 mL (2000 mcg/mL)', conc: 2000 }
+    {id:'nd-dop', name:'Dopamine', initMin:2, initMax:20, max:30,              concMcgMl:2000, prep:'ยา 200 mg (8 ml) + D5W หรือ NSS 92 ml (2000 mcg/ml)', mixes: [
+        { prep: 'ยา 100 mg (4 ml) + D5W หรือ NSS 96 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 1 vial (250 mg) + D5W upto 250 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 200 mg (8 ml) + D5W หรือ NSS 92 ml (2000 mcg/ml)', conc: 2000 },
+        { prep: 'ยา 1 vial (250 mg) + D5W upto 125 ml (2000 mcg/ml)', conc: 2000 }
     ]},
-    {id:'nd-dob', name:'Dobutamine', initMin:2, initMax:25, max:25,            concMcgMl:1000, prep:'ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL (1000 mcg/mL)', mixes: [
-        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL (1000 mcg/mL)', conc: 1000 },
-        { prep: 'ยา 2 vial (500 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL (2000 mcg/mL)', conc: 2000 },
-        { prep: 'ยา 4 vial (1000 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL (4000 mcg/mL)', conc: 4000 }
+    {id:'nd-dob', name:'Dobutamine', initMin:2, initMax:25, max:25,            concMcgMl:1000, prep:'ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (1000 mcg/ml)', mixes: [
+        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 2 vial (500 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (2000 mcg/ml)', conc: 2000 },
+        { prep: 'ยา 4 vial (1000 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (4000 mcg/ml)', conc: 4000 }
     ]},
-    {id:'nd-mil', name:'Milrinone', initMin:0.375, initMax:0.75, max:0.75,     concMcgMl:100,  prep:'ยา 10 mg (10 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL (100 mcg/mL)', mixes: [
-        { prep: 'ยา 10 mg (10 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL (100 mcg/mL)', conc: 100 },
-        { prep: 'ยา 15 mg (15 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL (150 mcg/mL)', conc: 150 },
-        { prep: 'ยา 10 mg (10 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 50 mL (200 mcg/mL)', conc: 200 }
+    {id:'nd-mil', name:'Milrinone', initMin:0.375, initMax:0.75, max:0.75,     concMcgMl:100,  prep:'ยา 10 mg (10 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (100 mcg/ml)', mixes: [
+        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (100 mcg/ml)', conc: 100 },
+        { prep: 'ยา 15 mg (15 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (150 mcg/ml)', conc: 150 },
+        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 50 ml (200 mcg/ml)', conc: 200 }
     ]},
-    {id:'nd-iso', name:'Isoproterenol', initMin:0.02, initMax:0.5, max:2,      concMcgMl:4,    prep:'ยา 10 mL (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 mL (4 mcg/mL)', unit:'mcg/min', perMin:true, mixes: [
-        { prep: 'ยา 10 mL (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 mL (4 mcg/mL)', conc: 4 },
-        { prep: 'ยา 10 mL (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL (20 mcg/mL)', conc: 20 }
+    {id:'nd-iso', name:'Isoproterenol', initMin:0.02, initMax:0.5, max:2,      concMcgMl:4,    prep:'ยา 10 ml (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 ml (4 mcg/ml)', unit:'mcg/min', perMin:true, mixes: [
+        { prep: 'ยา 10 ml (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 ml (4 mcg/ml)', conc: 4 },
+        { prep: 'ยา 10 ml (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (20 mcg/ml)', conc: 20 }
     ]}
 ];
 
 // --- ADULT EMERGENCY ---
 const adultEmDrugs = [
-    {name:'Epinephrine (Cardiac Arrest)',  prep:'Adrenaline 1 mg/mL (1:1000)', dose:'1 mg',     note:'q 3–5 min',           route:'IV/IO'},
-    {name:'Epinephrine (Anaphylaxis)',     prep:'Adrenaline 1 mg/mL (1:1000)', dose:'0.5 mg',   note:'IM deltoid',          route:'IM'},
-    {name:'Amiodarone (Arrest)',           prep:'150 mg/3 mL',                  dose:'300 mg',   note:'2nd dose 150 mg',     route:'IV/IO'},
-    {name:'Lidocaine (Arrest)',            prep:'2% 10mL (200 mg)',             dose:'1–1.5 mg/kg', note:'calc by wt',       route:'IV/IO'},
-    {name:'Atropine (Bradycardia)',        prep:'0.6 mg/mL',                    dose:'1 mg',     note:'q 3–5 min, Max 3 mg', route:'IV/IO'},
-    {name:'Adenosine (SVT 1st)',           prep:'2 mg/2 mL',                    dose:'6 mg',     note:'rapid IV push',       route:'IV/IO'},
-    {name:'Adenosine (SVT 2nd)',           prep:'2 mg/2 mL',                    dose:'12 mg',    note:'rapid IV push',       route:'IV/IO'},
-    {name:'Dopamine (Bradycardia)',        prep:'250 mg/10 mL',                 dose:'Drip ↓',   note:'see drip section',    route:'IV'},
-    {name:'Epinephrine (Bradycardia)',     prep:'Adrenaline 1 mg/mL (1:1000)', dose:'Drip ↓',   note:'see drip section',    route:'IV'},
-    {name:'Naloxone (OD)',                 prep:'0.4 mg/mL',                    dose:'0.4–2 mg', note:'repeat q 2–3 min',    route:'IV/IM'},
+    {name:'Epinephrine (Cardiac Arrest)',  prep:'Adrenaline 1 mg/ml (1:1000)', dose:'1 mg',     note:'q 3–5 min',           route:'IV/IO'},
+    {name:'Epinephrine (Anaphylaxis)',     prep:'Adrenaline 1 mg/ml (1:1000)', dose:'0.5 mg',   note:'IM deltoid',          route:'IM'},
+    {name:'Amiodarone (Arrest)',           prep:'150 mg/3 ml',                  dose:'300 mg',   note:'2nd dose 150 mg',     route:'IV/IO'},
+    {name:'Lidocaine (Arrest)',            prep:'2% 10ml (200 mg)',             dose:'1–1.5 mg/kg', note:'calc by wt',       route:'IV/IO'},
+    {name:'Atropine (Bradycardia)',        prep:'0.6 mg/ml',                    dose:'1 mg',     note:'q 3–5 min, Max 3 mg', route:'IV/IO'},
+    {name:'Adenosine (SVT 1st)',           prep:'2 mg/2 ml',                    dose:'6 mg',     note:'rapid IV push',       route:'IV/IO'},
+    {name:'Adenosine (SVT 2nd)',           prep:'2 mg/2 ml',                    dose:'12 mg',    note:'rapid IV push',       route:'IV/IO'},
+    {name:'Dopamine (Bradycardia)',        prep:'250 mg/10 ml',                 dose:'Drip ↓',   note:'see drip section',    route:'IV'},
+    {name:'Epinephrine (Bradycardia)',     prep:'Adrenaline 1 mg/ml (1:1000)', dose:'Drip ↓',   note:'see drip section',    route:'IV'},
+    {name:'Naloxone (OD)',                 prep:'0.4 mg/ml',                    dose:'0.4–2 mg', note:'repeat q 2–3 min',    route:'IV/IM'},
 ];
 
 const adultInotropes = [
-    {id:'ai-epi', name:'Epinephrine',    initMin:0.05, initMax:2,   max:2,   concMcgMl:4,    doseDef:0.1,  unit:'mcg/kg/min', prep:'ยา 1 mg (1 mL) ผสมสารน้ำ 249 mL (4 mcg/mL)', mixes: [
-        { prep: 'ยา 1 mg (1 mL) ผสมสารน้ำ 999 mL (1 mcg/mL)', conc: 1 },
-        { prep: 'ยา 1 mg (1 mL) ผสมสารน้ำ 249 mL (4 mcg/mL)', conc: 4 },
-        { prep: 'ยา 4 mg (4 mL) ผสมสารน้ำ 246 mL (16 mcg/mL)', conc: 16 },
-        { prep: 'ยา 6 mg (6 mL) ผสมสารน้ำ 94 mL (60 mcg/mL)', conc: 60 },
-        { prep: 'ยา 16 mg (16 mL) ผสมสารน้ำ 234 mL (64 mcg/mL)', conc: 64 },
-        { prep: 'ยา 10 mg (10 mL) ผสมสารน้ำ 100 mL (100 mcg/mL)', conc: 100 }
+    {id:'ai-epi', name:'Epinephrine',    initMin:0.05, initMax:2,   max:2,   concMcgMl:4,    doseDef:0.1,  unit:'mcg/kg/min', prep:'ยา 1 mg (1 ml) ผสมสารน้ำ 249 ml (4 mcg/ml)', mixes: [
+        { prep: 'ยา 1 mg (1 ml) ผสมสารน้ำ 999 ml (1 mcg/ml)', conc: 1 },
+        { prep: 'ยา 1 mg (1 ml) ผสมสารน้ำ 249 ml (4 mcg/ml)', conc: 4 },
+        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ 246 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ยา 6 mg (6 ml) ผสมสารน้ำ 94 ml (60 mcg/ml)', conc: 60 },
+        { prep: 'ยา 16 mg (16 ml) ผสมสารน้ำ 234 ml (64 mcg/ml)', conc: 64 },
+        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำ 100 ml (100 mcg/ml)', conc: 100 }
     ]},
-    {id:'ai-nor', name:'Norepinephrine (Cardiogenic)', initMin:0.05, initMax:0.4, max:0.4, concMcgMl:16, doseDef:0.1, unit:'mcg/kg/min', prep:'ผสมยา 4 mg (4 mL) ใน D5W, D5S 250 mL (16 mcg/mL)', mixes: [
-        { prep: 'ผสมยา 2 mg (2 mL) ใน D5W, D5S 250 mL (8 mcg/mL)', conc: 8 },
-        { prep: 'ผสมยา 4 mg (4 mL) ใน D5W, D5S 250 mL (16 mcg/mL)', conc: 16 },
-        { prep: 'ผสมยา 8 mg (8 mL) ใน D5W, D5S 250 mL (32 mcg/mL)', conc: 32 },
-        { prep: 'ผสมยา 4 mg (4 mL) ใน D5W, D5S 100 mL (40 mcg/mL)', conc: 40 },
-        { prep: 'ผสมยา 8 mg (8 mL) ใน D5W, D5S 100 mL (80 mcg/mL)', conc: 80 }
+    {id:'ai-nor', name:'Norepinephrine (Cardiogenic)', initMin:0.05, initMax:0.4, max:0.4, concMcgMl:16, doseDef:0.1, unit:'mcg/kg/min', prep:'ผสมยา 4 mg (4 ml) ใน D5W, D5S 250 ml (16 mcg/ml)', mixes: [
+        { prep: 'ผสมยา 2 mg (2 ml) ใน D5W, D5S 250 ml (8 mcg/ml)', conc: 8 },
+        { prep: 'ผสมยา 4 mg (4 ml) ใน D5W, D5S 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ผสมยา 8 mg (8 ml) ใน D5W, D5S 250 ml (32 mcg/ml)', conc: 32 },
+        { prep: 'ผสมยา 4 mg (4 ml) ใน D5W, D5S 100 ml (40 mcg/ml)', conc: 40 },
+        { prep: 'ผสมยา 8 mg (8 ml) ใน D5W, D5S 100 ml (80 mcg/ml)', conc: 80 }
     ]},
-    {id:'ai-nor2',name:'Norepinephrine (Septic/Post-arrest)', initMin:0.05, initMax:3.3, max:3.3, concMcgMl:16, doseDef:0.1, unit:'mcg/kg/min', prep:'ผสมยา 4 mg (4 mL) ใน D5W, D5S 250 mL (16 mcg/mL)', mixes: [
-        { prep: 'ผสมยา 2 mg (2 mL) ใน D5W, D5S 250 mL (8 mcg/mL)', conc: 8 },
-        { prep: 'ผสมยา 4 mg (4 mL) ใน D5W, D5S 250 mL (16 mcg/mL)', conc: 16 },
-        { prep: 'ผสมยา 8 mg (8 mL) ใน D5W, D5S 250 mL (32 mcg/mL)', conc: 32 },
-        { prep: 'ผสมยา 4 mg (4 mL) ใน D5W, D5S 100 mL (40 mcg/mL)', conc: 40 },
-        { prep: 'ผสมยา 8 mg (8 mL) ใน D5W, D5S 100 mL (80 mcg/mL)', conc: 80 }
+    {id:'ai-nor2',name:'Norepinephrine (Septic/Post-arrest)', initMin:0.05, initMax:3.3, max:3.3, concMcgMl:16, doseDef:0.1, unit:'mcg/kg/min', prep:'ผสมยา 4 mg (4 ml) ใน D5W, D5S 250 ml (16 mcg/ml)', mixes: [
+        { prep: 'ผสมยา 2 mg (2 ml) ใน D5W, D5S 250 ml (8 mcg/ml)', conc: 8 },
+        { prep: 'ผสมยา 4 mg (4 ml) ใน D5W, D5S 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ผสมยา 8 mg (8 ml) ใน D5W, D5S 250 ml (32 mcg/ml)', conc: 32 },
+        { prep: 'ผสมยา 4 mg (4 ml) ใน D5W, D5S 100 ml (40 mcg/ml)', conc: 40 },
+        { prep: 'ผสมยา 8 mg (8 ml) ใน D5W, D5S 100 ml (80 mcg/ml)', conc: 80 }
     ]},
-    {id:'ai-dop', name:'Dopamine',       initMin:2,    initMax:20,  max:50,  concMcgMl:2000, doseDef:5,   unit:'mcg/kg/min', prep:'ยา 200 mg (8 mL) + D5W หรือ NSS 92 mL (2000 mcg/mL)', mixes: [
-        { prep: 'ยา 100 mg (4 mL) + D5W หรือ NSS 96 mL (1000 mcg/mL)', conc: 1000 },
-        { prep: 'ยา 200 mg (8 mL) + D5W หรือ NSS 92 mL (2000 mcg/mL)', conc: 2000 }
+    {id:'ai-dop', name:'Dopamine',       initMin:2,    initMax:20,  max:50,  concMcgMl:2000, doseDef:5,   unit:'mcg/kg/min', prep:'ยา 200 mg (8 ml) + D5W หรือ NSS 92 ml (2000 mcg/ml)', mixes: [
+        { prep: 'ยา 100 mg (4 ml) + D5W หรือ NSS 96 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 1 vial (250 mg) + D5W upto 250 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 200 mg (8 ml) + D5W หรือ NSS 92 ml (2000 mcg/ml)', conc: 2000 },
+        { prep: 'ยา 1 vial (250 mg) + D5W upto 125 ml (2000 mcg/ml)', conc: 2000 }
     ]},
-    {id:'ai-dob', name:'Dobutamine',     initMin:2,    initMax:20,  max:40,  concMcgMl:1000, doseDef:5,   unit:'mcg/kg/min', prep:'ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL (1000 mcg/mL)', mixes: [
-        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL (1000 mcg/mL)', conc: 1000 },
-        { prep: 'ยา 2 vial (500 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL (2000 mcg/mL)', conc: 2000 },
-        { prep: 'ยา 4 vial (1000 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL (4000 mcg/mL)', conc: 4000 }
+    {id:'ai-dob', name:'Dobutamine',     initMin:2,    initMax:20,  max:40,  concMcgMl:1000, doseDef:5,   unit:'mcg/kg/min', prep:'ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (1000 mcg/ml)', mixes: [
+        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 2 vial (500 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (2000 mcg/ml)', conc: 2000 },
+        { prep: 'ยา 4 vial (1000 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (4000 mcg/ml)', conc: 4000 }
     ]},
-    {id:'ai-mil', name:'Milrinone',      initMin:0.375, initMax:0.75, max:0.75, concMcgMl:100, doseDef:0.375, unit:'mcg/kg/min', prep:'ยา 10 mg (10 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL (100 mcg/mL)', mixes: [
-        { prep: 'ยา 10 mg (10 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL (100 mcg/mL)', conc: 100 },
-        { prep: 'ยา 15 mg (15 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL (150 mcg/mL)', conc: 150 },
-        { prep: 'ยา 10 mg (10 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 50 mL (200 mcg/mL)', conc: 200 }
+    {id:'ai-mil', name:'Milrinone',      initMin:0.375, initMax:0.75, max:0.75, concMcgMl:100, doseDef:0.375, unit:'mcg/kg/min', prep:'ยา 10 mg (10 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (100 mcg/ml)', mixes: [
+        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (100 mcg/ml)', conc: 100 },
+        { prep: 'ยา 15 mg (15 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (150 mcg/ml)', conc: 150 },
+        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 50 ml (200 mcg/ml)', conc: 200 }
     ]},
-    {id:'ai-iso', name:'Isoproterenol',  initMin:2,    initMax:10,  max:30,  concMcgMl:4,    doseDef:2,   unit:'mcg/min',    prep:'ยา 10 mL (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 mL (4 mcg/mL)', perMin:true, mixes: [
-        { prep: 'ยา 10 mL (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 mL (4 mcg/mL)', conc: 4 },
-        { prep: 'ยา 10 mL (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL (20 mcg/mL)', conc: 20 }
+    {id:'ai-iso', name:'Isoproterenol',  initMin:2,    initMax:10,  max:30,  concMcgMl:4,    doseDef:2,   unit:'mcg/min',    prep:'ยา 10 ml (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 ml (4 mcg/ml)', perMin:true, mixes: [
+        { prep: 'ยา 10 ml (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 ml (4 mcg/ml)', conc: 4 },
+        { prep: 'ยา 10 ml (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (20 mcg/ml)', conc: 20 }
     ]},
 ];
 
 const adultAntiHtn = [
-    {name:'Nitroglycerin (NTG)', prep:'50 mg/10 mL', init:'5 mcg/min', max:'200 mcg/min', initRate:'0.75', maxRate:'30', mix:'NTG 50 mg + NSS 115 mL IV'},
-    {name:'Nicardipine',         prep:'10 mg/10 mL', init:'5 mg/hr',   max:'15 mg/hr',    initRate:'25',   maxRate:'75', mix:'Nicardipine 20 mg + NSS up to 100 mL'},
-    {name:'Labetalol',           prep:'100 mg/20 mL', init:'0.5 mg/min', max:'2 mg/min',  initRate:'15',   maxRate:'60', mix:'Labetalol 200 mg (40 mL) + NSS 60 mL'},
+    {name:'Nitroglycerin (NTG)', prep:'50 mg/10 ml', init:'5 mcg/min', max:'200 mcg/min', initRate:'0.75', maxRate:'30', mix:'NTG 50 mg + NSS 115 ml IV'},
+    {name:'Nicardipine',         prep:'10 mg/10 ml', init:'5 mg/hr',   max:'15 mg/hr',    initRate:'25',   maxRate:'75', mix:'Nicardipine 20 mg + NSS up to 100 ml'},
+    {name:'Labetalol',           prep:'100 mg/20 ml', init:'0.5 mg/min', max:'2 mg/min',  initRate:'15',   maxRate:'60', mix:'Labetalol 200 mg (40 ml) + NSS 60 ml'},
     {name:'Esmolol',             prep:'-',           init:'50 µg/kg/min', max:'300 µg/kg/min', initRate:'-', maxRate:'-', mix:'Bolus 500 µg/kg over 1 min'},
 ];
 
 const adultAntiArr = [
-    {name:'Lidocaine (Drip)',  init:'1 mg/min', max:'4 mg/min', initRate:'15', maxRate:'60', mix:'Lidocaine 2% 1000 mg (50 mL) + NSS/D5W up to 250 mL (4 mg/mL)'},
-    {name:'Diltiazem (Drip)', init:'5 mg/hr',  max:'15 mg/hr', initRate:'5',  maxRate:'15', mix:'Diltiazem 100 mg + NSS 100 mL IV (bolus 0.25 mg/kg over 5 min)'},
-    {name:'Amiodarone (AF)',  init:'150–300 mg over 30–60 min', max:'900–1200 mg/24hr', initRate:'-', maxRate:'-', mix:'150 mg in 250 mL D5W over 30–60 min'},
+    {name:'Lidocaine (Drip)',  init:'1 mg/min', max:'4 mg/min', initRate:'15', maxRate:'60', mix:'Lidocaine 2% 1000 mg (50 ml) + NSS/D5W up to 250 ml (4 mg/ml)'},
+    {name:'Diltiazem (Drip)', init:'5 mg/hr',  max:'15 mg/hr', initRate:'5',  maxRate:'15', mix:'Diltiazem 100 mg + NSS 100 ml IV (bolus 0.25 mg/kg over 5 min)'},
+    {name:'Amiodarone (AF)',  init:'150–300 mg over 30–60 min', max:'900–1200 mg/24hr', initRate:'-', maxRate:'-', mix:'150 mg in 250 ml D5W over 30–60 min'},
 ];
 
 const adultNeuroGroups = [
     { title: 'Neuro & Anti-epileptics', style: 'background:#7e22ce; color:#fff;', items: [
-        {name:'Diazepam', prep:'10 mg/2mL', route:'IV', min:0.3, max:0.3, unit:'mg/kg/dose', maxAdult:10, dosePrefix:'Loading', note:'rate <2 mg/min (Do not dilute)'},
-        {name:'Midazolam', prep:'5 mg/1mL', route:'IM/IV', min:0.2, max:0.2, unit:'mg/kg/dose', maxAdult:10, dosePrefix:'Loading (Bolus)', note:''},
-        {name:'Midazolam', prep:'5 mg/1mL', route:'IV', min:0.1, max:0.3, unit:'mg/kg/dose', maxAdult:10, dosePrefix:'Loading (Drip)', note:'mix in NSS, 5%DW (rate <4 mg/min)'},
+        {name:'Diazepam', prep:'10 mg/2ml', route:'IV', min:0.3, max:0.3, unit:'mg/kg/dose', maxAdult:10, dosePrefix:'Loading', note:'rate <2 mg/min (Do not dilute)'},
+        {name:'Midazolam', prep:'5 mg/1ml', route:'IM/IV', min:0.2, max:0.2, unit:'mg/kg/dose', maxAdult:10, dosePrefix:'Loading (Bolus)', note:''},
+        {name:'Midazolam', prep:'5 mg/1ml', route:'IV', min:0.1, max:0.3, unit:'mg/kg/dose', maxAdult:10, dosePrefix:'Loading (Drip)', note:'mix in NSS, 5%DW (rate <4 mg/min)'},
         {name:'Midazolam', prep:'', route:'IV', min:0.05, max:0.4, unit:'mg/kg/hr', dosePrefix:'Maintenance', note:'mix in NSS, 5%DW'},
-        {name:'Phenytoin', prep:'250 mg/5mL', route:'IV', min:20, max:30, unit:'mg/kg/dose', maxAdult:1500, dosePrefix:'Loading', note:'mix in 0.9%NSS only (rate <50 mg/min)'},
+        {name:'Phenytoin', prep:'250 mg/5ml', route:'IV', min:20, max:30, unit:'mg/kg/dose', maxAdult:1500, dosePrefix:'Loading', note:'mix in 0.9%NSS only (rate <50 mg/min)'},
         {name:'Phenytoin', prep:'', route:'IV', min:5, max:8, unit:'mg/kg/day', divisor:3, dosePrefix:'Maintenance', note:'mix in 0.9%NSS only (div q8h)'},
-        {name:'Phenobarbital', prep:'200 mg/1mL', route:'IV', fixed:'300 - 500 mg/day', maxAdult:1000, dosePrefix:'Maintenance', note:'mix in SWI 10 ml then NSS, RL, 5%DW (div q8h)'},
-        {name:'Sodium Valproate', prep:'400 mg/4mL', route:'IV', min:20, max:30, unit:'mg/kg/dose', dosePrefix:'Loading', note:'mix in 0.9%NSS, 5%DW (rate <100 mg/min)'},
+        {name:'Phenobarbital', prep:'200 mg/1ml', route:'IV', fixed:'300 - 500 mg/day', maxAdult:1000, dosePrefix:'Maintenance', note:'mix in SWI 10 ml then NSS, RL, 5%DW (div q8h)'},
+        {name:'Sodium Valproate', prep:'400 mg/4ml', route:'IV', min:20, max:30, unit:'mg/kg/dose', dosePrefix:'Loading', note:'mix in 0.9%NSS, 5%DW (rate <100 mg/min)'},
         {name:'Sodium Valproate', prep:'', route:'IV', min:1, max:2, unit:'mg/kg/hr', dosePrefix:'Maintenance', note:'mix in 0.9%NSS, 5%DW'},
-        {name:'Levetiracetam', prep:'500 mg/5mL', route:'IV', min:30, max:40, unit:'mg/kg/dose', maxAdult:4000, dosePrefix:'Loading', note:'mix in 0.9%NSS, RL, 5%DW (>15 min)'},
+        {name:'Levetiracetam', prep:'500 mg/5ml', route:'IV', min:30, max:40, unit:'mg/kg/dose', maxAdult:4000, dosePrefix:'Loading', note:'mix in 0.9%NSS, RL, 5%DW (>15 min)'},
         {name:'Levetiracetam', prep:'', route:'IV', min:10, max:30, unit:'mg/kg/dose', dosePrefix:'Maintenance', note:'mix in 0.9%NSS, RL, 5%DW (q 12h)'},
-        {name:'Lacosamide', prep:'200 mg/20mL', route:'IV', fixed:'400 mg', maxAdult:400, dosePrefix:'Loading', note:'mix in 0.9%NSS, RL, 5%DW'},
+        {name:'Lacosamide', prep:'200 mg/20ml', route:'IV', fixed:'400 mg', maxAdult:400, dosePrefix:'Loading', note:'mix in 0.9%NSS, RL, 5%DW'},
         {name:'Lacosamide', prep:'', route:'IV', min:200, max:400, unit:'mg/day', maxAdult:400, dosePrefix:'Maintenance', note:'mix in 0.9%NSS, RL, 5%DW (fixed)'},
-        {name:'Propofol', prep:'200 mg/20mL', route:'IV', min:2, max:2, unit:'mg/kg/dose', dosePrefix:'Loading', note:'no dilution (rate <0.05 mg/kg/min)'},
+        {name:'Propofol', prep:'200 mg/20ml', route:'IV', min:2, max:2, unit:'mg/kg/dose', dosePrefix:'Loading', note:'no dilution (rate <0.05 mg/kg/min)'},
         {name:'Thiopental', prep:'1 g/vial', route:'IV', min:2, max:2, unit:'mg/kg/dose', dosePrefix:'Loading', note:'mix in NSS, 5%DW, SWI to 2.5% solution (rate <0.05 mg/kg/min)'},
         {name:'Thiopental', prep:'', route:'IV', min:3, max:5, unit:'mg/kg/hr', dosePrefix:'Maintenance', note:'mix in NSS, 5%DW, SWI to 2.5% solution'},
-        {name:'Ketamine', prep:'500 mg/10mL', route:'IV', min:1, max:2, unit:'mg/kg/dose', dosePrefix:'Loading', note:'mix in NSS, 5%DW, SWI to <= 2 mg/ml'},
+        {name:'Ketamine', prep:'500 mg/10ml', route:'IV', min:1, max:2, unit:'mg/kg/dose', dosePrefix:'Loading', note:'mix in NSS, 5%DW, SWI to <= 2 mg/ml'},
         {name:'Ketamine', prep:'', route:'IV', min:0.6, max:5, unit:'mg/kg/hr', dosePrefix:'Maintenance', note:'mix in NSS, 5%DW, SWI to <= 2 mg/ml'},
     ]}
 ];
 
 const adultSed = [
-    {name:'Midazolam',         loading:'0.01–0.05 mg/kg (0.7–3.5 mg)', maint:'0.02–0.1 mg/kg/hr', concMgMl:0.5, prep:'Midazolam 50 mg + NSS up to 100 mL (0.5 mg/mL, Max 5 mg/mL)'},
+    {name:'Midazolam',         loading:'0.01–0.05 mg/kg (0.7–3.5 mg)', maint:'0.02–0.1 mg/kg/hr', concMgMl:0.5, prep:'Midazolam 50 mg + NSS up to 100 ml (0.5 mg/ml, Max 5 mg/ml)'},
     {name:'Lorazepam',         loading:'0.02–0.04 mg/kg (max 2 mg)',    maint:'0.02–0.06 mg/kg q2-6h PRN', concMgMl:null, prep:'-'},
     {name:'Diazepam',          loading:'5–10 mg (fixed)',               maint:'0.03–0.1 mg/kg q0.5-6h PRN',concMgMl:null, prep:'-'},
-    {name:'Propofol',          loading:'5 mcg/kg/min over 5 min',       maint:'5–50 mcg/kg/min',    concMgMl:10, prep:'Propofol 200 mg/20 mL (ไม่ผสม)'},
+    {name:'Propofol',          loading:'5 mcg/kg/min over 5 min',       maint:'5–50 mcg/kg/min',    concMgMl:10, prep:'Propofol 200 mg/20 ml (ไม่ผสม)'},
     {name:'Dexmedetomidine',   loading:'1 mcg/kg over 10 min (70 mcg)', maint:'0.2–0.7 mcg/kg/hr', concMgMl:null, prep:'-'},
     {name:'Fentanyl',          loading:'1–2 mcg/kg',                    maint:'0.5–2 mcg/kg/hr',            concMgMl:null, prep:'-'},
 ];
@@ -1230,7 +1426,8 @@ function renderRsi() {
             if (d.absMax) { cUsual = Math.min(cUsual, d.absMax); cMin = Math.min(cMin, d.absMax); cMax = Math.min(cMax, d.absMax); }
             let rangeMg = (d.min === d.max) ? d.min : `${d.min} - ${d.max}`;
             let rangeDose = (cMin === cMax) ? `${rnd(cMin)} ${u}` : `${rnd(cMin)} - ${rnd(cMax)} ${u}`;
-            h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${rangeMg}</td><td class="text-slate-600 font-bold text-blue-700">${d.prep || '-'}</td><td class="val-blue text-lg">${rnd(cUsual)} ${u}</td><td class="text-slate-500">${rangeDose}</td></tr>`;
+            let prepHtml = (d.prep && d.prep !== "-") ? `<div class="text-[11px] text-slate-400 mt-1.5">${d.prep}</div>` : "";
+            h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div>${prepHtml}<div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${rangeMg}</td><td class="val-blue text-lg">${rnd(cUsual)} ${u}</td><td class="text-slate-500">${rangeDose}</td></tr>`;
         });
         document.getElementById('rsi-pre-tbody').innerHTML = h;
     }
@@ -1241,7 +1438,8 @@ function renderRsi() {
         const u = d.unit || 'mg';
         let rangeMg = (d.min === d.max) ? d.min : `${d.min} - ${d.max}`;
         let rangeDose = (d.min === d.max) ? `${rnd(d.min*w)} ${u}` : `${rnd(d.min*w)} - ${rnd(d.max*w)} ${u}`;
-        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${rangeMg}</td><td class="text-slate-600 font-bold text-blue-700">${d.prep || '-'}</td><td class="val-blue text-lg">${rnd(d.usual*w)} ${u}</td><td class="text-slate-500">${rangeDose}</td></tr>`;
+        let prepHtml = (d.prep && d.prep !== "-") ? `<div class="text-[11px] text-slate-400 mt-1.5">${d.prep}</div>` : "";
+        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div>${prepHtml}<div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${rangeMg}</td><td class="val-blue text-lg">${rnd(d.usual*w)} ${u}</td><td class="text-slate-500">${rangeDose}</td></tr>`;
     });
     document.getElementById('rsi-sed-tbody').innerHTML = h;
 
@@ -1249,7 +1447,8 @@ function renderRsi() {
     rsiNmb.forEach(d => {
         const w = (d.wt === 'lbw' && P.lbw > 0) ? P.lbw : P.calcWt;
         const u = d.unit || 'mg';
-        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${d.min} - ${d.max}</td><td class="text-slate-600 font-bold text-blue-700 text-sm">${d.prep || '-'}</td><td class="val-blue text-lg">${rnd(d.usual*w)} ${u}</td><td class="text-slate-500">${rnd(d.min*w)} - ${rnd(d.max*w)} ${u}</td></tr>`;
+        let prepHtml = (d.prep && d.prep !== "-") ? `<div class="text-[11px] text-slate-400 mt-1.5">${d.prep}</div>` : "";
+        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div>${prepHtml}<div class="text-xs text-slate-400 mt-0.5">${d.note}</div></td><td class="font-bold text-blue-600">${d.usual}</td><td class="text-slate-500">${d.min} - ${d.max}</td><td class="val-blue text-lg">${rnd(d.usual*w)} ${u}</td><td class="text-slate-500">${rnd(d.min*w)} - ${rnd(d.max*w)} ${u}</td></tr>`;
     });
     document.getElementById('rsi-nmb-tbody').innerHTML = h;
 
@@ -1257,7 +1456,8 @@ function renderRsi() {
     rsiRev.forEach(d => {
         const w = P.calcWt;
         const dose = d.dose ? rnd(d.dose * w) + ' mg' : rnd(d.min*w) + ' – ' + rnd(d.max*w) + ' mg';
-        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div></td><td>${d.dose ? d.dose : d.min+'–'+d.max}</td><td class="val-teal">${dose}</td><td class="text-xs text-slate-500">${d.note}</td></tr>`;
+        let prepHtml = (d.prep && d.prep !== "-") ? `<div class="text-[11px] text-slate-400 mt-1.5">${d.prep}</div>` : "";
+        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div>${prepHtml}</td><td>${d.dose ? d.dose : d.min+'–'+d.max}</td><td class="val-teal">${dose}</td><td class="text-xs text-slate-500">${d.note}</td></tr>`;
     });
     document.getElementById('rsi-rev-tbody').innerHTML = h;
 }
@@ -1274,8 +1474,13 @@ function renderDrugGroups(groupsArray, containerId) {
             const nextIsSame = (index < g.items.length - 1 && g.items[index+1].name === item.name);
             const isGrouped = isSameName || nextIsSame;
             
+            let calcBtn = '';
+            if (item.name.includes('Phenytoin')) {
+                calcBtn = ` <button onclick="openPhenytoinModal()" class="ml-1 text-blue-500 hover:text-blue-700 bg-blue-50 border border-blue-200 px-1.5 py-0.5 rounded shadow-sm text-[10px] whitespace-nowrap"><i class="fas fa-calculator"></i> Naïve and Top up dose</button>`;
+            }
+
             if (isGrouped && !isSameName) {
-                html += `<tr><td colspan="6" class="font-semibold text-slate-700 pt-2 pb-1 !border-b-0">${item.name}</td></tr>`;
+                html += `<tr><td colspan="6" class="pt-2 pb-1 !border-b-0"><div class="font-semibold text-slate-700 flex flex-wrap items-center gap-1">${item.name}${calcBtn}</div></td></tr>`;
             }
             
             let tdBorder = 'pb-2';
@@ -1290,13 +1495,13 @@ function renderDrugGroups(groupsArray, containerId) {
             
             let drugPrepHtml = '';
             if (!isGrouped) {
-                drugPrepHtml = `<div class="font-semibold text-slate-700">${item.name}</div>`;
+                drugPrepHtml = `<div class="font-semibold text-slate-700 flex flex-wrap items-center gap-1">${item.name}${calcBtn}</div>`;
                 if (item.prep) {
-                    drugPrepHtml += `<div class="text-[11px] text-slate-400 mt-1.5">For ${item.prep}</div>`;
+                    drugPrepHtml += `<div class="text-[11px] text-slate-400 mt-1.5">${item.prep}</div>`;
                 }
             } else {
                 if (item.prep) {
-                    drugPrepHtml = `<div class="text-[11px] text-slate-500">For ${item.prep}</div>`;
+                    drugPrepHtml = `<div class="text-[11px] text-slate-500">${item.prep}</div>`;
                 }
             }
 
@@ -1502,13 +1707,14 @@ function renderPedEm() {
                 calc = `${rnd(capped)} J`;
                 vol = '-';
             } else {
-                calc = rnd(capped) + (d.unit === 'ml/kg' ? ' mL' : ' mg');
-                vol = d.concMgMl ? rnd(capped / d.concMgMl) + ' mL' : '-';
+                calc = rnd(capped) + (d.unit === 'ml/kg' ? ' ml' : ' mg');
+                vol = d.concMgMl ? rnd(capped / d.concMgMl) + ' ml' : '-';
             }
         }
         const maxStr = d.max ? 'Max: ' + d.max + (d.unit === 'J/kg' ? ' J' : ' mg') : '';
+        let prepHtml = (d.prep && d.prep !== "-") ? `<div class="text-[11px] text-slate-400 mt-1.5">${d.prep}</div>` : "";
         h += `<tr>
-            <td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-500 mt-0.5">${d.prep}</div></td>
+            <td><div class="font-semibold text-slate-700">${d.name}</div>${prepHtml}</td>
             <td class="text-xs text-slate-600">${d.dose ? d.dose : '40–60'} ${d.unit}</td>
             <td class="text-xs text-slate-500">${maxStr}</td>
             <td class="val-orange">${calc}</td>
@@ -1531,7 +1737,8 @@ function renderNeonatal() {
     neoDrugs.forEach(d => {
         const calc = d.isVol ? '-' : (rnd(P.calcWt * d.doseMin) + '-' + rnd(P.calcWt * d.doseMax));
         const vol = d.concMgMl ? (rnd(P.calcWt * d.doseMin / d.concMgMl) + '-' + rnd(P.calcWt * d.doseMax / d.concMgMl)) : '-';
-        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div><div class="text-xs text-slate-500 mt-0.5">${d.prep}</div></td><td class="text-xs text-slate-600">${d.dose}</td><td class="val-blue">${calc}</td><td class="val-pink">${vol}</td><td><span class="route-tag ${routeColor(d.route)}">${d.route}</span></td></tr>`;
+        let prepHtml = (d.prep && d.prep !== "-") ? `<div class="text-[11px] text-slate-400 mt-1.5">${d.prep}</div>` : "";
+        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div>${prepHtml}</td><td class="text-xs text-slate-600">${d.dose}</td><td class="val-blue">${calc}</td><td class="val-pink">${vol}</td><td><span class="route-tag ${routeColor(d.route)}">${d.route}</span></td></tr>`;
     });
     document.getElementById('neo-drug-tbody').innerHTML = h;
 
@@ -1587,7 +1794,12 @@ function renderAdult() {
     adultEmDrugs.forEach(d => {
         let doseStr = d.dose;
         if (d.dose === '1–1.5 mg/kg') doseStr = `${rnd(P.calcWt*1)}–${rnd(P.calcWt*1.5)} mg`;
-        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div></td><td class="text-xs text-slate-600">${d.prep}</td><td class="text-xs text-slate-600">${d.dose}</td><td class="val-blue">${doseStr} <br><span class="text-xs text-slate-500 font-normal">${d.note}</span></td><td><span class="route-tag ${routeColor(d.route)}">${d.route}</span></td></tr>`;
+        let prepHtml = (d.prep && d.prep !== "-") ? `<div class="text-[11px] text-slate-400 mt-1.5">${d.prep}</div>` : "";
+        let calcBtn = '';
+        if (d.name.includes('Phenytoin')) {
+            calcBtn = ` <button onclick="openPhenytoinModal()" class="ml-1 text-blue-500 hover:text-blue-700 bg-blue-50 border border-blue-200 px-1.5 py-0.5 rounded shadow-sm text-[10px] whitespace-nowrap"><i class="fas fa-calculator"></i> Naïve and Top up dose</button>`;
+        }
+        h += `<tr><td><div class="font-semibold text-slate-700 flex flex-wrap items-center gap-1">${d.name}${calcBtn}</div>${prepHtml}</td><td class="text-xs text-slate-600">${d.dose}</td><td class="val-blue">${doseStr} <br><span class="text-xs text-slate-500 font-normal">${d.note}</span></td><td><span class="route-tag ${routeColor(d.route)}">${d.route}</span></td></tr>`;
     });
     emTbody.innerHTML = h;
 
@@ -1598,13 +1810,13 @@ function renderAdult() {
 
     h = '';
     adultAntiHtn.forEach(d => {
-        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div></td><td class="text-xs text-slate-600">${d.prep}</td><td class="text-xs text-slate-600">${d.init}</td><td class="text-xs text-slate-600">${d.max}</td><td class="val-blue">${d.initRate} mL/hr</td><td class="val-orange">${d.maxRate} mL/hr</td><td class="text-xs text-slate-500">${d.mix}</td></tr>`;
+        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div></td><td class="text-xs text-slate-600">${d.prep}</td><td class="text-xs text-slate-600">${d.init}</td><td class="text-xs text-slate-600">${d.max}</td><td class="val-blue">${d.initRate} ml/hr</td><td class="val-orange">${d.maxRate} ml/hr</td><td class="text-xs text-slate-500">${d.mix}</td></tr>`;
     });
     document.getElementById('adult-antihtn-tbody').innerHTML = h;
 
     h = '';
     adultAntiArr.forEach(d => {
-        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div></td><td class="text-xs text-slate-600">${d.init}</td><td class="text-xs text-slate-600">${d.max}</td><td class="val-blue">${d.initRate} mL/hr</td><td class="val-orange">${d.maxRate} mL/hr</td><td class="text-xs text-slate-500">${d.mix}</td></tr>`;
+        h += `<tr><td><div class="font-semibold text-slate-700">${d.name}</div></td><td class="text-xs text-slate-600">${d.init}</td><td class="text-xs text-slate-600">${d.max}</td><td class="val-blue">${d.initRate} ml/hr</td><td class="val-orange">${d.maxRate} ml/hr</td><td class="text-xs text-slate-500">${d.mix}</td></tr>`;
     });
     document.getElementById('adult-antiarr-tbody').innerHTML = h;
 
@@ -1646,16 +1858,25 @@ function buildDripCard(d, unit, perMin, accent) {
         </div>
         ${prepHTML}
         <div class="flex items-center gap-2 mb-2">
-            <label class="text-xs text-slate-500 whitespace-nowrap">Conc (mcg/mL)</label>
+            <label class="text-xs text-slate-500 whitespace-nowrap">Conc (mcg/ml)</label>
             <input type="number" id="${d.id}-conc" class="inp flex-1" value="${d.concMcgMl}" min="0.1" oninput="calcDrip('${d.id}')">
         </div>
-        <div class="flex items-center gap-2 mb-1">
-            <label class="text-xs text-slate-500 whitespace-nowrap">Target Dose (${unit})</label>
-            <input type="number" id="${d.id}-dose" class="inp flex-1" value="${d.doseDef || d.initMin}" step="0.05" min="0" oninput="calcDrip('${d.id}')">
+        <div class="flex items-end gap-2 mb-2">
+            <div class="flex flex-col flex-1">
+                <label class="text-[10px] text-slate-500 mb-0.5 leading-tight">Target (${unit})</label>
+                <input type="number" id="${d.id}-dose" class="inp w-full text-center px-1" value="${d.initMin}" step="0.05" min="0" oninput="calcDrip('${d.id}')">
+            </div>
+            <div class="flex flex-col flex-1">
+                <label class="text-[10px] text-slate-500 mb-0.5 leading-tight">Upper Limit</label>
+                <input type="number" id="${d.id}-maxDose" class="inp w-full text-center px-1 text-slate-500" value="${d.initMax}" step="0.05" min="0" oninput="calcDrip('${d.id}')">
+            </div>
         </div>
-        <div class="rate-display">
-            <span class="text-xs text-slate-500">Drip Rate</span>
-            <div><span id="${d.id}-rate" class="text-2xl font-bold ${textColors[accent]}">0</span><span class="text-xs text-slate-400 ml-1">mL/hr</span></div>
+        <div class="rate-display flex-col items-stretch !items-start">
+            <div class="flex justify-between items-center w-full">
+                <span class="text-xs text-slate-500">Drip Rate</span>
+                <div><span id="${d.id}-rate" class="text-2xl font-bold ${textColors[accent]}">0</span><span class="text-xs text-slate-400 ml-1">ml/hr</span></div>
+            </div>
+            <div id="${d.id}-range" class="text-right w-full text-[11px] font-semibold ${textColors[accent]} mt-1"></div>
         </div>
     </div>`;
 }
@@ -1691,6 +1912,16 @@ function calcDrip(id) {
     
     // Most infusion pumps support 1 decimal place, we use rnd() for smart formatting
     rateEl.innerText = rnd(rate);
+
+    const rangeEl = document.getElementById(id + '-range');
+    if (rangeEl && d && d.initMin !== undefined && d.initMax !== undefined) {
+        let minR = isPerMin ? (d.initMin * 60) / conc : (d.initMin * P.calcWt * 60) / conc;
+        const maxDoseEl = document.getElementById(id + '-maxDose');
+        let maxDoseVal = maxDoseEl ? parseFloat(maxDoseEl.value) : d.initMax;
+        if (isNaN(maxDoseVal) || maxDoseVal <= 0) maxDoseVal = d.initMax;
+        let maxR = isPerMin ? (maxDoseVal * 60) / conc : (maxDoseVal * P.calcWt * 60) / conc;
+        rangeEl.innerText = `Range: ${rnd(minR)} – ${rnd(maxR)} ml/hr`;
+    }
 }
 
 // ============================================================
@@ -1701,10 +1932,10 @@ const manualDrugDB = [
         name:'Epinephrine (Adrenaline)',
         initDose:'0.05 mcg/kg/min',
         maxDose:'1 mcg/kg/min (สูงกว่านี้ได้ในบางกรณี)',
-        conc:'10–40 mcg/mL',
+        conc:'10–40 mcg/ml',
         concVal: 10, concUnit: 'mcg_mL',
         stdMg: 1, stdVol: 100, initDoseVal: 0.05,
-        mix:'1 mg (1 mL) + สารน้ำ up to 100 mL (10 mcg/mL)  หรือ 4 mg + 100 mL (40 mcg/mL)',
+        mix:'1 mg (1 ml) + สารน้ำ up to 100 ml (10 mcg/ml)  หรือ 4 mg + 100 ml (40 mcg/ml)',
         fluid:'NSS, D5W, LR, D5NSS, D5S/2',
         unit:'mcg_kg_min'
     },
@@ -1712,10 +1943,10 @@ const manualDrugDB = [
         name:'Norepinephrine',
         initDose:'0.05 mcg/kg/min',
         maxDose:'3.3 mcg/kg/min',
-        conc:'16 mcg/mL',
+        conc:'16 mcg/ml',
         concVal: 16, concUnit: 'mcg_mL',
         stdMg: 4, stdVol: 250, initDoseVal: 0.05,
-        mix:'4 mg (1 amp) + D5W 250 mL (16 mcg/mL)',
+        mix:'4 mg (1 amp) + D5W 250 ml (16 mcg/ml)',
         fluid:'D5W, D5NSS (ห้ามผสม NSS เดี่ยวเนื่องจาก oxidation)',
         unit:'mcg_kg_min'
     },
@@ -1723,10 +1954,10 @@ const manualDrugDB = [
         name:'Dopamine',
         initDose:'2–5 mcg/kg/min',
         maxDose:'20 mcg/kg/min (Max 50)',
-        conc:'2 mg/mL (2000 mcg/mL)',
+        conc:'1-2 mg/ml',
         concVal: 2000, concUnit: 'mcg_mL',
         stdMg: 200, stdVol: 100, initDoseVal: 5,
-        mix:'200 mg (8 mL) + NSS/D5W 92 mL up to 100 mL (2 mg/mL)',
+        mix:'(1:1) 1 vial (250mg) + D5W upto 250 ml หรือ\n(2:1) 1 vial (250mg) + D5W upto 125 ml',
         fluid:'NSS, D5W, LR',
         unit:'mcg_kg_min'
     },
@@ -1734,10 +1965,10 @@ const manualDrugDB = [
         name:'Dobutamine',
         initDose:'2–5 mcg/kg/min',
         maxDose:'20 mcg/kg/min (Max 40)',
-        conc:'1 mg/mL (1000 mcg/mL)',
+        conc:'1 mg/ml (1000 mcg/ml)',
         concVal: 1000, concUnit: 'mcg_mL',
         stdMg: 250, stdVol: 250, initDoseVal: 5,
-        mix:'250 mg (1 vial) + D5W/NSS up to 250 mL (1 mg/mL)',
+        mix:'250 mg (1 vial) + D5W/NSS up to 250 ml (1 mg/ml)',
         fluid:'NSS, D5W, LR',
         unit:'mcg_kg_min'
     },
@@ -1745,10 +1976,10 @@ const manualDrugDB = [
         name:'Milrinone',
         initDose:'0.375 mcg/kg/min',
         maxDose:'0.75 mcg/kg/min',
-        conc:'100 mcg/mL',
+        conc:'100 mcg/ml',
         concVal: 100, concUnit: 'mcg_mL',
         stdMg: 10, stdVol: 100, initDoseVal: 0.375,
-        mix:'10 mg (10 mL) + สารน้ำ up to 100 mL (100 mcg/mL)',
+        mix:'10 mg (10 ml) + สารน้ำ up to 100 ml (100 mcg/ml)',
         fluid:'NSS, D5W, LR',
         unit:'mcg_kg_min'
     },
@@ -1756,10 +1987,10 @@ const manualDrugDB = [
         name:'Isoproterenol',
         initDose:'2 mcg/min',
         maxDose:'10 mcg/min (Max 30)',
-        conc:'4 mcg/mL',
+        conc:'4 mcg/ml',
         concVal: 4, concUnit: 'mcg_mL',
         stdMg: 2, stdVol: 500, initDoseVal: 2,
-        mix:'2 mg (10 mL) + D5W/NSS 490 mL up to 500 mL (4 mcg/mL)',
+        mix:'2 mg (10 ml) + D5W/NSS 490 ml up to 500 ml (4 mcg/ml)',
         fluid:'D5W, NSS, LR',
         unit:'mcg_min'
     },
@@ -1767,10 +1998,10 @@ const manualDrugDB = [
         name:'Nitroglycerin (NTG)',
         initDose:'5 mcg/min',
         maxDose:'200 mcg/min',
-        conc:'200 mcg/mL',
+        conc:'200 mcg/ml',
         concVal: 200, concUnit: 'mcg_mL',
         stdMg: 50, stdVol: 250, initDoseVal: 5,
-        mix:'NTG 50 mg + NSS 250 mL (200 mcg/mL) (ใช้ขวดแก้ว/ถุง PVC-free)',
+        mix:'NTG 50 mg + NSS 250 ml (200 mcg/ml) (ใช้ขวดแก้ว/ถุง PVC-free)',
         fluid:'NSS, D5W (ใช้อุปกรณ์ PVC-free)',
         unit:'mcg_min'
     },
@@ -1778,10 +2009,10 @@ const manualDrugDB = [
         name:'Nicardipine',
         initDose:'5 mg/hr',
         maxDose:'15 mg/hr',
-        conc:'0.1 mg/mL',
+        conc:'0.1 mg/ml',
         concVal: 0.1, concUnit: 'mg_mL',
         stdMg: 20, stdVol: 200, initDoseVal: 5,
-        mix:'Nicardipine 20 mg + NSS 180 mL (0.1 mg/mL)',
+        mix:'Nicardipine 20 mg + NSS 180 ml (0.1 mg/ml)',
         fluid:'NSS, D5W',
         unit:'mg_hr'
     },
@@ -1789,10 +2020,10 @@ const manualDrugDB = [
         name:'Labetalol',
         initDose:'0.5 mg/min',
         maxDose:'2 mg/min',
-        conc:'1 mg/mL',
+        conc:'1 mg/ml',
         concVal: 1, concUnit: 'mg_mL',
         stdMg: 200, stdVol: 200, initDoseVal: 0.5,
-        mix:'200 mg (40 mL) + NSS 160 mL up to 200 mL (1 mg/mL)',
+        mix:'200 mg (40 ml) + NSS 160 ml up to 200 ml (1 mg/ml)',
         fluid:'NSS, D5W, LR',
         unit:'mg_hr'
     },
@@ -1800,10 +2031,10 @@ const manualDrugDB = [
         name:'Lidocaine',
         initDose:'1 mg/min',
         maxDose:'4 mg/min',
-        conc:'4 mg/mL',
+        conc:'4 mg/ml',
         concVal: 4, concUnit: 'mg_mL',
         stdMg: 1000, stdVol: 250, initDoseVal: 1,
-        mix:'Lido 2% 50 mL (1000 mg) + D5W 200 mL up to 250 mL (4 mg/mL)',
+        mix:'Lido 2% 50 ml (1000 mg) + D5W 200 ml up to 250 ml (4 mg/ml)',
         fluid:'D5W, NSS, LR',
         unit:'mg_hr'
     },
@@ -1811,10 +2042,10 @@ const manualDrugDB = [
         name:'Midazolam',
         initDose:'0.02 mg/kg/hr',
         maxDose:'0.1 mg/kg/hr',
-        conc:'0.5–5 mg/mL',
+        conc:'0.5–5 mg/ml',
         concVal: 0.5, concUnit: 'mg_mL',
         stdMg: 50, stdVol: 100, initDoseVal: 0.02,
-        mix:'50 mg + NSS up to 100 mL (0.5 mg/mL)',
+        mix:'50 mg + NSS up to 100 ml (0.5 mg/ml)',
         fluid:'NSS, D5W',
         unit:'mg_kg_hr'
     },
@@ -1822,10 +2053,10 @@ const manualDrugDB = [
         name:'Propofol',
         initDose:'5 mcg/kg/min',
         maxDose:'50 mcg/kg/min',
-        conc:'10 mg/mL',
+        conc:'10 mg/ml',
         concVal: 10, concUnit: 'mg_mL',
         stdMg: null, stdVol: null, initDoseVal: 5,
-        mix:'ไม่ต้องผสม ใช้ขวด Propofol 1% โดยตรง (10 mg/mL)',
+        mix:'ไม่ต้องผสม ใช้ขวด Propofol 1% โดยตรง (10 mg/ml)',
         fluid:'ไม่ผสม (ใช้ straight)',
         unit:'mcg_kg_min'
     },
@@ -1833,10 +2064,10 @@ const manualDrugDB = [
         name:'Dexmedetomidine',
         initDose:'0.2 mcg/kg/hr',
         maxDose:'0.7 mcg/kg/hr (Max 1.5)',
-        conc:'4 mcg/mL',
+        conc:'4 mcg/ml',
         concVal: 4, concUnit: 'mcg_mL',
         stdMg: 0.2, stdVol: 50, initDoseVal: 0.2,
-        mix:'Dex 200 mcg (2 mL) + NSS 48 mL up to 50 mL (4 mcg/mL)',
+        mix:'Dex 200 mcg (2 ml) + NSS 48 ml up to 50 ml (4 mcg/ml)',
         fluid:'NSS, D5W, LR',
         unit:'mcg_kg_hr'
     },
@@ -1844,10 +2075,10 @@ const manualDrugDB = [
         name:'Amiodarone (drip)',
         initDose:'1 mg/min (6 hr แรก)',
         maxDose:'0.5 mg/min (18 hr หลัง)',
-        conc:'1.8 mg/mL',
+        conc:'1.8 mg/ml',
         concVal: 1.8, concUnit: 'mg_mL',
         stdMg: 450, stdVol: 250, initDoseVal: 1,
-        mix:'Amiodarone 450 mg + D5W 250 mL (1.8 mg/mL)',
+        mix:'Amiodarone 450 mg + D5W 250 ml (1.8 mg/ml)',
         fluid:'D5W เท่านั้น (ห้ามผสม NSS/LR เด็ดขาด)',
         unit:'mg_hr'
     },
@@ -1855,21 +2086,21 @@ const manualDrugDB = [
         name:'Insulin (Regular)',
         initDose:'0.05–0.1 unit/kg/hr (DKA)',
         maxDose:'ตาม DTX',
-        conc:'1 unit/mL',
+        conc:'1 unit/ml',
         concVal: 1, concUnit: 'unit_mL',
         stdMg: null, stdVol: null, initDoseVal: 0.1,
-        mix:'Regular Insulin 100 units + NSS 100 mL (1 unit/mL)',
-        fluid:'NSS (ล้างสายด้วย NSS ก่อนใช้ 50 mL เพื่อกันยาติดสาย)',
+        mix:'Regular Insulin 100 units + NSS 100 ml (1 unit/ml)',
+        fluid:'NSS (ล้างสายด้วย NSS ก่อนใช้ 50 ml เพื่อกันยาติดสาย)',
         unit:'unit_kg_hr'
     },
     {
         name:'Heparin',
         initDose:'12–18 unit/kg/hr',
         maxDose:'ตาม aPTT',
-        conc:'100 unit/mL',
+        conc:'100 unit/ml',
         concVal: 100, concUnit: 'unit_mL',
         stdMg: null, stdVol: null, initDoseVal: 18,
-        mix:'Heparin 25,000 units + NSS 250 mL (100 units/mL)',
+        mix:'Heparin 25,000 units + NSS 250 ml (100 units/ml)',
         fluid:'NSS, D5W, LR',
         unit:'unit_kg_hr'
     },
@@ -1877,10 +2108,10 @@ const manualDrugDB = [
         name:'Potassium Chloride (KCl)',
         initDose:'10 mEq/hr',
         maxDose:'40 mEq/hr (Central line เท่านั้น)',
-        conc:'0.1–0.4 mEq/mL',
+        conc:'0.1–0.4 mEq/ml',
         concVal: 0.4, concUnit: 'mEq_mL',
         stdMg: null, stdVol: null, initDoseVal: 10,
-        mix:'KCl 40 mEq + NSS 100 mL (0.4 mEq/mL)',
+        mix:'KCl 40 mEq + NSS 100 ml (0.4 mEq/ml)',
         fluid:'NSS, D5W, LR (ห้าม IV push เด็ดขาด)',
         unit:'mEq_hr'
     },
@@ -1976,7 +2207,7 @@ function applyDrugToCalc() {
         // calcConc will handle step 1 UI and auto-trigger calcRate for step 2
         calcConc(); 
         
-        // Ensure conc unit is set correctly (calcConc forces mcg/mL if mg/mL is not specified, but let's override for safety)
+        // Ensure conc unit is set correctly (calcConc forces mcg/ml if mg/ml is not specified, but let's override for safety)
         if (selectedDrug.concUnit) document.getElementById('mcConcUnit').value = selectedDrug.concUnit;
         if (selectedDrug.concVal) document.getElementById('mcConc').value = selectedDrug.concVal;
         calcRate();
@@ -2046,18 +2277,6 @@ function calcRate() {
     }
 
     // 2. Normalize doseHr to match the concentration base unit
-    let doseBase = doseU.split('_')[0]; // 'mcg', 'mg', 'unit', 'mEq'
-    let concBase = concU.split('_')[0]; // 'mcg', 'mg', 'unit', 'mEq'
-    
-    let doseNorm = doseHr;
-    if (doseBase === 'mg' && concBase === 'mcg') doseNorm = doseHr * 1000;
-    else if (doseBase === 'mcg' && concBase === 'mg') doseNorm = doseHr / 1000;
-    // Note: unit and mEq are assumed to match directly
-
-    // 3. Calculate Rate (mL/hr)
-    const rateMlHr = doseNorm / conc;  
-    document.getElementById('mcRate').innerText = rateMlHr < 10 ? rateMlHr.toFixed(2) : Math.round(rateMlHr * 10) / 10;
-    
     let sanity = '';
     if (rateMlHr > 500) sanity = '⚠️ Rate สูงมาก กรุณาตรวจสอบค่าอีกครั้ง';
     else if (rateMlHr < 0.1) sanity = '⚠️ Rate ต่ำมาก กรุณาตรวจสอบหน่วยและค่า';
@@ -2071,11 +2290,361 @@ function onManualEnter() {
     initDrugChips();
 }
 
+function openPhenytoinModal() {
+    document.getElementById('pheny-wt').value = P.calcWt || 0;
+    document.getElementById('pheny-topup-wt').value = P.calcWt || 0;
+    calcPhenyNaive();
+    calcPhenyTopup();
+    document.getElementById('phenytoinModal').classList.remove('hidden');
+}
+
+function switchPhenyTab(tab) {
+    const nBtn = document.getElementById('tab-pheny-naive');
+    const tBtn = document.getElementById('tab-pheny-topup');
+    const nCon = document.getElementById('pheny-naive-content');
+    const tCon = document.getElementById('pheny-topup-content');
+    
+    if (tab === 'naive') {
+        nBtn.className = "flex-1 py-2 rounded-lg text-sm font-bold bg-blue-600 text-white shadow";
+        tBtn.className = "flex-1 py-2 rounded-lg text-sm font-bold bg-white text-slate-600 border hover:bg-slate-50 transition";
+        nCon.classList.remove('hidden');
+        tCon.classList.add('hidden');
+    } else {
+        tBtn.className = "flex-1 py-2 rounded-lg text-sm font-bold bg-orange-500 text-white shadow";
+        nBtn.className = "flex-1 py-2 rounded-lg text-sm font-bold bg-white text-slate-600 border hover:bg-slate-50 transition";
+        tCon.classList.remove('hidden');
+        nCon.classList.add('hidden');
+    }
+}
+
+function calcPhenyNaive() {
+    let wt = parseFloat(document.getElementById('pheny-wt').value) || 0;
+    document.getElementById('pheny-naive-res').innerText = `${rnd(15 * wt)} - ${rnd(20 * wt)} mg`;
+}
+
+function calcPhenyTopup() {
+    let wt = parseFloat(document.getElementById('pheny-topup-wt').value) || 0;
+    let lvl = parseFloat(document.getElementById('pheny-level').value) || 0;
+    let alb = parseFloat(document.getElementById('pheny-albumin').value) || 0;
+    let target = parseFloat(document.getElementById('pheny-target').value) || 0;
+    
+    let corrected = lvl;
+    if (alb > 0) {
+        corrected = lvl / ((0.2 * alb) + 0.1);
+    }
+    document.getElementById('pheny-corrected-res').innerText = corrected.toFixed(2);
+    
+    let topup = 0;
+    if (target > corrected) {
+        let topupPerKg = (0.6 * (target - corrected)) / 0.92;
+        topup = topupPerKg * wt;
+    }
+    document.getElementById('pheny-topup-res').innerText = rnd(topup);
+}
+
+function toggleAntidoteList(forceState = '') {
+    const list = document.getElementById('antidoteListWrap');
+    const chevron = document.getElementById('antidoteListChevron');
+    if (!list || !chevron) return;
+    let isHidden = list.classList.contains('hidden');
+    if (forceState === 'show') isHidden = true;
+    else if (forceState === 'hide') isHidden = false;
+    if (isHidden) {
+        list.classList.remove('hidden');
+        chevron.classList.remove('fa-chevron-down');
+        chevron.classList.add('fa-chevron-up');
+    } else {
+        list.classList.add('hidden');
+        chevron.classList.remove('fa-chevron-up');
+        chevron.classList.add('fa-chevron-down');
+    }
+}
+
+function renderAntidotes() {
+    filterAntidotes(); // populate the list initially
+    // Re-calculate NAC if it's currently selected
+    if (window.currentAntidote === 'N-ACETYLCYSTEINE') {
+        calcNac();
+    }
+}
+
+function filterAntidotes() {
+    const q = (document.getElementById('antidoteSearch').value || '').toLowerCase();
+    const c = document.getElementById('antidoteListContainer');
+    let html = '';
+    antidoteList.forEach(d => {
+        if(d.name.toLowerCase().includes(q) || (d.alt && d.alt.toLowerCase().includes(q))) {
+            html += `<button onclick="selectAntidote('${d.name}')" class="antidote-btn w-full p-2 rounded-lg bg-white border border-slate-200 hover:bg-purple-50 hover:border-purple-300 transition shadow-sm" data-name="${d.name}">
+                <div class="font-bold text-[13px] leading-snug text-slate-700 text-left break-words">${d.name}</div>
+            </button>`;
+        }
+    });
+    c.innerHTML = html;
+}
+
+function selectAntidote(name) {
+    window.currentAntidote = name;
+    // highlight button
+    document.querySelectorAll('.antidote-btn').forEach(b => {
+        b.classList.remove('ring-2', 'ring-purple-500', 'bg-purple-50', 'border-purple-300');
+        if(b.dataset.name === name) b.classList.add('ring-2', 'ring-purple-500', 'bg-purple-50', 'border-purple-300');
+    });
+
+    const card = document.getElementById('antidoteDetailCard');
+    const title = document.getElementById('adTitle');
+    const content = document.getElementById('adContent');
+    
+    card.classList.remove('hidden');
+    title.innerHTML = `<i class="fas fa-prescription-bottle-medical mr-2"></i>${name}`;
+    
+    if (name === 'N-ACETYLCYSTEINE') {
+        renderNacCalculator(content);
+        calcNac();
+    } else {
+        content.innerHTML = `<div class="p-8 text-center text-slate-400">
+            <i class="fas fa-hammer text-4xl mb-3"></i>
+            <div>Calculator or Information for <b>${name}</b> is under construction.</div>
+        </div>`;
+    }
+    
+    toggleAntidoteList('hide');
+    // Scroll to detail view slightly below header
+    setTimeout(() => {
+        const y = card.getBoundingClientRect().top + window.scrollY - 20;
+        window.scrollTo({top: y, behavior: 'smooth'});
+    }, 100);
+}
+
+function renderNacCalculator(container) {
+    container.innerHTML = `
+        <div class="border-b border-purple-100 flex flex-wrap bg-purple-50/50">
+            <button id="tab-nac-iv3" onclick="switchNacTab('iv3')" class="nac-tab flex-1 py-3 text-sm font-bold border-b-2 border-purple-600 text-purple-700 transition">IV 3-Bag (21 hr)</button>
+            <button id="tab-nac-po" onclick="switchNacTab('po')" class="nac-tab flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-purple-600 transition">Oral (72 hr)</button>
+            <button id="tab-nac-iv2" onclick="switchNacTab('iv2')" class="nac-tab flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-purple-600 transition">Simp. 2-Bag (20 hr)</button>
+            <button id="tab-nac-snap" onclick="switchNacTab('snap')" class="nac-tab flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-purple-600 transition">SNAP 2-Bag (12 hr)</button>
+        </div>
+        
+        <div class="p-4 bg-white">
+            <div class="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800 flex items-start gap-2 shadow-inner">
+                <i class="fas fa-triangle-exclamation mt-1 text-amber-600"></i>
+                <div>
+                    <b>Max Body Weight = 110 kg</b><br>
+                    (Doses are capped for weights > 110 kg)
+                </div>
+            </div>
+            <div id="nac-content"></div>
+        </div>
+    `;
+}
+
+let activeNacTab = 'iv3';
+function switchNacTab(tab) {
+    activeNacTab = tab;
+    document.querySelectorAll('.nac-tab').forEach(b => {
+        b.classList.remove('border-purple-600', 'text-purple-700');
+        b.classList.add('border-transparent', 'text-slate-500');
+    });
+    const btn = document.getElementById('tab-nac-' + tab);
+    if(btn) {
+        btn.classList.remove('border-transparent', 'text-slate-500');
+        btn.classList.add('border-purple-600', 'text-purple-700');
+    }
+    calcNac();
+}
+
+function calcNac() {
+    const content = document.getElementById('nac-content');
+    if (!content) return;
+    
+    // Weight is capped at 100kg for ALL NAC protocols
+    const hasW = (P.calcWt && P.calcWt > 0);
+    const wt = hasW ? Math.min(P.calcWt, 110) : 0;
+    
+    let html = '';
+    if (!hasW) {
+        html += '<div class="mb-4 text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight first.</div>';
+    }
+    
+    if (activeNacTab === 'iv3') {
+        let d1 = 200, d2 = 500, d3 = 1000;
+        if (!hasW) { d1 = 0; d2 = 0; d3 = 0; }
+        else if (wt <= 10) { d1 = 30; d2 = 70; d3 = 140; }
+        else if (wt <= 15) { d1 = 45; d2 = 105; d3 = 210; }
+        else if (wt <= 20) { d1 = 60; d2 = 140; d3 = 280; }
+        else if (wt <= 25) { d1 = 100; d2 = 250; d3 = 500; }
+        else if (wt <= 30) { d1 = 100; d2 = 250; d3 = 500; }
+        else if (wt < 40) { d1 = 100; d2 = 250; d3 = 500; }
+
+        html += renderNacBag('Bag 1 (Loading)', 150, wt, d1, '60 minutes', 'purple') +
+               renderNacBag('Bag 2', 50, wt, d2, '4 hours', 'blue') +
+               renderNacBag('Bag 3', 100, wt, d3, '16 hours', 'teal');
+               
+    } else if (activeNacTab === 'po') {
+        const loadVol20 = hasW ? (140 * wt) / 200 : 0;
+        const loadDiluent = hasW ? loadVol20 * 3 : 0;
+        const maintVol20 = hasW ? (70 * wt) / 200 : 0;
+        const maintDiluent = hasW ? maintVol20 * 3 : 0;
+        
+        const loadOrder = hasW ? `NAC 20% <b>${rnd(loadVol20)} mL</b> + 5%DW/Juice <b>${rnd(loadDiluent)} mL</b> Oral/NG stat` : '-';
+        const maintOrder = hasW ? `NAC 20% <b>${rnd(maintVol20)} mL</b> + 5%DW/Juice <b>${rnd(maintDiluent)} mL</b> Oral/NG every 4 hr` : '-';
+        
+        html += `
+            <div class="mb-4 border border-purple-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-purple-600 text-white font-bold p-2 text-sm flex justify-between">
+                    <span>Loading Dose</span><span>140 mg/kg</span>
+                </div>
+                <div class="p-3 bg-white text-sm">
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <div class="bg-slate-50 p-2 rounded border border-slate-100">
+                            <div class="text-xs text-slate-500 mb-1">Total Dose</div>
+                            <div class="font-bold text-slate-700">${hasW ? rnd(140 * wt) : 0} mg</div>
+                            <div class="text-[10px] text-slate-400">(${hasW ? rnd(140 * wt / 1000) : 0} g)</div>
+                        </div>
+                        <div class="bg-purple-50 p-2 rounded border border-purple-100">
+                            <div class="text-xs text-purple-500 mb-1">NAC 20% Volume</div>
+                            <div class="font-bold text-purple-700 text-lg">${rnd(loadVol20)} mL</div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2 bg-slate-50 p-2 rounded border border-slate-100">
+                        <div class="flex items-center gap-3">
+                            <div class="text-xs font-bold text-slate-500 uppercase">Mix in D5W or NSS/Juice:</div>
+                            <div class="font-bold text-blue-600 text-lg">${rnd(loadDiluent)} mL</div>
+                        </div>
+                        <div class="text-[13px] text-slate-700">
+                            <span class="font-bold text-slate-500 mr-1">Order:</span> ${loadOrder}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border border-blue-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-blue-600 text-white font-bold p-2 text-sm flex justify-between">
+                    <span>Maintenance Dose (x17)</span><span>70 mg/kg</span>
+                </div>
+                <div class="bg-blue-50 text-xs p-2 text-blue-800 border-b border-blue-100 font-medium">
+                    <i class="fas fa-clock mr-1"></i> Every 4 hours
+                </div>
+                <div class="p-3 bg-white text-sm">
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <div class="bg-slate-50 p-2 rounded border border-slate-100">
+                            <div class="text-xs text-slate-500 mb-1">Total Dose</div>
+                            <div class="font-bold text-slate-700">${hasW ? rnd(70 * wt) : 0} mg</div>
+                            <div class="text-[10px] text-slate-400">(${hasW ? rnd(70 * wt / 1000) : 0} g)</div>
+                        </div>
+                        <div class="bg-blue-50 p-2 rounded border border-blue-100">
+                            <div class="text-xs text-blue-500 mb-1">NAC 20% Volume</div>
+                            <div class="font-bold text-blue-700 text-lg">${rnd(maintVol20)} mL</div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2 bg-slate-50 p-2 rounded border border-slate-100">
+                        <div class="flex items-center gap-3">
+                            <div class="text-xs font-bold text-slate-500 uppercase">Mix in D5W or NSS/Juice:</div>
+                            <div class="font-bold text-blue-600 text-lg">${rnd(maintDiluent)} mL</div>
+                        </div>
+                        <div class="text-[13px] text-slate-700">
+                            <span class="font-bold text-slate-500 mr-1">Order:</span> ${maintOrder}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+    } else if (activeNacTab === 'iv2') {
+        let d1 = 500, d2 = 1000;
+        if (!hasW) { d1 = 0; d2 = 0; }
+        
+        html += renderNacBag('Bag 1', 200, wt, d1, '4 hours', 'purple', '22g') +
+               renderNacBag('Bag 2', 100, wt, d2, '16 hours', 'blue', '11g');
+               
+    } else if (activeNacTab === 'snap') {
+        let d1 = 200, d2 = 1000;
+        if (!hasW) { d1 = 0; d2 = 0; }
+        
+        html += renderNacBag('Bag 1', 100, wt, d1, '2 hours', 'purple') +
+               renderNacBag('Bag 2', 200, wt, d2, '10 hours', 'blue');
+    }
+    
+    content.innerHTML = html;
+}
+
+function renderNacBag(title, mgKg, wt, diluent, duration, color, maxLabel = '') {
+    const hasW = (wt > 0);
+    const doseMg = hasW ? (mgKg * wt) : 0;
+    const vol20 = hasW ? (doseMg / 200) : 0; // 200 mg/mL
+    
+    const rDose = hasW ? rnd(doseMg) : 0;
+    const rDoseG = hasW ? rnd(doseMg/1000) : 0;
+    const rVol = hasW ? rnd(vol20) : 0;
+    const rDiluent = hasW ? diluent : 0;
+    
+    const orderTxt = hasW ? `NAC 20% <b>${rVol} mL</b> + 5%DW <b>${rDiluent} mL</b> IV drip in <b>${duration}</b>` : '-';
+    
+    return `
+        <div class="mb-4 border border-${color}-200 rounded-lg overflow-hidden shadow-sm">
+            <div class="bg-${color}-600 text-white font-bold p-2 text-sm flex justify-between">
+                <span>${title}</span>
+                <span>${mgKg} mg/kg${maxLabel ? ' (Max ' + maxLabel + ')' : ''}</span>
+            </div>
+            <div class="bg-${color}-50 text-xs p-2 text-${color}-800 border-b border-${color}-100 font-medium">
+                <i class="fas fa-clock mr-1"></i> Infuse over ${duration}
+            </div>
+            <div class="p-3 bg-white text-sm">
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div class="bg-slate-50 p-2 rounded border border-slate-100">
+                        <div class="text-xs text-slate-500 mb-1">Total Dose</div>
+                        <div class="font-bold text-slate-700">${rDose} mg</div>
+                        <div class="text-[10px] text-slate-400">(${rDoseG} g)</div>
+                    </div>
+                    <div class="bg-${color}-50 p-2 rounded border border-${color}-100">
+                        <div class="text-xs text-${color}-500 mb-1">NAC 20% Volume</div>
+                        <div class="font-bold text-${color}-700 text-lg">${rVol} mL</div>
+                    </div>
+                </div>
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2 bg-slate-50 p-2 rounded border border-slate-100">
+                    <div class="flex items-center gap-3">
+                        <div class="text-xs font-bold text-slate-500 uppercase">Mix in D5W or NSS:</div>
+                        <div class="font-bold text-blue-600 text-lg">${rDiluent} mL</div>
+                    </div>
+                    <div class="text-[13px] text-slate-700">
+                        <span class="font-bold text-slate-500 mr-1">Order:</span> ${orderTxt}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// Ensure clicking outside modals closes them
+window.addEventListener('click', (e) => {
+    const pModal = document.getElementById('phenytoinModal');
+    if (e.target === pModal) pModal.classList.add('hidden');
+    
+    const formulaModal = document.getElementById('formulaModal');
+    if (e.target === formulaModal) formulaModal.classList.add('hidden');
+
+    const vsModal = document.getElementById('vsModal');
+    if (e.target === vsModal) vsModal.classList.add('hidden');
+});
+
 // Init
 recalc();
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
