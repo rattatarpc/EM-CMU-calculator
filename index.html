@@ -2714,6 +2714,11 @@ function selectAntidote(name) {
     
     window.currentAntidote = name;
     
+    // Auto-collapse the list when a drug is selected
+    if (typeof toggleAntidoteList === 'function') {
+        toggleAntidoteList('hide');
+    }
+    
     const content = document.getElementById('adContent');
     if (!content) return;
     
