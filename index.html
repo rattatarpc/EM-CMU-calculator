@@ -825,6 +825,9 @@ function recalc() {
     if (!P.calcWt || P.calcWt <= 0) P.calcWt = P.tbw;
     
     if (calcWtMode !== 'manual') {
+        renderAll();
+        renderAntidotes(); // Refresh antidotes UI if open
+        if (typeof calcCurrentAntidote === 'function') calcCurrentAntidote();
         document.getElementById('calcWt').value = P.calcWt > 0 ? rnd(P.calcWt) : '';
     }
 
@@ -889,9 +892,6 @@ function navigate(page, title = '') {
 const antidoteList = [
     { name: 'N-ACETYLCYSTEINE' },
     { name: 'ACTIVATED CHARCOAL' },
-    { name: 'ANTIVENOM FOR NORTH AMERICAN VENOMOUS SNAKES (CROTALINE AND ELAPID)' },
-    { name: 'ANTIVENOM: SCORPION' },
-    { name: 'ANTIVENOM: SPIDER' },
     { name: 'ATROPINE' },
     { name: 'BENZODIAZEPINES' },
     { name: 'BOTULINUM ANTITOXIN' },
@@ -911,7 +911,6 @@ const antidoteList = [
     { name: 'GLUCARPIDASE (CARBOXYPEPTIDASE G2)' },
     { name: 'HIGH-DOSE INSULIN (HDI)' },
     { name: 'HYDROXOCOBALAMIN' },
-    { name: 'HYPERBARIC OXYGEN' },
     { name: 'LIPID EMULSION' },
     { name: 'MAGNESIUM' },
     { name: 'METHYLENE BLUE' },
@@ -2277,6 +2276,13 @@ function calcRate() {
     }
 
     // 2. Normalize doseHr to match the concentration base unit
+    let doseHrNormalized = doseHr;
+    if (doseU.includes('mg') && concU.includes('mcg')) doseHrNormalized = doseHr * 1000;
+    if (doseU.includes('mcg') && concU.includes('mg')) doseHrNormalized = doseHr / 1000;
+
+    let rateMlHr = doseHrNormalized / conc;
+    document.getElementById('mcRate').innerText = rnd(rateMlHr);
+
     let sanity = '';
     if (rateMlHr > 500) sanity = '⚠️ Rate สูงมาก กรุณาตรวจสอบค่าอีกครั้ง';
     else if (rateMlHr < 0.1) sanity = '⚠️ Rate ต่ำมาก กรุณาตรวจสอบหน่วยและค่า';
@@ -2360,78 +2366,405 @@ function toggleAntidoteList(forceState = '') {
     }
 }
 
-function renderAntidotes() {
-    filterAntidotes(); // populate the list initially
-    // Re-calculate NAC if it's currently selected
-    if (window.currentAntidote === 'N-ACETYLCYSTEINE') {
-        calcNac();
+function calcCurrentAntidote() {
+    if (window.currentAntidote === 'N-ACETYLCYSTEINE' && typeof calcNac === 'function') calcNac();
+    if (window.currentAntidote === 'ACTIVATED CHARCOAL' && typeof calcCharcoal === 'function') calcCharcoal();
+    if (window.currentAntidote === 'WHOLE-BOWEL IRRIGATION AND OTHER INTESTINAL EVACUANTS' && typeof calcWbi === 'function') calcWbi();
+}
+
+function renderCharcoalCalculator(container) {
+    container.innerHTML = `
+        <div class="p-4 bg-white">
+            <div id="charcoal-content"></div>
+        </div>
+    `;
+}
+
+function calcCharcoal() {
+    const content = document.getElementById('charcoal-content');
+    if (!content) return;
+    const hasW = (P.calcWt && P.calcWt > 0);
+    const wt = hasW ? P.calcWt : 0;
+    
+    let sdacDoseStr = '-', sdacVolStr = '-', mdacDoseStr = '-', mdacVolStr = '-';
+    let sdacOrderStr = '-', mdacOrderStr = '-';
+    
+    if (hasW) {
+        let sdacDose = rnd(Math.min(wt * 1, 100));
+        let sdacVol = rnd(sdacDose * 8);
+        sdacDoseStr = sdacDose;
+        sdacVolStr = sdacVol;
+        sdacOrderStr = `Activated Charcoal ${sdacDose} g (mix with water ${sdacVol} mL) oral/NG tube`;
+        
+        let mdacDose = rnd(Math.min(wt * 0.5, 50));
+        let mdacVol = rnd(mdacDose * 8);
+        mdacDoseStr = mdacDose;
+        mdacVolStr = mdacVol;
+        mdacOrderStr = `Activated Charcoal ${mdacDose} g (mix with water ${mdacVol} mL) oral/NG tube every 4-6 h`;
     }
+    
+    let html = '';
+    if (!hasW) {
+        html += '<div class="mb-4 text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight first.</div>';
+    }
+
+    html += `
+        <div class="space-y-4">
+            <div class="border border-purple-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-purple-600 text-white font-bold p-2 text-sm flex items-center justify-between">
+                    <div><i class="fas fa-pills mr-2"></i>SDAC (Single Dose)</div>
+                    <div class="text-xs font-normal opacity-90 text-purple-100">Max 100 g</div>
+                </div>
+                <div class="p-3 bg-white">
+                    <div class="flex items-baseline justify-between mb-2 border-b border-dashed border-slate-200 pb-2">
+                        <span class="text-slate-500 text-sm">Target Dose</span>
+                        <span class="font-bold text-slate-800">1 g/kg</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="font-bold text-purple-700">Total Dose</span>
+                        <span class="font-black text-lg text-purple-700">${sdacDoseStr} ${hasW ? '<span class="text-sm font-normal">g</span>' : ''}</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-slate-600">Activated charcoal : liquid 1:8</span>
+                        <span class="font-bold text-slate-800">${sdacVolStr} ${hasW ? '<span class="text-sm font-normal">mL</span>' : ''}</span>
+                    </div>
+                    <div class="bg-slate-50 p-2 mt-3 rounded border border-slate-200 text-xs text-slate-700">
+                        <div class="mb-1"><span class="font-bold text-slate-800">Frequency:</span> Single dose</div>
+                        <div><span class="font-bold text-slate-800">How to order:</span> ${sdacOrderStr}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border border-blue-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-blue-600 text-white font-bold p-2 text-sm flex items-center justify-between">
+                    <div><i class="fas fa-clock mr-2"></i>MDAC (Subsequent Doses)</div>
+                    <div class="text-xs font-normal opacity-90 text-blue-100">Max 50 g</div>
+                </div>
+                <div class="p-3 bg-white">
+                    <div class="flex items-baseline justify-between mb-2 border-b border-dashed border-slate-200 pb-2">
+                        <span class="text-slate-500 text-sm">Target Dose</span>
+                        <span class="font-bold text-slate-800">0.5 g/kg</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="font-bold text-blue-700">Total Dose</span>
+                        <span class="font-black text-lg text-blue-700">${mdacDoseStr} ${hasW ? '<span class="text-sm font-normal">g</span>' : ''}</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-slate-600">Activated charcoal : liquid 1:8</span>
+                        <span class="font-bold text-slate-800">${mdacVolStr} ${hasW ? '<span class="text-sm font-normal">mL</span>' : ''}</span>
+                    </div>
+                    <div class="bg-slate-50 p-2 mt-3 rounded border border-slate-200 text-xs text-slate-700">
+                        <div class="mb-1"><span class="font-bold text-slate-800">Frequency:</span> Every 4-6 hours</div>
+                        <div><span class="font-bold text-slate-800">How to order:</span> ${mdacOrderStr}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm mt-4">
+                <div class="bg-slate-100 p-2 text-sm font-bold text-slate-700 border-b border-slate-200 flex items-center gap-2">
+                    <i class="fas fa-book-medical text-slate-500"></i> Reference & Guidelines
+                </div>
+                <div class="p-3 bg-white text-xs text-slate-700 space-y-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="bg-green-50 p-2 rounded border border-green-200">
+                            <div class="font-bold text-green-800 mb-1 border-b border-green-200 pb-1">Indications</div>
+                            <ul class="list-disc pl-4 space-y-1 text-green-900">
+                                <li>Ingestion within the previous hour of a toxic substance known to be adsorbed by activated charcoal, where the benefits of administration are judged to outweigh the risks</li>
+                            </ul>
+                        </div>
+                        <div class="bg-red-50 p-2 rounded border border-red-200">
+                            <div class="font-bold text-red-800 mb-1 border-b border-red-200 pb-1">Contraindications</div>
+                            <ul class="list-disc pl-4 space-y-1 text-red-900">
+                                <li>Nontoxic ingestion</li>
+                                <li>Toxin not adsorbed by activated charcoal</li>
+                                <li>Recovery will occur without administration of activated charcoal</li>
+                                <li>Unprotected airway</li>
+                                <li>Corrosive ingestion</li>
+                                <li>Possibility of upper GI perforation</li>
+                            </ul>
+                        </div>
+                        <div class="bg-orange-50 p-2 rounded border border-orange-200 md:col-span-2">
+                            <div class="font-bold text-orange-800 mb-1 border-b border-orange-200 pb-1">Complications</div>
+                            <ul class="list-disc pl-4 space-y-1 text-orange-900">
+                                <li>Vomiting</li>
+                                <li>Aspiration of the activated charcoal</li>
+                                <li>Impaired absorption of orally administered antidotes</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-indigo-50 p-2 rounded border border-indigo-200 mt-2">
+                        <div class="font-bold text-indigo-800 mb-1 text-sm"><i class="fas fa-redo mr-1"></i>Drugs removed by repeat-dose Activated charcoal (MDAC)</div>
+                        <div class="text-indigo-900 font-semibold mb-2">Mnemonic: "These People Drink Charcoal Quickly"</div>
+                        <div class="grid grid-cols-2 gap-x-2 gap-y-1">
+                            <ul class="list-none space-y-1">
+                                <li><i class="fas fa-check text-indigo-400 mr-1"></i><b>T</b>heophylline</li>
+                                <li><i class="fas fa-check text-indigo-400 mr-1"></i><b>P</b>henobarbital</li>
+                                <li><i class="fas fa-check text-indigo-400 mr-1"></i><b>D</b>apsone</li>
+                            </ul>
+                            <ul class="list-none space-y-1">
+                                <li><i class="fas fa-check text-indigo-400 mr-1"></i><b>C</b>arbamazepine</li>
+                                <li><i class="fas fa-check text-indigo-400 mr-1"></i><b>Q</b>uinine</li>
+                            </ul>
+                        </div>
+                        <div class="mt-2 text-[10px] text-indigo-700"><b>Full list:</b> Caffeine, Carbamazepine, Chlordecone, Dapsone, Digitoxin, Nadolol, Phenobarbital, Phenylbutazone, Phenytoin, Quinine, Salicylate, Theophylline.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    content.innerHTML = html;
+}
+
+function renderWbiCalculator(container) {
+    container.innerHTML = `
+        <div class="p-4 bg-white">
+            <div class="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 shadow-inner">
+                <div class="font-bold text-amber-700 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>Maharaj Formula Preparation</div>
+                1 set = PEG 4000 (90g) + Electrolytes (14.3g) = Total 104.3g.<br>
+                Mix with clean water 1,500 mL.
+            </div>
+            <div id="wbi-content"></div>
+            
+            <div class="mt-4 border border-red-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-red-50 p-2 text-sm font-bold text-red-700 border-b border-red-200">
+                    <i class="fas fa-hand-paper mr-1"></i>CMU Safety Stop Criteria & Notes
+                </div>
+                <div class="p-3 text-xs text-slate-700 space-y-2">
+                    <p><b>Observe:</b> Abdominal sign, vomiting every 1 hr. If mild nausea/vomiting, give antiemetics and reduce rate.</p>
+                    <p class="text-red-700 font-bold">STOP WBI and notify Toxicologist if &ge; 1 of the following:</p>
+                    <ul class="list-disc pl-4 space-y-1">
+                        <li>Significant abdominal distension</li>
+                        <li>Severe vomiting</li>
+                        <li>Bowel ileus</li>
+                        <li>Signs of GI tract perforation</li>
+                        <li>WBI &ge; 9 L/day without stool</li>
+                    </ul>
+                    <p class="pt-2 border-t border-slate-200 mt-2"><b>Special Consideration:</b> Pregnancy (FDA Category C), Breastfeeding (Infant risk cannot be ruled out)</p>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function calcWbi() {
+    const content = document.getElementById('wbi-content');
+    if (!content) return;
+    const hasW = (P.calcWt && P.calcWt > 0);
+    const wt = hasW ? P.calcWt : 0;
+    const age = P.age || 0;
+    
+    let html = '';
+    if (!hasW && age <= 0) {
+        html += '<div class="mb-4 text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight or age first.</div>';
+    }
+
+    let rateText = "-";
+    let rateVal = "-";
+    let ageGroup = "-";
+    let orderStr = "-";
+    
+    if (age > 0 && age < 6) {
+        ageGroup = "Small Children (9 mo - 6 yr)";
+        rateText = "25 mL/kg/hr (Max 500 mL/hr)";
+        rateVal = rnd(Math.min(wt * 25, 500)) + " mL/hr";
+    } else if (age >= 6 && age < 12) {
+        ageGroup = "Children (6 - 12 yr)";
+        rateText = "1,000 mL/hr";
+        rateVal = "1,000 mL/hr";
+    } else if (age >= 12) {
+        ageGroup = "Adolescents & Adults (≥ 12 yr)";
+        rateText = "1,500 - 2,000 mL/hr";
+        rateVal = "1,500 - 2,000 mL/hr";
+    } else if (hasW) {
+        if (wt < 20) {
+            ageGroup = "Small Children (Estimated by weight < 20kg)";
+            rateText = "25 mL/kg/hr (Max 500 mL/hr)";
+            rateVal = rnd(Math.min(wt * 25, 500)) + " mL/hr";
+        } else if (wt < 40) {
+            ageGroup = "Children (Estimated by weight 20-40kg)";
+            rateText = "1,000 mL/hr";
+            rateVal = "1,000 mL/hr";
+        } else {
+            ageGroup = "Adolescents & Adults (Estimated by weight ≥ 40kg)";
+            rateText = "1,500 - 2,000 mL/hr";
+            rateVal = "1,500 - 2,000 mL/hr";
+        }
+    }
+    
+    if ((hasW || age > 0) && rateVal !== "-") {
+        if (rateVal === "0 mL/hr") {
+            rateVal = "-";
+        } else {
+            orderStr = `Colon prep (1 set = Polyethylene glycol 4000 (90 gm) + Electrolyte (14.3 gm) = 104.3 gm) 1 set + clean water 1,500 mL oral / feed via gastric tube rate <b>${rateVal}</b> until clear rectal effluent`;
+        }
+    }
+
+    html += `
+        <div class="border border-teal-200 rounded-lg overflow-hidden shadow-sm">
+            <div class="bg-teal-600 text-white font-bold p-2 text-sm flex items-center justify-between">
+                <div><i class="fas fa-tint mr-2"></i>Administration Rate</div>
+                <div class="text-xs font-normal opacity-90 text-teal-100">${ageGroup}</div>
+            </div>
+            <div class="p-3 bg-white">
+                <div class="flex items-baseline justify-between mb-2 border-b border-dashed border-slate-200 pb-2">
+                    <span class="text-slate-500 text-sm">Target Rate</span>
+                    <span class="font-bold text-slate-800">${rateText}</span>
+                </div>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="font-bold text-teal-700">Calculated Rate</span>
+                    <span class="font-black text-xl text-teal-700">${rateVal}</span>
+                </div>
+                
+                <div class="bg-slate-100 p-3 rounded-lg text-xs text-slate-700 mt-3 border border-slate-200">
+                    <div class="font-bold text-slate-800 mb-1">How to order:</div>
+                    ${orderStr}
+                </div>
+                <div class="mt-3 text-xs font-bold text-center bg-teal-50 text-teal-800 rounded p-1 border border-teal-100">Duration: 4-6 hours or until clear effluent</div>
+            </div>
+        </div>
+        
+        <div class="mt-4 border border-blue-200 rounded-lg overflow-hidden shadow-sm">
+            <div class="bg-blue-50 p-2 text-sm font-bold text-blue-800 border-b border-blue-200">
+                <i class="fas fa-info-circle mr-1"></i>Other PEG Preparation
+            </div>
+            <div class="p-3 text-[11px] text-slate-700 space-y-2 bg-white">
+                <div class="font-bold text-slate-800 underline">แบบผสมก่อนใช้:</div>
+                <ul class="list-disc pl-4 space-y-1">
+                    <li><b>Polyethylene glycol-electrolyte solution (PEG-ELS) (55 gm/sachet)x4:</b> ส่วนที่ 1: ผง Polyethylene glycol 4000 (PEG 4000) + น้ำร้อน 300 mL, ส่วนที่ 2: ผง electrolyte + น้ำต้มสุก 500 mL. ผสมส่วนที่ 1 และ 2 (total 800mL) แล้วเติมน้ำสะอาด 200 mL => ได้สารละลาย ปริมาตร 1 L</li>
+                    <li><b>Colon prep® (สูตรศูนย์พิษวิทยารามาธิบดี):</b> ส่วนที่ 1: Macrogol (Polyethylene glycol 4000 [PEG 4000]) = 44.81 gm/sachet, ส่วนที่ 2: electrolyte. ผสมส่วนที่ 1 และ 2 (total 52 gm/sachet) + น้ำ 750 mL</li>
+                    <li><b>Niflec® (137.55 gm/sachet):</b> ส่วนที่ 1: Macrogol (Polyethylene glycol 4000 [PEG 4000]), ส่วนที่ 2: electrolyte. Niflec® 1 sachet + น้ำ 2 L</li>
+                    <li><b>Forlax® (Polyethylene glycol 4000 [PEG 4000] = 10 gm/sachet) + electrolyte:</b> นำส่วนที่ 1 Forlax® 5.5 sachet (55 gm) + น้ำสะอาด 300 mL, ส่วนที่ 2 ผง electrolyte + น้ำต้มสุก 500 mL. ผสม 1 และ 2 แล้วเติมน้ำสะอาด 200 mL => ได้สารละลาย 1 L</li>
+                    <li><b>Forlax® (Polyethylene glycol 4000 [PEG 4000] = 10 gm/sachet) + Swiff® solution:</b> นำส่วนที่ 1 Forlax® 5.5 sachet (55 gm) + น้ำสะอาด 300 mL, ส่วนที่ 2 Swiff® solution (Sodium phosphate 2.4 gm/mL + Disodium hydrogen phosphate 0.9 gm/mL) = 21 mL. ผสม 1 และ 2 แล้วเติมน้ำสะอาดจนได้สารละลาย 1 L</li>
+                </ul>
+                <div class="font-bold text-slate-800 underline mt-2">แบบพร้อมใช้ (Solution ready to use):</div>
+                <ul class="list-disc pl-4 space-y-1">
+                    <li><b>Colyte®</b> = ประกอบด้วย Polyethylene glycol 3350 (PEG 3350) และ Electrolyte</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="mt-4 border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+            <div class="bg-slate-100 p-2 text-sm font-bold text-slate-700 border-b border-slate-200 flex items-center gap-2">
+                <i class="fas fa-book-medical text-slate-500"></i> Reference & Guidelines
+            </div>
+            <div class="p-3 bg-white text-xs text-slate-700 space-y-3">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="bg-green-50 p-2 rounded border border-green-200">
+                        <div class="font-bold text-green-800 mb-1 border-b border-green-200 pb-1">Indications (potential)</div>
+                        <ul class="list-disc pl-4 space-y-1 text-green-900">
+                            <li>Iron ingestion >60 milligrams/kg with opacities on abdominal radiograph</li>
+                            <li>Life-threatening ingestion of diltiazem or verapamil</li>
+                            <li>Body packers or stuffers</li>
+                            <li>Slow-release potassium ingestion</li>
+                            <li>Lead ingestion (including paint flakes containing lead)</li>
+                            <li>Symptomatic arsenic trioxide ingestion</li>
+                            <li>Life-threatening ingestions of lithium</li>
+                        </ul>
+                    </div>
+                    <div class="bg-red-50 p-2 rounded border border-red-200">
+                        <div class="font-bold text-red-800 mb-1 border-b border-red-200 pb-1">Contraindications</div>
+                        <ul class="list-disc pl-4 space-y-1 text-red-900">
+                            <li>Unprotected airway</li>
+                            <li>GI perforation, obstruction or ileus, hemorrhage</li>
+                            <li>Intractable vomiting</li>
+                            <li>Cardiovascular instability</li>
+                        </ul>
+                    </div>
+                    <div class="bg-orange-50 p-2 rounded border border-orange-200 md:col-span-2">
+                        <div class="font-bold text-orange-800 mb-1 border-b border-orange-200 pb-1">Complications</div>
+                        <ul class="list-disc pl-4 space-y-1 text-orange-900">
+                            <li>Nausea, vomiting</li>
+                            <li>Pulmonary aspiration</li>
+                            <li>Time consuming; possible delay instituting other definitive care</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    content.innerHTML = html;
 }
 
 function filterAntidotes() {
     const q = (document.getElementById('antidoteSearch').value || '').toLowerCase();
     const c = document.getElementById('antidoteListContainer');
+    if (!c) return;
+    
     let html = '';
     antidoteList.forEach(d => {
-        if(d.name.toLowerCase().includes(q) || (d.alt && d.alt.toLowerCase().includes(q))) {
-            html += `<button onclick="selectAntidote('${d.name}')" class="antidote-btn w-full p-2 rounded-lg bg-white border border-slate-200 hover:bg-purple-50 hover:border-purple-300 transition shadow-sm" data-name="${d.name}">
-                <div class="font-bold text-[13px] leading-snug text-slate-700 text-left break-words">${d.name}</div>
-            </button>`;
+        if (d.name.toLowerCase().includes(q) || (d.alt && d.alt.toLowerCase().includes(q))) {
+            let displayName = d.name;
+            if (displayName.includes('(') && displayName.includes(')')) {
+                displayName = displayName.replace(/\s*\((.*?)\)/g, '<br><span class="text-xs text-slate-500 font-normal">($1)</span>');
+            }
+            html += `<button onclick="selectAntidote('${d.name}')" class="antidote-btn w-full h-full text-left p-3 rounded bg-white border border-slate-200 hover:bg-indigo-50 hover:border-indigo-300 transition text-sm font-semibold text-slate-700 leading-tight flex flex-col justify-center" data-name="${d.name}">${displayName}</button>`;
         }
     });
     c.innerHTML = html;
 }
 
 function selectAntidote(name) {
-    window.currentAntidote = name;
-    // highlight button
     document.querySelectorAll('.antidote-btn').forEach(b => {
-        b.classList.remove('ring-2', 'ring-purple-500', 'bg-purple-50', 'border-purple-300');
-        if(b.dataset.name === name) b.classList.add('ring-2', 'ring-purple-500', 'bg-purple-50', 'border-purple-300');
+        b.classList.remove('ring-2', 'ring-indigo-500', 'bg-indigo-50');
+        if (b.dataset.name === name) {
+            b.classList.add('ring-2', 'ring-indigo-500', 'bg-indigo-50');
+        }
     });
-
-    const card = document.getElementById('antidoteDetailCard');
-    const title = document.getElementById('adTitle');
-    const content = document.getElementById('adContent');
     
-    card.classList.remove('hidden');
-    title.innerHTML = `<i class="fas fa-prescription-bottle-medical mr-2"></i>${name}`;
+    window.currentAntidote = name;
+    
+    const content = document.getElementById('adContent');
+    if (!content) return;
+    
+    const detailCard = document.getElementById('antidoteDetailCard');
+    if (detailCard) detailCard.classList.remove('hidden');
+    
+    const title = document.getElementById('adTitle');
+    if (title) title.innerHTML = `<i class="fas fa-prescription-bottle-medical mr-2"></i>${name}`;
     
     if (name === 'N-ACETYLCYSTEINE') {
         renderNacCalculator(content);
         calcNac();
+    } else if (name === 'ACTIVATED CHARCOAL') {
+        renderCharcoalCalculator(content);
+        calcCharcoal();
+    } else if (name === 'WHOLE-BOWEL IRRIGATION AND OTHER INTESTINAL EVACUANTS') {
+        renderWbiCalculator(content);
+        calcWbi();
     } else {
         content.innerHTML = `<div class="p-8 text-center text-slate-400">
             <i class="fas fa-hammer text-4xl mb-3"></i>
             <div>Calculator or Information for <b>${name}</b> is under construction.</div>
         </div>`;
     }
-    
-    toggleAntidoteList('hide');
-    // Scroll to detail view slightly below header
-    setTimeout(() => {
-        const y = card.getBoundingClientRect().top + window.scrollY - 20;
-        window.scrollTo({top: y, behavior: 'smooth'});
-    }, 100);
+}
+
+function renderAntidotes() {
+    filterAntidotes();
+    if (window.currentAntidote) {
+        document.querySelectorAll('.antidote-btn').forEach(b => {
+            if (b.dataset.name === window.currentAntidote) {
+                b.classList.add('ring-2', 'ring-indigo-500', 'bg-indigo-50');
+            }
+        });
+        
+        if (window.currentAntidote === 'N-ACETYLCYSTEINE' && typeof calcNac === 'function') calcNac();
+        else if (window.currentAntidote === 'ACTIVATED CHARCOAL' && typeof calcCharcoal === 'function') calcCharcoal();
+        else if (window.currentAntidote === 'WHOLE-BOWEL IRRIGATION AND OTHER INTESTINAL EVACUANTS' && typeof calcWbi === 'function') calcWbi();
+    }
 }
 
 function renderNacCalculator(container) {
     container.innerHTML = `
-        <div class="border-b border-purple-100 flex flex-wrap bg-purple-50/50">
-            <button id="tab-nac-iv3" onclick="switchNacTab('iv3')" class="nac-tab flex-1 py-3 text-sm font-bold border-b-2 border-purple-600 text-purple-700 transition">IV 3-Bag (21 hr)</button>
-            <button id="tab-nac-po" onclick="switchNacTab('po')" class="nac-tab flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-purple-600 transition">Oral (72 hr)</button>
-            <button id="tab-nac-iv2" onclick="switchNacTab('iv2')" class="nac-tab flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-purple-600 transition">Simp. 2-Bag (20 hr)</button>
-            <button id="tab-nac-snap" onclick="switchNacTab('snap')" class="nac-tab flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-purple-600 transition">SNAP 2-Bag (12 hr)</button>
+        <div class="border-b border-indigo-100 flex flex-wrap bg-indigo-50/50">
+            <button id="tab-nac-iv3" onclick="switchNacTab('iv3')" class="nac-tab flex-1 py-3 text-sm font-bold border-b-2 border-indigo-600 text-indigo-700 transition">IV 3-Bag</button>
+            <button id="tab-nac-iv2" onclick="switchNacTab('iv2')" class="nac-tab flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-indigo-600 transition">Simplified 2-Bag (20 hr)</button>
+            <button id="tab-nac-snap" onclick="switchNacTab('snap')" class="nac-tab flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-indigo-600 transition">SNAP 2-Bag (12 hr)</button>
+            <button id="tab-nac-po" onclick="switchNacTab('po')" class="nac-tab flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-indigo-600 transition">Oral (72 hr)</button>
         </div>
         
         <div class="p-4 bg-white">
-            <div class="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800 flex items-start gap-2 shadow-inner">
-                <i class="fas fa-triangle-exclamation mt-1 text-amber-600"></i>
-                <div>
-                    <b>Max Body Weight = 110 kg</b><br>
-                    (Doses are capped for weights > 110 kg)
-                </div>
-            </div>
             <div id="nac-content"></div>
         </div>
     `;
@@ -2441,13 +2774,13 @@ let activeNacTab = 'iv3';
 function switchNacTab(tab) {
     activeNacTab = tab;
     document.querySelectorAll('.nac-tab').forEach(b => {
-        b.classList.remove('border-purple-600', 'text-purple-700');
+        b.classList.remove('border-indigo-600', 'text-indigo-700');
         b.classList.add('border-transparent', 'text-slate-500');
     });
     const btn = document.getElementById('tab-nac-' + tab);
     if(btn) {
         btn.classList.remove('border-transparent', 'text-slate-500');
-        btn.classList.add('border-purple-600', 'text-purple-700');
+        btn.classList.add('border-indigo-600', 'text-indigo-700');
     }
     calcNac();
 }
@@ -2456,9 +2789,8 @@ function calcNac() {
     const content = document.getElementById('nac-content');
     if (!content) return;
     
-    // Weight is capped at 100kg for ALL NAC protocols
     const hasW = (P.calcWt && P.calcWt > 0);
-    const wt = hasW ? Math.min(P.calcWt, 110) : 0;
+    const wt = hasW ? P.calcWt : 0;
     
     let html = '';
     if (!hasW) {
@@ -2474,116 +2806,101 @@ function calcNac() {
         else if (wt <= 25) { d1 = 100; d2 = 250; d3 = 500; }
         else if (wt <= 30) { d1 = 100; d2 = 250; d3 = 500; }
         else if (wt < 40) { d1 = 100; d2 = 250; d3 = 500; }
-
-        html += renderNacBag('Bag 1 (Loading)', 150, wt, d1, '60 minutes', 'purple') +
-               renderNacBag('Bag 2', 50, wt, d2, '4 hours', 'blue') +
-               renderNacBag('Bag 3', 100, wt, d3, '16 hours', 'teal');
+        
+        const cWt = Math.min(wt, 110);
+        html += renderNacBag('Bag 1 (Loading)', 150, cWt, null, d1, '60 minutes', 'indigo');
+        html += renderNacBag('Bag 2', 50, cWt, null, d2, '4 hours', 'blue');
+        html += renderNacBag('Bag 3', 100, cWt, null, d3, '16 hours', 'teal');
                
     } else if (activeNacTab === 'po') {
-        const loadVol20 = hasW ? (140 * wt) / 200 : 0;
-        const loadDiluent = hasW ? loadVol20 * 3 : 0;
-        const maintVol20 = hasW ? (70 * wt) / 200 : 0;
-        const maintDiluent = hasW ? maintVol20 * 3 : 0;
+        let loadVol20Str = '-', loadDiluentStr = '-', loadTotalStr = '-';
+        let maintVol20Str = '-', maintDiluentStr = '-', maintTotalStr = '-';
         
-        const loadOrder = hasW ? `NAC 20% <b>${rnd(loadVol20)} mL</b> + 5%DW/Juice <b>${rnd(loadDiluent)} mL</b> Oral/NG stat` : '-';
-        const maintOrder = hasW ? `NAC 20% <b>${rnd(maintVol20)} mL</b> + 5%DW/Juice <b>${rnd(maintDiluent)} mL</b> Oral/NG every 4 hr` : '-';
+        if (hasW) {
+            const cWt = Math.min(wt, 110);
+            const loadVol20 = (140 * cWt) / 200;
+            const loadDiluent = loadVol20 * 3;
+            const maintVol20 = (70 * cWt) / 200;
+            const maintDiluent = maintVol20 * 3;
+            
+            loadVol20Str = rnd(loadVol20);
+            loadDiluentStr = rnd(loadDiluent);
+            loadTotalStr = rnd(loadVol20 + loadDiluent);
+            
+            maintVol20Str = rnd(maintVol20);
+            maintDiluentStr = rnd(maintDiluent);
+            maintTotalStr = rnd(maintVol20 + maintDiluent);
+        }
         
         html += `
-            <div class="mb-4 border border-purple-200 rounded-lg overflow-hidden shadow-sm">
-                <div class="bg-purple-600 text-white font-bold p-2 text-sm flex justify-between">
-                    <span>Loading Dose</span><span>140 mg/kg</span>
-                </div>
-                <div class="p-3 bg-white text-sm">
-                    <div class="grid grid-cols-2 gap-3 mb-3">
-                        <div class="bg-slate-50 p-2 rounded border border-slate-100">
-                            <div class="text-xs text-slate-500 mb-1">Total Dose</div>
-                            <div class="font-bold text-slate-700">${hasW ? rnd(140 * wt) : 0} mg</div>
-                            <div class="text-[10px] text-slate-400">(${hasW ? rnd(140 * wt / 1000) : 0} g)</div>
-                        </div>
-                        <div class="bg-purple-50 p-2 rounded border border-purple-100">
-                            <div class="text-xs text-purple-500 mb-1">NAC 20% Volume</div>
-                            <div class="font-bold text-purple-700 text-lg">${rnd(loadVol20)} mL</div>
-                        </div>
-                    </div>
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2 bg-slate-50 p-2 rounded border border-slate-100">
-                        <div class="flex items-center gap-3">
-                            <div class="text-xs font-bold text-slate-500 uppercase">Mix in D5W or NSS/Juice:</div>
-                            <div class="font-bold text-blue-600 text-lg">${rnd(loadDiluent)} mL</div>
-                        </div>
-                        <div class="text-[13px] text-slate-700">
-                            <span class="font-bold text-slate-500 mr-1">Order:</span> ${loadOrder}
-                        </div>
+            <div class="mb-4 border border-indigo-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-indigo-600 text-white font-bold p-2 text-sm">Loading Dose (140 mg/kg)</div>
+                <div class="p-3 bg-white grid grid-cols-2 gap-2 text-sm">
+                    <div><b>NAC 20% Vol:</b> <span class="text-indigo-700 font-bold">${loadVol20Str}</span> ${hasW ? 'mL' : ''}</div>
+                    <div><b>Diluent Vol:</b> <span class="text-blue-700 font-bold">${loadDiluentStr}</span> ${hasW ? 'mL' : ''}</div>
+                    <div class="col-span-2 pt-2 border-t mt-1 flex justify-between items-center">
+                        <div><b>Total 5% Solution Volume:</b> <span class="text-lg font-bold text-green-700">${loadTotalStr}</span> ${hasW ? 'mL' : ''}</div>
+                        <div class="bg-slate-100 px-2 py-1 rounded text-xs font-bold text-slate-600 self-center">Max 15.4 g</div>
                     </div>
                 </div>
             </div>
-            
             <div class="border border-blue-200 rounded-lg overflow-hidden shadow-sm">
-                <div class="bg-blue-600 text-white font-bold p-2 text-sm flex justify-between">
-                    <span>Maintenance Dose (x17)</span><span>70 mg/kg</span>
-                </div>
-                <div class="bg-blue-50 text-xs p-2 text-blue-800 border-b border-blue-100 font-medium">
-                    <i class="fas fa-clock mr-1"></i> Every 4 hours
-                </div>
-                <div class="p-3 bg-white text-sm">
-                    <div class="grid grid-cols-2 gap-3 mb-3">
-                        <div class="bg-slate-50 p-2 rounded border border-slate-100">
-                            <div class="text-xs text-slate-500 mb-1">Total Dose</div>
-                            <div class="font-bold text-slate-700">${hasW ? rnd(70 * wt) : 0} mg</div>
-                            <div class="text-[10px] text-slate-400">(${hasW ? rnd(70 * wt / 1000) : 0} g)</div>
-                        </div>
-                        <div class="bg-blue-50 p-2 rounded border border-blue-100">
-                            <div class="text-xs text-blue-500 mb-1">NAC 20% Volume</div>
-                            <div class="font-bold text-blue-700 text-lg">${rnd(maintVol20)} mL</div>
-                        </div>
-                    </div>
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2 bg-slate-50 p-2 rounded border border-slate-100">
-                        <div class="flex items-center gap-3">
-                            <div class="text-xs font-bold text-slate-500 uppercase">Mix in D5W or NSS/Juice:</div>
-                            <div class="font-bold text-blue-600 text-lg">${rnd(maintDiluent)} mL</div>
-                        </div>
-                        <div class="text-[13px] text-slate-700">
-                            <span class="font-bold text-slate-500 mr-1">Order:</span> ${maintOrder}
-                        </div>
+                <div class="bg-blue-600 text-white font-bold p-2 text-sm">Maintenance Dose (70 mg/kg) x 17 doses</div>
+                <div class="bg-blue-50 text-xs p-2 text-blue-800 border-b border-blue-100">Every 4 hours</div>
+                <div class="p-3 bg-white grid grid-cols-2 gap-2 text-sm">
+                    <div><b>NAC 20% Vol:</b> <span class="text-indigo-700 font-bold">${maintVol20Str}</span> ${hasW ? 'mL' : ''}</div>
+                    <div><b>Diluent Vol:</b> <span class="text-blue-700 font-bold">${maintDiluentStr}</span> ${hasW ? 'mL' : ''}</div>
+                    <div class="col-span-2 pt-2 border-t mt-1 flex justify-between items-center">
+                        <div><b>Total 5% Solution Volume:</b> <span class="text-lg font-bold text-green-700">${maintTotalStr}</span> ${hasW ? 'mL' : ''}</div>
+                        <div class="bg-slate-100 px-2 py-1 rounded text-xs font-bold text-slate-600 self-center">Max 7.7 g</div>
                     </div>
                 </div>
             </div>
         `;
         
     } else if (activeNacTab === 'iv2') {
-        let d1 = 500, d2 = 1000;
-        if (!hasW) { d1 = 0; d2 = 0; }
-        
-        html += renderNacBag('Bag 1', 200, wt, d1, '4 hours', 'purple', '22g') +
-               renderNacBag('Bag 2', 100, wt, d2, '16 hours', 'blue', '11g');
+        html += renderNacBag('Bag 1', 200, wt, 22000, 500, '4 hours', 'indigo');
+        html += renderNacBag('Bag 2', 100, wt, 11000, 1000, '16 hours', 'teal');
                
     } else if (activeNacTab === 'snap') {
-        let d1 = 200, d2 = 1000;
-        if (!hasW) { d1 = 0; d2 = 0; }
-        
-        html += renderNacBag('Bag 1', 100, wt, d1, '2 hours', 'purple') +
-               renderNacBag('Bag 2', 200, wt, d2, '10 hours', 'blue');
+        html += renderNacBag('Bag 1', 100, wt, 11000, 200, '2 hours', 'indigo');
+        html += renderNacBag('Bag 2', 200, wt, 22000, 1000, '10 hours', 'teal');
     }
     
     content.innerHTML = html;
 }
 
-function renderNacBag(title, mgKg, wt, diluent, duration, color, maxLabel = '') {
-    const hasW = (wt > 0);
-    const doseMg = hasW ? (mgKg * wt) : 0;
-    const vol20 = hasW ? (doseMg / 200) : 0; // 200 mg/mL
+function renderNacBag(title, mgKg, wt, maxDoseMg, diluent, duration, color) {
+    let hasW = wt > 0;
     
-    const rDose = hasW ? rnd(doseMg) : 0;
-    const rDoseG = hasW ? rnd(doseMg/1000) : 0;
-    const rVol = hasW ? rnd(vol20) : 0;
-    const rDiluent = hasW ? diluent : 0;
+    let doseMgStr = '-';
+    let doseGText = '';
+    let vol20Str = '-';
+    let maxTag = '';
+    let orderStr = '-';
+    let diluentStr = hasW ? diluent : '-';
     
-    const orderTxt = hasW ? `NAC 20% <b>${rVol} mL</b> + 5%DW <b>${rDiluent} mL</b> IV drip in <b>${duration}</b>` : '-';
+    if (hasW) {
+        let doseMg = mgKg * wt;
+        let isCapped = false;
+        if (maxDoseMg && doseMg > maxDoseMg) {
+            doseMg = maxDoseMg;
+            isCapped = true;
+        }
+        let vol20 = doseMg / 200; // 200 mg/mL
+        
+        doseMgStr = `${rnd(doseMg)} mg`;
+        doseGText = `(${rnd(doseMg/1000)} g)`;
+        vol20Str = `${rnd(vol20)} mL`;
+        maxTag = isCapped ? `<span class="bg-rose-100 text-rose-700 px-1 py-0.5 rounded ml-2 border border-rose-200">Max ${maxDoseMg/1000} g</span>` : '';
+        orderStr = `NAC 20% ${rnd(vol20)} mL + 5%DW ${diluent} mL IV drip in ${duration}`;
+    }
     
     return `
         <div class="mb-4 border border-${color}-200 rounded-lg overflow-hidden shadow-sm">
-            <div class="bg-${color}-600 text-white font-bold p-2 text-sm flex justify-between">
+            <div class="bg-${color}-600 text-white font-bold p-2 text-sm flex justify-between items-center">
                 <span>${title}</span>
-                <span>${mgKg} mg/kg${maxLabel ? ' (Max ' + maxLabel + ')' : ''}</span>
+                <span>${mgKg} mg/kg${maxDoseMg ? ` (Max ${maxDoseMg/1000}g)` : ''}</span>
             </div>
             <div class="bg-${color}-50 text-xs p-2 text-${color}-800 border-b border-${color}-100 font-medium">
                 <i class="fas fa-clock mr-1"></i> Infuse over ${duration}
@@ -2592,21 +2909,22 @@ function renderNacBag(title, mgKg, wt, diluent, duration, color, maxLabel = '') 
                 <div class="grid grid-cols-2 gap-3 mb-3">
                     <div class="bg-slate-50 p-2 rounded border border-slate-100">
                         <div class="text-xs text-slate-500 mb-1">Total Dose</div>
-                        <div class="font-bold text-slate-700">${rDose} mg</div>
-                        <div class="text-[10px] text-slate-400">(${rDoseG} g)</div>
+                        <div class="font-bold text-slate-700 flex items-center">${doseMgStr}${maxTag}</div>
+                        <div class="text-[10px] text-slate-400">${doseGText}</div>
                     </div>
-                    <div class="bg-${color}-50 p-2 rounded border border-${color}-100">
-                        <div class="text-xs text-${color}-500 mb-1">NAC 20% Volume</div>
-                        <div class="font-bold text-${color}-700 text-lg">${rVol} mL</div>
+                    <div class="bg-indigo-50 p-2 rounded border border-indigo-100">
+                        <div class="text-xs text-indigo-500 mb-1">NAC 20% Volume</div>
+                        <div class="font-bold text-indigo-700 text-lg">${vol20Str}</div>
                     </div>
                 </div>
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-2 bg-slate-50 p-2 rounded border border-slate-100">
-                    <div class="flex items-center gap-3">
-                        <div class="text-xs font-bold text-slate-500 uppercase">Mix in D5W or NSS:</div>
-                        <div class="font-bold text-blue-600 text-lg">${rDiluent} mL</div>
+                
+                <div class="bg-slate-50 p-3 flex flex-col md:flex-row items-center justify-between gap-2 text-sm border-t border-slate-100 rounded-lg">
+                    <div class="flex items-center gap-2">
+                        <div class="text-xs font-bold text-slate-500 uppercase">MIX IN D5W OR NSS:</div>
+                        <div class="font-bold text-blue-600 text-lg">${diluentStr} ${hasW ? 'mL' : ''}</div>
                     </div>
-                    <div class="text-[13px] text-slate-700">
-                        <span class="font-bold text-slate-500 mr-1">Order:</span> ${orderTxt}
+                    <div class="text-xs font-medium text-slate-700 text-right">
+                        <b>Order:</b> ${orderStr}
                     </div>
                 </div>
             </div>
@@ -2614,39 +2932,6 @@ function renderNacBag(title, mgKg, wt, diluent, duration, color, maxLabel = '') 
     `;
 }
 
-// Ensure clicking outside modals closes them
-window.addEventListener('click', (e) => {
-    const pModal = document.getElementById('phenytoinModal');
-    if (e.target === pModal) pModal.classList.add('hidden');
-    
-    const formulaModal = document.getElementById('formulaModal');
-    if (e.target === formulaModal) formulaModal.classList.add('hidden');
-
-    const vsModal = document.getElementById('vsModal');
-    if (e.target === vsModal) vsModal.classList.add('hidden');
-});
-
-// Init
-recalc();
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
