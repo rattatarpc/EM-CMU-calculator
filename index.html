@@ -1,10 +1,186 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+window.onerror = function(msg, url, line, col, error) {
+    var errStr = 'Error: ' + msg + ' at line ' + line + ':' + col;
+    document.title = errStr;
+    var d = document.createElement('div');
+    d.style.position = 'fixed';
+    d.style.top = '0';
+    d.style.left = '0';
+    d.style.width = '100%';
+    d.style.background = 'red';
+    d.style.color = 'white';
+    d.style.zIndex = '999999';
+    d.style.padding = '20px';
+    d.style.fontSize = '20px';
+    d.innerHTML = errStr;
+    if (document.body) { document.body.appendChild(d); }
+    else {
+        window.addEventListener('DOMContentLoaded', function() {
+            document.body.appendChild(d);
+        });
+    }
+};
+
+function populateSearchLists() {
+    let allDrugs = new Set();
+    
+    // 1. pedCommonGroups
+    if (typeof pedCommonGroups !== 'undefined') {
+        pedCommonGroups.forEach(g => {
+            if (g.items) g.items.forEach(d => allDrugs.add(d.name));
+        });
+    }
+    
+    // 2. pedDrips
+    if (typeof pedDrips !== 'undefined') {
+        pedDrips.forEach(d => allDrugs.add(d.name));
+    }
+    
+    // 3. pedEmDrugs
+    if (typeof pedEmDrugs !== 'undefined') {
+        pedEmDrugs.forEach(d => allDrugs.add(d.name));
+    }
+    
+    // 4. adultEmDrugs
+    if (typeof adultEmDrugs !== 'undefined') {
+        adultEmDrugs.forEach(cat => {
+            if (cat.items) cat.items.forEach(d => allDrugs.add(d.name));
+        });
+    }
+
+    // Generate datalist
+    let allDataList = document.getElementById('allDrugList');
+    if (!allDataList) {
+        allDataList = document.createElement('datalist');
+        allDataList.id = 'allDrugList';
+        document.body.appendChild(allDataList);
+    }
+    allDataList.innerHTML = '';
+    
+    // Sort alphabetically
+    let sortedDrugs = Array.from(allDrugs).sort();
+    sortedDrugs.forEach(drug => {
+        if (drug) {
+            const option = document.createElement('option');
+            option.value = drug;
+            allDataList.appendChild(option);
+        }
+    });
+}
+
+function startCalculation() {
+    // 1. Sync data
+    document.getElementById('gender').value = document.getElementById('entry-gender').value;
+    document.getElementById('age').value = document.getElementById('entry-yr').value;
+    document.getElementById('ageMo').value = document.getElementById('entry-mo').value;
+    document.getElementById('weight').value = document.getElementById('entry-tbw').value;
+    document.getElementById('height').value = document.getElementById('entry-ht').value;
+    
+    // 2. Set Weight for Calculate IF a weight was entered
+    const tbwVal = document.getElementById('entry-tbw').value;
+    if (tbwVal) {
+        document.getElementById('calcWt').value = tbwVal;
+    }
+    
+    // 3. Trigger recalculation
+    recalc();
+    onManualCalcWtInput();
+    
+    // 4. Navigate to home
+    navigate('home');
+}
+</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EM CMU Calculator</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com">
+function populateSearchLists() {
+    // Collect Pediatric Drugs
+    let pedDrugs = new Set();
+    pedCommonGroups.forEach(g => {
+        if (g.items) g.items.forEach(d => pedDrugs.add(d.name));
+    });
+    // For pedDrips and pedEmDrugs, assuming they are arrays of objects with 'name' property
+    if (typeof pedDrips !== 'undefined') pedDrips.forEach(d => pedDrugs.add(d.name));
+    if (typeof pedEmDrugs !== 'undefined') pedEmDrugs.forEach(d => pedDrugs.add(d.name));
+
+    let pedDataList = document.getElementById('pedDrugList');
+    if (!pedDataList) {
+        pedDataList = document.createElement('datalist');
+        pedDataList.id = 'pedDrugList';
+        document.body.appendChild(pedDataList);
+    }
+    pedDataList.innerHTML = '';
+    pedDrugs.forEach(drug => {
+        if (drug) {
+            const option = document.createElement('option');
+            option.value = drug;
+            pedDataList.appendChild(option);
+        }
+    });
+
+    // Collect Adult Drugs
+    let adultDrugs = new Set();
+    if (typeof adultEmDrugs !== 'undefined') {
+        adultEmDrugs.forEach(cat => {
+            if (cat.items) cat.items.forEach(d => adultDrugs.add(d.name));
+        });
+    }
+
+    let adultDataList = document.getElementById('adultDrugList');
+    if (!adultDataList) {
+        adultDataList = document.createElement('datalist');
+        adultDataList.id = 'adultDrugList';
+        document.body.appendChild(adultDataList);
+    }
+    adultDataList.innerHTML = '';
+    adultDrugs.forEach(drug => {
+        if (drug) {
+            const option = document.createElement('option');
+            option.value = drug;
+            adultDataList.appendChild(option);
+        }
+    });
+}
+
+function handleGlobalSearch(query) {
+    let activePageId = null;
+    document.querySelectorAll('.page').forEach(el => {
+        if (el.classList.contains('active')) {
+            activePageId = el.id;
+        }
+    });
+    
+    if (activePageId && activePageId !== 'page-antidote' && activePageId !== 'page-home') {
+        filterDrugs(activePageId, query);
+    }
+}
+
+function startCalculation() {
+    // 1. Sync data
+    document.getElementById('gender').value = document.getElementById('entry-gender').value;
+    document.getElementById('age').value = document.getElementById('entry-yr').value;
+    document.getElementById('ageMo').value = document.getElementById('entry-mo').value;
+    document.getElementById('weight').value = document.getElementById('entry-tbw').value;
+    document.getElementById('height').value = document.getElementById('entry-ht').value;
+    
+    // 2. Set Weight for Calculate IF a weight was entered
+    const tbwVal = document.getElementById('entry-tbw').value;
+    if (tbwVal) {
+        document.getElementById('calcWt').value = tbwVal;
+    }
+    
+    // 3. Trigger recalculation
+    recalc();
+    onManualCalcWtInput();
+    
+    // 4. Navigate to home
+    navigate('home');
+}
+</script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
@@ -93,7 +269,12 @@
             </div>
         </div>
         <div class="flex items-center gap-2">
-            <button onclick="window.print()" class="print-btn w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition flex items-center justify-center" title="Print this page">
+            
+        <div id="globalSearchContainer" class="hidden relative mr-2">
+            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+            <input type="text" id="globalSearch" class="pl-8 pr-3 py-1.5 rounded-full border border-slate-300 text-xs w-32 focus:w-48 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Search..." oninput="handleGlobalSearch(this.value)">
+        </div>
+        <button onclick="window.print()" class="print-btn w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition flex items-center justify-center" title="Print this page">
                 <i class="fas fa-print text-sm"></i>
             </button>
             <button onclick="togglePatient()" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white transition px-3 py-1.5 rounded-full text-xs font-semibold shadow-md">
@@ -153,12 +334,12 @@
                     </div>
                 </div>
             </div>
-            
             <!-- Row 2: Weight for calculation -->
             <div class="flex items-center gap-3 pt-2 border-t border-slate-100">
                 <div class="text-sm font-semibold text-slate-700 whitespace-nowrap">Weight for calculate (kg):</div>
-                <div class="flex gap-2">
-                    <input type="number" id="calcWt" class="inp w-[80px] text-orange-600 font-bold text-center" oninput="onManualCalcWtInput()">
+                <div class="flex gap-2 items-center">
+                    <input type="number" id="calcWt" class="inp w-[110px] text-orange-600 font-bold text-center placeholder:text-slate-300 placeholder:font-normal" placeholder="กรอกน้ำหนัก" oninput="onManualCalcWtInput()">
+                    <span class="text-xs text-slate-400 font-semibold mx-1">or</span>
                     <div class="flex gap-1">
                         <button id="btn-tbw" onclick="setCalcWtMode('tbw')" class="wt-btn bg-slate-50 text-slate-600 px-3 py-1 rounded border border-slate-200 hover:bg-slate-100 font-medium text-sm">TBW</button>
                         <button id="btn-ibw" onclick="setCalcWtMode('ibw')" class="wt-btn bg-blue-50 text-blue-600 px-3 py-1 rounded border border-blue-200 hover:bg-blue-100 font-medium text-sm">IBW</button>
@@ -173,36 +354,83 @@
     <main class="flex-1 p-4 max-w-5xl mx-auto w-full pb-20">
 
         <!-- HOME PAGE -->
-        <div id="page-home" class="page active">
+        <div 
+        <!-- WELCOME PAGE -->
+        <div id="page-welcome" class="page active space-y-6">
+            <div class="text-center mt-10 mb-8">
+                <div class="text-4xl font-extrabold text-slate-800">EM CMU Calculator</div>
+                <div class="text-slate-500 text-sm mt-2">Enter patient data to begin</div>
+            </div>
+            
+            <div class="max-w-lg mx-auto card p-6 shadow-lg border-blue-100">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <div class="text-sm font-semibold text-slate-700 mb-1">Gender</div>
+                        <select id="entry-gender" class="inp w-full">
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <div class="text-sm font-semibold text-slate-700 mb-1">Age (yr)</div>
+                        <input type="number" id="entry-yr" class="inp w-full" placeholder="Years">
+                    </div>
+                    <div>
+                        <div class="text-sm font-semibold text-slate-700 mb-1">Age (mo)</div>
+                        <input type="number" id="entry-mo" class="inp w-full" placeholder="Months">
+                    </div>
+                    <div>
+                        <div class="text-sm font-semibold text-slate-700 mb-1">Weight (kg)</div>
+                        <input type="number" id="entry-tbw" class="inp w-full" placeholder="kg">
+                    </div>
+                    <div>
+                        <div class="text-sm font-semibold text-slate-700 mb-1">Height (cm)</div>
+                        <input type="number" id="entry-ht" class="inp w-full" placeholder="cm">
+                    </div>
+                </div>
+                
+                <button onclick="startCalculation()" class="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+                    <i class="fas fa-calculator"></i>
+                    <span>Start Calculation</span>
+                </button>
+                <div class="text-center text-[11px] text-slate-400 mt-3 font-medium">
+                    * ถ้าไม่มีข้อมูล ไม่ต้องกรอก สามารถกดเข้าใช้งานได้เลย
+                </div>
+            </div>
+        </div>
+            
+        <div id="page-home" class="page">
             <div class="text-center mb-8 mt-4">
                 <div class="text-3xl font-extrabold text-slate-800">EM CMU Calculator</div>
                 <div class="text-slate-500 text-sm mt-1">Select a category to begin</div>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- 1. Neonatal Resuscitation -->
+                <button onclick="navigate('neonatal','Neonatal Resuscitation')" class="flex items-center gap-4 p-5 rounded-2xl text-left hover:-translate-y-1 transition-all shadow-md hover:shadow-lg text-white bg-pink-500 hover:bg-pink-600 border border-pink-600">
+                    <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-white/20 shrink-0"><i class="fas fa-baby text-2xl"></i></div>
+                    <div><div class="font-bold text-xl">Neonatal Resuscitation</div><div class="text-pink-100 text-sm">NCPR  Drug  Equipment</div></div>
+                </button>
+                <!-- 2. PALS -->
+                <button onclick="navigate('ped-em','PALS')" class="flex items-center gap-4 p-5 rounded-2xl text-left hover:-translate-y-1 transition-all shadow-md hover:shadow-lg text-white bg-orange-500 hover:bg-orange-600 border border-orange-600">
+                    <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-white/20 shrink-0"><i class="fas fa-heartbeat text-2xl"></i></div>
+                    <div><div class="font-bold text-xl">PALS</div><div class="text-orange-100 text-sm">Arrest  Seizure  Drips  Equipment</div></div>
+                </button>
+                <!-- 3. Pediatric -->
+                <button onclick="navigate('ped-common','Pediatric')" class="flex items-center gap-4 p-5 rounded-2xl text-left hover:-translate-y-1 transition-all shadow-md hover:shadow-lg text-white bg-amber-500 hover:bg-amber-600 border border-amber-600">
+                    <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-white/20 shrink-0"><i class="fas fa-child-reaching text-2xl"></i></div>
+                    <div><div class="font-bold text-xl">Pediatric</div><div class="text-amber-100 text-sm">Emergency and Common Drug</div></div>
+                </button>
+                <!-- 4. Adult -->
+                <button onclick="navigate('adult','Adult')" class="flex items-center gap-4 p-5 rounded-2xl text-left hover:-translate-y-1 transition-all shadow-md hover:shadow-lg text-white bg-blue-500 hover:bg-blue-600 border border-blue-600">
+                    <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-white/20 shrink-0"><i class="fas fa-user-doctor text-2xl"></i></div>
+                    <div><div class="font-bold text-xl">Adult</div><div class="text-blue-100 text-sm">Emergency and Common Drug</div></div>
+                </button>
+                <!-- 5. RSI -->
                 <button onclick="navigate('rsi','RSI')" class="flex items-center gap-4 p-5 rounded-2xl text-left hover:-translate-y-1 transition-all shadow-md hover:shadow-lg text-white bg-red-500 hover:bg-red-600 border border-red-600">
                     <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-white/20 shrink-0"><i class="fas fa-lungs text-2xl"></i></div>
-                    <div><div class="font-bold text-xl">RSI</div><div class="text-red-100 text-sm">Induction · NMB · Reversal</div></div>
+                    <div><div class="font-bold text-xl">RSI</div><div class="text-red-100 text-sm">Induction  NMB  Reversal</div></div>
                 </button>
-                <button onclick="navigate('ped-common','Ped Common Drug')" class="flex items-center gap-4 p-5 rounded-2xl text-left hover:-translate-y-1 transition-all shadow-md hover:shadow-lg text-white bg-amber-500 hover:bg-amber-600 border border-amber-600">
-                    <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-white/20 shrink-0"><i class="fas fa-child-reaching text-2xl"></i></div>
-                    <div><div class="font-bold text-xl">Ped Common</div><div class="text-amber-100 text-sm">Fever · Asthma · GI · Neuro</div></div>
-                </button>
-                <button onclick="navigate('ped-em','Ped Emergency Drug')" class="flex items-center gap-4 p-5 rounded-2xl text-left hover:-translate-y-1 transition-all shadow-md hover:shadow-lg text-white bg-orange-500 hover:bg-orange-600 border border-orange-600">
-                    <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-white/20 shrink-0"><i class="fas fa-heartbeat text-2xl"></i></div>
-                    <div><div class="font-bold text-xl">Ped Emergency</div><div class="text-orange-100 text-sm">Arrest · Seizure · Drips · Equipment</div></div>
-                </button>
-                <button onclick="navigate('neonatal','Neonatal Emergency')" class="flex items-center gap-4 p-5 rounded-2xl text-left hover:-translate-y-1 transition-all shadow-md hover:shadow-lg text-white bg-pink-500 hover:bg-pink-600 border border-pink-600">
-                    <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-white/20 shrink-0"><i class="fas fa-baby text-2xl"></i></div>
-                    <div><div class="font-bold text-xl">Neonatal</div><div class="text-pink-100 text-sm">Resuscitation · Drugs · Equipment</div></div>
-                </button>
-                <button onclick="navigate('adult','Adult Emergency Drug')" class="flex items-center gap-4 p-5 rounded-2xl text-left hover:-translate-y-1 transition-all shadow-md hover:shadow-lg text-white bg-blue-500 hover:bg-blue-600 border border-blue-600">
-                    <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-white/20 shrink-0"><i class="fas fa-user-doctor text-2xl"></i></div>
-                    <div><div class="font-bold text-xl">Adult Emergency</div><div class="text-blue-100 text-sm">ACLS · Inotropes · Anti-HTN · Sedation</div></div>
-                </button>
-                <button onclick="navigate('manual','Manual Drip Calculator')" class="flex items-center gap-4 p-5 rounded-2xl text-left hover:-translate-y-1 transition-all shadow-md hover:shadow-lg text-white bg-teal-600 hover:bg-teal-700 border border-teal-700">
-                    <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-white/20 shrink-0"><i class="fas fa-flask-vial text-2xl"></i></div>
-                    <div><div class="font-bold text-xl">Manual Calculator</div><div class="text-teal-100 text-sm">Concentration · Drip Rate · Drug Search</div></div>
-                </button>
+                <!-- 6. Antidote -->
                 <button onclick="navigate('antidote','Common Antidote')" class="flex items-center gap-4 p-5 rounded-2xl text-left hover:-translate-y-1 transition-all shadow-md hover:shadow-lg text-white bg-purple-600 hover:bg-purple-700 border border-purple-700">
                     <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-white/20 shrink-0">
                         <svg viewBox="0 0 64 64" class="w-8 h-8 text-white" fill="currentColor" stroke="none">
@@ -228,6 +456,11 @@
                         </svg>
                     </div>
                     <div><div class="font-bold text-xl">Common Antidote</div><div class="text-purple-100 text-sm">Antidote Reversal</div></div>
+                </button>
+                <!-- 7. Manual Calculator -->
+                <button onclick="navigate('manual','Manual Drip Calculator')" class="flex items-center gap-4 p-5 rounded-2xl text-left hover:-translate-y-1 transition-all shadow-md hover:shadow-lg text-white bg-teal-600 hover:bg-teal-700 border border-teal-700">
+                    <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-white/20 shrink-0"><i class="fas fa-flask-vial text-2xl"></i></div>
+                    <div><div class="font-bold text-xl">Manual Calculator</div><div class="text-teal-100 text-sm">Concentration  Drip Rate  Drug Search</div></div>
                 </button>
             </div>
         </div>
@@ -377,6 +610,7 @@
 
         <!-- PED COMMON PAGE -->
         <div id="page-ped-common" class="page space-y-4">
+            
             <div id="ped-common-vs-card" class="hidden"></div>
             <div class="est-weight-banner bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm text-amber-700 flex items-center gap-2 mb-4">
                 <i class="fas fa-calculator"></i>
@@ -506,6 +740,7 @@
 
         <!-- ADULT PAGE -->
         <div id="page-adult" class="page space-y-4">
+            
             <div class="card">
                 <div class="card-header bg-blue-600"><i class="fas fa-heart-pulse mr-2"></i>Emergency Medications (ACLS)</div>
                 <div class="overflow-x-auto">
@@ -749,11 +984,15 @@ function syncNeoWt() {
     const neoWtInput = document.getElementById('neoWtGrams');
     const mainWtInput = document.getElementById('weight');
     if (neoWtInput.value) {
-        mainWtInput.value = parseFloat(neoWtInput.value) / 1000;
+        const kg = parseFloat(neoWtInput.value) / 1000;
+        mainWtInput.value = kg;
+        document.getElementById('calcWt').value = kg;
     } else {
         mainWtInput.value = '';
+        document.getElementById('calcWt').value = '';
     }
     recalc();
+    onManualCalcWtInput();
 }
 
 function recalcNeo() {
@@ -882,6 +1121,18 @@ function navigate(page, title = '') {
     }
     renderAll();
     renderAntidotes();
+
+    const searchContainer = document.getElementById('globalSearchContainer');
+    const globalSearch = document.getElementById('globalSearch');
+    if (page !== 'home' && page !== 'antidote') {
+        searchContainer.classList.remove('hidden');
+        globalSearch.value = '';
+        // Set list to general allDrugList
+        globalSearch.setAttribute('list', 'allDrugList');
+    } else {
+        searchContainer.classList.add('hidden');
+    }
+
     if (typeof calcNac === 'function') calcNac();
 }
 
@@ -893,8 +1144,7 @@ const antidoteList = [
     { name: 'N-ACETYLCYSTEINE' },
     { name: 'ACTIVATED CHARCOAL' },
     { name: 'ATROPINE' },
-    { name: 'BENZODIAZEPINES' },
-    { name: 'BOTULINUM ANTITOXIN' },
+        { name: 'BOTULINUM ANTITOXIN' },
     { name: 'CALCIUM' },
     { name: 'L-CARNITINE' },
     { name: 'DANTROLENE SODIUM' },
@@ -1286,7 +1536,8 @@ function routeColor(r) {
 // ============================================================
 // RENDER FUNCTIONS
 // ============================================================
-function renderAll() {
+function renderAll() {    renderPedEquipment();
+
     renderRsi();
     renderPedCommon();
     renderPedEm();
@@ -1586,6 +1837,68 @@ function renderDrugGroups(groupsArray, containerId) {
     calcCustomSyrup();
 }
 
+
+function renderPedEquipment() {
+    const tbody = document.getElementById('ped-equip-tbody');
+    if (!tbody) return;
+    
+    // Always show these items
+    const items = [
+        { name: 'ET Tube (Uncuffed)', calcSize: (ageYr) => ageYr >= 1 ? (ageYr/4 + 4) : 3.5 },
+        { name: 'ET Tube (Cuffed)', calcSize: (ageYr) => ageYr >= 1 ? (ageYr/4 + 3.5) : 3.0 },
+        { name: 'Laryngoscope Blade', calcSize: (ageYr) => {
+            if (ageYr < 1/12) return '0 (Straight)';
+            if (ageYr < 2) return '1 (Straight)';
+            if (ageYr < 8) return '2 (Straight/Curved)';
+            return '3 (Straight/Curved)';
+        }},
+        { name: 'LMA Size', calcSizeWt: (wt) => {
+            if (wt < 5) return '1';
+            if (wt <= 10) return '1.5';
+            if (wt <= 20) return '2';
+            if (wt <= 30) return '2.5';
+            if (wt <= 50) return '3';
+            if (wt <= 70) return '4';
+            return '5';
+        }},
+        { name: 'Chest Tube', calcSize: (ageYr) => {
+            if (ageYr < 1) return '10-14 Fr';
+            if (ageYr < 8) return '20-28 Fr';
+            return '28-32 Fr';
+        }}
+    ];
+
+    let h = '';
+    const hasData = (P.calcWt > 0 || P.ageMo > 0);
+    const ageYr = (P.ageMo || 0) / 12;
+    const wt = P.calcWt || 0;
+
+    items.forEach(item => {
+        let size = '-';
+        let depth = '-';
+        
+        if (hasData) {
+            if (item.calcSize) {
+                let s = item.calcSize(ageYr);
+                if (typeof s === 'number') s = (Math.round(s * 2) / 2).toFixed(1).replace('.0', '');
+                size = s;
+                if (item.name.includes('ET Tube') && typeof item.calcSize(ageYr) === 'number') {
+                    depth = (item.calcSize(ageYr) * 3).toFixed(1).replace('.0', '');
+                }
+            } else if (item.calcSizeWt) {
+                if (wt > 0) size = item.calcSizeWt(wt);
+            }
+        }
+        
+        h += `<tr>
+            <td class="font-semibold text-slate-700">${item.name}</td>
+            <td class="text-blue-600 font-bold">${size}</td>
+            <td class="text-orange-600 font-bold">${depth}</td>
+        </tr>`;
+    });
+    
+    tbody.innerHTML = h;
+}
 function renderPedCommon() {
     renderDrugGroups(pedCommonGroups, 'ped-common-container');
 }
@@ -2410,11 +2723,10 @@ function calcCharcoal() {
 
     html += `
         <div class="space-y-4">
-            <div class="border border-purple-200 rounded-lg overflow-hidden shadow-sm">
-                <div class="bg-purple-600 text-white font-bold p-2 text-sm flex items-center justify-between">
+            <div class="card border border-purple-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="card-header bg-purple-600 text-white font-bold p-2 text-sm flex items-center justify-between">
                     <div><i class="fas fa-pills mr-2"></i>SDAC (Single Dose)</div>
                     <div class="text-xs font-normal opacity-90 text-purple-100">Max 100 g</div>
-                </div>
                 <div class="p-3 bg-white">
                     <div class="flex items-baseline justify-between mb-2 border-b border-dashed border-slate-200 pb-2">
                         <span class="text-slate-500 text-sm">Target Dose</span>
@@ -2473,7 +2785,7 @@ function calcCharcoal() {
                             </ul>
                         </div>
                         <div class="bg-red-50 p-2 rounded border border-red-200">
-                            <div class="font-bold text-red-800 mb-1 border-b border-red-200 pb-1">Contraindications</div>
+                            <div class="font-bold text-red-800 mb-1 border-b border-red-200 pb-1">Contraindications & Pregnancy</div>
                             <ul class="list-disc pl-4 space-y-1 text-red-900">
                                 <li>Nontoxic ingestion</li>
                                 <li>Toxin not adsorbed by activated charcoal</li>
@@ -2481,6 +2793,7 @@ function calcCharcoal() {
                                 <li>Unprotected airway</li>
                                 <li>Corrosive ingestion</li>
                                 <li>Possibility of upper GI perforation</li>
+                                <li><b>Pregnancy & Lactation:</b> Safe to use (not systemically absorbed).</li>
                             </ul>
                         </div>
                         <div class="bg-orange-50 p-2 rounded border border-orange-200 md:col-span-2">
@@ -2663,12 +2976,13 @@ function calcWbi() {
                         </ul>
                     </div>
                     <div class="bg-red-50 p-2 rounded border border-red-200">
-                        <div class="font-bold text-red-800 mb-1 border-b border-red-200 pb-1">Contraindications</div>
+                        <div class="font-bold text-red-800 mb-1 border-b border-red-200 pb-1">Contraindications & Pregnancy</div>
                         <ul class="list-disc pl-4 space-y-1 text-red-900">
                             <li>Unprotected airway</li>
                             <li>GI perforation, obstruction or ileus, hemorrhage</li>
                             <li>Intractable vomiting</li>
                             <li>Cardiovascular instability</li>
+                            <li><b>Pregnancy & Lactation:</b> Generally considered safe (PEG is poorly absorbed).</li>
                         </ul>
                     </div>
                     <div class="bg-orange-50 p-2 rounded border border-orange-200 md:col-span-2">
@@ -2737,6 +3051,21 @@ function selectAntidote(name) {
     } else if (name === 'WHOLE-BOWEL IRRIGATION AND OTHER INTESTINAL EVACUANTS') {
         renderWbiCalculator(content);
         calcWbi();
+    } else if (name === 'ATROPINE') {
+        renderAtropineCalculator(content);
+        calcAtropine();
+    } else if (name === 'BOTULINUM ANTITOXIN') {
+        renderBotulismCalculator(content);
+        calcBotulism();
+    } else if (name === 'CALCIUM') {
+        renderCalciumCalculator(content);
+        calcCalcium();
+    } else if (name === 'L-CARNITINE') {
+        renderCarnitineCalculator(content);
+        calcCarnitine();
+    } else if (name === 'DANTROLENE SODIUM') {
+        renderDantroleneCalculator(content);
+        calcDantrolene();
     } else {
         content.innerHTML = `<div class="p-8 text-center text-slate-400">
             <i class="fas fa-hammer text-4xl mb-3"></i>
@@ -2757,6 +3086,11 @@ function renderAntidotes() {
         if (window.currentAntidote === 'N-ACETYLCYSTEINE' && typeof calcNac === 'function') calcNac();
         else if (window.currentAntidote === 'ACTIVATED CHARCOAL' && typeof calcCharcoal === 'function') calcCharcoal();
         else if (window.currentAntidote === 'WHOLE-BOWEL IRRIGATION AND OTHER INTESTINAL EVACUANTS' && typeof calcWbi === 'function') calcWbi();
+        else if (window.currentAntidote === 'ATROPINE' && typeof calcAtropine === 'function') calcAtropine();
+        else if (window.currentAntidote === 'BOTULINUM ANTITOXIN' && typeof calcBotulism === 'function') calcBotulism();
+        else if (window.currentAntidote === 'CALCIUM' && typeof calcCalcium === 'function') calcCalcium();
+        else if (window.currentAntidote === 'L-CARNITINE' && typeof calcCarnitine === 'function') calcCarnitine();
+        else if (window.currentAntidote === 'DANTROLENE SODIUM' && typeof calcDantrolene === 'function') calcDantrolene();
     }
 }
 
@@ -2872,71 +3206,1255 @@ function calcNac() {
         html += renderNacBag('Bag 2', 200, wt, 22000, 1000, '10 hours', 'teal');
     }
     
-    content.innerHTML = html;
-}
-
-function renderNacBag(title, mgKg, wt, maxDoseMg, diluent, duration, color) {
-    let hasW = wt > 0;
-    
-    let doseMgStr = '-';
-    let doseGText = '';
-    let vol20Str = '-';
-    let maxTag = '';
-    let orderStr = '-';
-    let diluentStr = hasW ? diluent : '-';
-    
-    if (hasW) {
-        let doseMg = mgKg * wt;
-        let isCapped = false;
-        if (maxDoseMg && doseMg > maxDoseMg) {
-            doseMg = maxDoseMg;
-            isCapped = true;
-        }
-        let vol20 = doseMg / 200; // 200 mg/mL
-        
-        doseMgStr = `${rnd(doseMg)} mg`;
-        doseGText = `(${rnd(doseMg/1000)} g)`;
-        vol20Str = `${rnd(vol20)} mL`;
-        maxTag = isCapped ? `<span class="bg-rose-100 text-rose-700 px-1 py-0.5 rounded ml-2 border border-rose-200">Max ${maxDoseMg/1000} g</span>` : '';
-        orderStr = `NAC 20% ${rnd(vol20)} mL + 5%DW ${diluent} mL IV drip in ${duration}`;
-    }
-    
-    return `
-        <div class="mb-4 border border-${color}-200 rounded-lg overflow-hidden shadow-sm">
-            <div class="bg-${color}-600 text-white font-bold p-2 text-sm flex justify-between items-center">
-                <span>${title}</span>
-                <span>${mgKg} mg/kg${maxDoseMg ? ` (Max ${maxDoseMg/1000}g)` : ''}</span>
+    html += `
+        <div class="mt-4 border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+            <div class="bg-slate-100 p-2 text-sm font-bold text-slate-700 border-b border-slate-200 flex items-center gap-2">
+                <i class="fas fa-book-medical text-slate-500"></i> Reference & Guidelines
             </div>
-            <div class="bg-${color}-50 text-xs p-2 text-${color}-800 border-b border-${color}-100 font-medium">
-                <i class="fas fa-clock mr-1"></i> Infuse over ${duration}
-            </div>
-            <div class="p-3 bg-white text-sm">
-                <div class="grid grid-cols-2 gap-3 mb-3">
-                    <div class="bg-slate-50 p-2 rounded border border-slate-100">
-                        <div class="text-xs text-slate-500 mb-1">Total Dose</div>
-                        <div class="font-bold text-slate-700 flex items-center">${doseMgStr}${maxTag}</div>
-                        <div class="text-[10px] text-slate-400">${doseGText}</div>
+            <div class="p-3 bg-white text-xs text-slate-700 space-y-3">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="bg-green-50 p-2 rounded border border-green-200">
+                        <div class="font-bold text-green-800 mb-1 border-b border-green-200 pb-1">Indications</div>
+                        <ul class="list-disc pl-4 space-y-1 text-green-900">
+                            <li>Acetaminophen (APAP) toxicity</li>
+                            <li>Amanita phalloides (mushrooms)</li>
+                            <li>Carbon tetrachloride, pennyroyal/clove oil</li>
+                            <li>Non-APAP fulminant hepatic failure</li>
+                        </ul>
                     </div>
-                    <div class="bg-indigo-50 p-2 rounded border border-indigo-100">
-                        <div class="text-xs text-indigo-500 mb-1">NAC 20% Volume</div>
-                        <div class="font-bold text-indigo-700 text-lg">${vol20Str}</div>
+                    <div class="bg-orange-50 p-2 rounded border border-orange-200">
+                        <div class="font-bold text-orange-800 mb-1 border-b border-orange-200 pb-1">Adverse Effects</div>
+                        <ul class="list-disc pl-4 space-y-1 text-orange-900">
+                            <li><b>PO:</b> Nausea, vomiting (20%), diarrhea.</li>
+                            <li><b>IV:</b> Anaphylactoid reactions (14-18%; flushing, rash, rarely bronchospasm/hypotension), mild INR elevation.</li>
+                        </ul>
                     </div>
-                </div>
-                
-                <div class="bg-slate-50 p-3 flex flex-col md:flex-row items-center justify-between gap-2 text-sm border-t border-slate-100 rounded-lg">
-                    <div class="flex items-center gap-2">
-                        <div class="text-xs font-bold text-slate-500 uppercase">MIX IN D5W OR NSS:</div>
-                        <div class="font-bold text-blue-600 text-lg">${diluentStr} ${hasW ? 'mL' : ''}</div>
-                    </div>
-                    <div class="text-xs font-medium text-slate-700 text-right">
-                        <b>Order:</b> ${orderStr}
+                    <div class="bg-red-50 p-2 rounded border border-red-200 md:col-span-2">
+                        <div class="font-bold text-red-800 mb-1 border-b border-red-200 pb-1">Safety, Precautions & Pregnancy</div>
+                        <ul class="list-disc pl-4 space-y-1 text-red-900">
+                            <li>If IV anaphylactoid reaction: stop, treat (e.g., diphenhydramine), restart slowly.</li>
+                            <li>Effervescent PO has high sodium.</li>
+                            <li><b>Pregnancy & Lactation:</b> Category B. Untreated APAP toxicity is a greater threat. IV NAC is preferred over PO to assure fetal delivery.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     `;
+
+    content.innerHTML = html;
+}
+function renderAtropineCalculator(container) {
+    container.innerHTML = `
+        <div class="border-b border-rose-100 flex flex-wrap bg-rose-50/50">
+            <button id="tab-atro-op" onclick="switchAtropineTab('op')" class="atro-tab flex-1 py-3 text-sm font-bold border-b-2 border-rose-600 text-rose-700 transition">Organophosphorus / Carbamate</button>
+            <button id="tab-atro-nerve" onclick="switchAtropineTab('nerve')" class="atro-tab flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-rose-600 transition">Nerve Agents</button>
+        </div>
+        
+        <div class="p-4 bg-white">
+            <div id="atropine-content"></div>
+        </div>
+    `;
 }
 
+function switchAtropineTab(tab) {
+    activeAtropineTab = tab;
+    document.querySelectorAll('.atro-tab').forEach(b => {
+        b.classList.remove('border-rose-600', 'text-rose-700');
+        b.classList.add('border-transparent', 'text-slate-500');
+    });
+    const btn = document.getElementById('tab-atro-' + tab);
+    if(btn) {
+        btn.classList.remove('border-transparent', 'text-slate-500');
+        btn.classList.add('border-rose-600', 'text-rose-700');
+    }
+    calcAtropine();
+}
+
+function calcAtropine() {
+    const content = document.getElementById('atropine-content');
+    if (!content) return;
+    
+    const hasW = (P.calcWt && P.calcWt > 0);
+    const wt = hasW ? P.calcWt : 0;
+    const age = P.age || 0;
+    
+    let html = '';
+    
+    if (activeAtropineTab === 'op') {
+        let isPed = false;
+        if (age > 0 && age < 15) isPed = true;
+        if (hasW && wt < 50 && age === 0) isPed = true;
+        
+        let pDoseStr = '-', pMaintStr = '-';
+        if (hasW) {
+            pDoseStr = rnd(wt * 0.02) + " mg";
+            pMaintStr = rnd(wt * 0.025) + " mg/hr";
+        }
+        
+        let orderStr = '-';
+        if (hasW && isPed) {
+            let bolus = rnd(wt * 0.02);
+            orderStr = `Atropine ${bolus} mg + NSS 100 mL IV drip rate 10 mL/hr`;
+        }
+        
+        html += `
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200">
+                    <div>
+                        <div class="text-xs text-slate-500 font-bold uppercase">Patient Type</div>
+                        <div class="font-bold text-slate-800">${isPed ? 'Pediatric' : 'Adult'}</div>
+                    </div>
+                </div>
+                
+                ${isPed ? `
+                <div class="border border-rose-200 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-rose-600 text-white font-bold p-2 text-sm">Pediatric Dosing (0.02 mg/kg)</div>
+                    <div class="p-3 bg-white">
+                        <div class="grid grid-cols-2 gap-3 mb-3">
+                            <div class="bg-slate-50 p-2 rounded border border-slate-100">
+                                <div class="text-xs text-slate-500 mb-1">Initial Dose (IV/IO)</div>
+                                <div class="font-bold text-slate-700 text-lg">${pDoseStr}</div>
+                            </div>
+                            <div class="bg-indigo-50 p-2 rounded border border-indigo-100">
+                                <div class="text-xs text-indigo-500 mb-1">Maintenance Infusion</div>
+                                <div class="font-bold text-indigo-700 text-lg">${pMaintStr}</div>
+                            </div>
+                        </div>
+                        ${!hasW ? '<div class="text-xs text-red-500 font-bold">Please enter patient weight first.</div>' : ''}
+                        
+                        <div class="mt-3 bg-rose-50 p-2 rounded border border-rose-100 text-sm">
+                            <span class="font-bold text-rose-800">Preparation Example:</span><br>
+                            ${orderStr} 
+                            <div class="text-xs text-rose-600 mt-1">(Rate 10 mL/hr = 10% of loading dose per hour)</div>
+                        </div>
+                    </div>
+                </div>
+                ` : `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="border border-orange-200 rounded-lg overflow-hidden shadow-sm">
+                        <div class="bg-orange-500 text-white font-bold p-2 text-sm">Mild to Moderate</div>
+                        <div class="p-3 bg-white text-sm">
+                            <div class="mb-2"><span class="font-bold text-slate-700">Initial Dose:</span> 1 to 2 mg</div>
+                            <div class="mb-2"><span class="font-bold text-slate-700">Titration:</span> Double dose every 3-5 mins until improvement</div>
+                            <div><span class="font-bold text-slate-700">Maintenance:</span> 10% to 20% of loading dose per hour</div>
+                            <div class="mt-2 bg-rose-50 p-2 rounded border border-rose-100 text-sm">
+                                <span class="font-bold text-rose-800">Preparation Example:</span><br>
+                                Atropine total of bolus (mg) + NSS 100 mL IV drip rate 10 mL/hr 
+                                <div class="text-xs text-rose-600 mt-1">(Rate 10 mL/hr = 10% of loading dose per hour)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border border-red-200 rounded-lg overflow-hidden shadow-sm">
+                        <div class="bg-red-600 text-white font-bold p-2 text-sm">Severe (Unconscious)</div>
+                        <div class="p-3 bg-white text-sm">
+                            <div class="mb-2"><span class="font-bold text-slate-700">Initial Dose:</span> 3 to 5 mg</div>
+                            <div class="mb-2"><span class="font-bold text-slate-700">Titration:</span> Double dose every 3-5 mins until improvement</div>
+                            <div><span class="font-bold text-slate-700">Maintenance:</span> 10% to 20% of loading dose per hour</div>
+                            <div class="mt-2 bg-rose-50 p-2 rounded border border-rose-100 text-sm">
+                                <span class="font-bold text-rose-800">Preparation Example:</span><br>
+                                Atropine total of bolus (mg) + NSS 100 mL IV drip rate 10 mL/hr 
+                                <div class="text-xs text-rose-600 mt-1">(Rate 10 mL/hr = 10% of loading dose per hour)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                `}
+                
+                <div class="bg-green-50 p-3 rounded-lg border border-green-200 text-sm text-green-800">
+                    <div class="font-bold mb-1"><i class="fas fa-bullseye mr-1"></i> Target Endpoints:</div>
+                    Clear lungs, HR >= 80 bpm, SBP > 90 mmHg, dry axillae, absence of pinpoint pupils.
+                </div>
+            </div>
+        `;
+    } else if (activeAtropineTab === 'nerve') {
+        let ageGroup = 'Adult';
+        if (age > 0) {
+            if (age < 1) ageGroup = 'Pediatric (< 1 year)';
+            else if (age <= 7) ageGroup = 'Pediatric (3 to 7 years, 13-25 kg)';
+            else if (age <= 14) ageGroup = 'Pediatric (8 to 14 years)';
+            else ageGroup = 'Adult';
+        } else if (hasW) {
+            if (wt < 13) ageGroup = 'Pediatric (< 1 year)';
+            else if (wt <= 25) ageGroup = 'Pediatric (3 to 7 years, 13-25 kg)';
+            else if (wt <= 40) ageGroup = 'Pediatric (8 to 14 years)';
+            else ageGroup = 'Adult';
+        }
+        
+        let pDose = '', pNote = '';
+        if (ageGroup === 'Pediatric (< 1 year)') {
+            pDose = '0.5 mg (1 pediatric autoinjector)';
+        } else if (ageGroup === 'Pediatric (3 to 7 years, 13-25 kg)') {
+            pDose = '2 mg (1 autoinjector)';
+            pNote = 'Total expected dose: 0.08 to 0.15 mg/kg.<br>Also give 1 autoinjector of pralidoxime (600 mg).';
+        } else if (ageGroup === 'Pediatric (8 to 14 years)') {
+            pDose = '4 mg (2 autoinjectors)';
+            pNote = 'Total expected dose: 0.08 to 0.15 mg/kg.<br>Also give 2 autoinjectors of pralidoxime.';
+        }
+        
+        html += `
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200">
+                    <div>
+                        <div class="text-xs text-slate-500 font-bold uppercase">Estimated Group</div>
+                        <div class="font-bold text-slate-800">${ageGroup}</div>
+                    </div>
+                </div>
+                
+                ${ageGroup !== 'Adult' ? `
+                <div class="border border-rose-200 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-rose-600 text-white font-bold p-2 text-sm">${ageGroup} Dosing</div>
+                    <div class="p-3 bg-white text-sm">
+                        <div class="font-bold text-rose-700 text-lg mb-2">${pDose}</div>
+                        ${pNote ? `<div class="bg-indigo-50 p-2 rounded border border-indigo-100 text-indigo-800">${pNote}</div>` : ''}
+                    </div>
+                </div>
+                ` : `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="border border-orange-200 rounded-lg overflow-hidden shadow-sm">
+                        <div class="bg-orange-500 text-white font-bold p-2 text-sm">Conscious (with cholinergic effects)</div>
+                        <div class="p-3 bg-white text-sm">
+                            <div class="mb-2"><span class="font-bold text-slate-700">Initial Dose:</span> 2 mg</div>
+                            <div class="mb-2"><span class="font-bold text-slate-700">Titration:</span> Every 5 to 10 mins until improvement</div>
+                            <div><span class="font-bold text-slate-700">Total Expected Dose:</span> 2 to 4 mg</div>
+                        </div>
+                    </div>
+                    <div class="border border-red-200 rounded-lg overflow-hidden shadow-sm">
+                        <div class="bg-red-600 text-white font-bold p-2 text-sm">Unconscious or apneic</div>
+                        <div class="p-3 bg-white text-sm">
+                            <div class="mb-2"><span class="font-bold text-slate-700">Initial Dose:</span> 2 mg</div>
+                            <div class="mb-2"><span class="font-bold text-slate-700">Titration:</span> Every 5 to 10 mins until improvement</div>
+                            <div><span class="font-bold text-slate-700">Total Expected Dose:</span> 5 to 15 mg</div>
+                        </div>
+                    </div>
+                </div>
+                `}
+                
+                <div class="bg-blue-50 p-3 rounded-lg border border-blue-200 text-sm text-blue-800 mt-2">
+                    <i class="fas fa-syringe mr-1"></i> <b>Autoinjector:</b> Mark 1 Nerve Agent Antidote Kit (NAAK, AtroPen) contains 2 mg of atropine.
+                </div>
+                <div class="bg-green-50 p-3 rounded-lg border border-green-200 text-sm text-green-800">
+                    <div class="font-bold mb-1"><i class="fas fa-bullseye mr-1"></i> Target Endpoints:</div>
+                    Shortness of breath improves and drying of secretions occurs.
+                </div>
+            </div>
+        `;
+    }
+    
+    html += `
+        <div class="mt-4 border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+            <div class="bg-slate-100 p-2 text-sm font-bold text-slate-700 border-b border-slate-200 flex items-center gap-2">
+                <i class="fas fa-book-medical text-slate-500"></i> Reference & Guidelines
+            </div>
+            <div class="p-3 bg-white text-xs text-slate-700 space-y-3">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="bg-green-50 p-2 rounded border border-green-200">
+                        <div class="font-bold text-green-800 mb-1 border-b border-green-200 pb-1">Indications</div>
+                        <ul class="list-disc pl-4 space-y-1 text-green-900">
+                            <li>Organophosphorus & carbamate toxicity</li>
+                            <li>Nerve agents</li>
+                            <li>Muscarinic mushrooms (Clitocybe, Inocybe)</li>
+                            <li>Alzheimer's drug toxicity</li>
+                        </ul>
+                    </div>
+                    <div class="bg-orange-50 p-2 rounded border border-orange-200">
+                        <div class="font-bold text-orange-800 mb-1 border-b border-orange-200 pb-1">Adverse Effects</div>
+                        <ul class="list-disc pl-4 space-y-1 text-orange-900">
+                            <li>Anticholinergic toxidrome (dry mouth, blurred vision, tachycardia, hyperthermia, delirium, urinary retention).</li>
+                            <li>Paradoxical bradycardia at low doses (<0.5 mg).</li>
+                        </ul>
+                    </div>
+                    <div class="bg-red-50 p-2 rounded border border-red-200 md:col-span-2">
+                        <div class="font-bold text-red-800 mb-1 border-b border-red-200 pb-1">Safety & Precautions</div>
+                        <ul class="list-disc pl-4 space-y-1 text-red-900">
+                            <li>Caution in narrow-angle glaucoma, obstructive uropathy.</li>
+                            <li>Pregnancy Cat C. Compatible with breast-feeding.</li>
+                            <li>Overdose antidote: Physostigmine.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    content.innerHTML = html;
+}
+
+
+let activeBotulismTab = 'hbat';
+
+function renderBotulismCalculator(container) {
+    container.innerHTML = `
+        <div class="border-b border-purple-100 flex flex-wrap bg-purple-50/50">
+            <button id="tab-bot-hbat" onclick="switchBotulismTab('hbat')" class="bot-tab flex-1 py-3 text-sm font-bold border-b-2 border-purple-600 text-purple-700 transition">H-BAT (Heptavalent)</button>
+            <button id="tab-bot-big" onclick="switchBotulismTab('big')" class="bot-tab flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-purple-600 transition">BabyBIG-IV</button>
+        </div>
+        
+        <div class="p-4 bg-white">
+            <div id="botulism-content"></div>
+        </div>
+    `;
+}
+
+function switchBotulismTab(tab) {
+    activeBotulismTab = tab;
+    document.querySelectorAll('.bot-tab').forEach(b => {
+        b.classList.remove('border-purple-600', 'text-purple-700');
+        b.classList.add('border-transparent', 'text-slate-500');
+    });
+    const btn = document.getElementById('tab-bot-' + tab);
+    if(btn) {
+        btn.classList.remove('border-transparent', 'text-slate-500');
+        btn.classList.add('border-purple-600', 'text-purple-700');
+    }
+    calcBotulism();
+}
+
+function calcBotulism() {
+    const content = document.getElementById('botulism-content');
+    if (!content) return;
+    
+    const hasW = (P.calcWt && P.calcWt > 0);
+    const wt = hasW ? P.calcWt : 0;
+    const age = P.age || 0;
+    
+    let html = '';
+    
+    if (activeBotulismTab === 'hbat') {
+        let pGroup = 'Adult (>= 17 yrs)';
+        if (age > 0) {
+            if (age < 1) pGroup = 'Infant (< 1 yr)';
+            else if (age < 17) pGroup = (wt > 0 && wt <= 30) ? 'Pediatric (<= 30 kg)' : 'Pediatric (> 30 kg)';
+        } else if (hasW) {
+            if (wt < 10) pGroup = 'Infant (< 1 yr)';
+            else if (wt <= 30) pGroup = 'Pediatric (<= 30 kg)';
+            else if (wt < 60) pGroup = 'Pediatric (> 30 kg)';
+        }
+        
+        let doseCalc = '-', calcPct = '-', initRate = '-', titRate = '-', maxRate = '-';
+        if (pGroup === 'Adult (>= 17 yrs)') {
+            doseCalc = '1 Vial';
+            calcPct = '100%';
+            initRate = '0.5 mL/min';
+            titRate = '1 mL/min for next 30 min';
+            maxRate = '2 mL/min until finish';
+        } else if (pGroup === 'Infant (< 1 yr)') {
+            doseCalc = '10% of Adult Dose';
+            calcPct = '10%';
+            initRate = '0.01 mL/kg/min';
+            titRate = 'Increase 0.01 mL/kg/min every 30 min';
+            maxRate = '0.03 mL/kg/min';
+        } else if (pGroup === 'Pediatric (<= 30 kg)') {
+            doseCalc = hasW ? rnd(2 * wt) + '% of Adult Dose' : '2 x Weight (kg) = % of Adult Dose';
+            calcPct = hasW ? rnd(2 * wt) + '%' : '-';
+            initRate = '0.01 mL/kg/min';
+            titRate = 'Increase 0.01 mL/kg/min every 30 min';
+            maxRate = '0.03 mL/kg/min';
+        } else {
+            doseCalc = hasW ? rnd(wt + 30) + '% of Adult Dose' : 'Weight (kg) + 30 = % of Adult Dose';
+            calcPct = hasW ? rnd(wt + 30) + '%' : '-';
+            initRate = '0.01 mL/kg/min';
+            titRate = 'Increase 0.01 mL/kg/min every 30 min';
+            maxRate = '0.03 mL/kg/min';
+        }
+        
+        let actInit = '-', actTit = '-', actMax = '-';
+        if (hasW && pGroup !== 'Adult (>= 17 yrs)') {
+            actInit = rnd(0.01 * wt) + ' mL/min';
+            actTit = '+' + rnd(0.01 * wt) + ' mL/min';
+            actMax = rnd(0.03 * wt) + ' mL/min';
+        } else if (pGroup === 'Adult (>= 17 yrs)') {
+            actInit = '0.5 mL/min';
+            actTit = '+0.5 mL/min';
+            actMax = '2 mL/min';
+        }
+        
+        html += `
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200">
+                    <div>
+                        <div class="text-xs text-slate-500 font-bold uppercase">Estimated Group</div>
+                        <div class="font-bold text-slate-800">${pGroup}</div>
+                    </div>
+                </div>
+                
+                <div class="border border-purple-200 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-purple-600 text-white font-bold p-2 text-sm flex justify-between">
+                        <span>H-BAT Dosing</span>
+                        <span class="text-purple-100">${calcPct}</span>
+                    </div>
+                    <div class="p-3 bg-white text-sm">
+                        <div class="mb-3">
+                            <span class="text-xs text-slate-500 block mb-1">Dose Calculation</span>
+                            <div class="font-bold text-lg text-slate-800">${doseCalc}</div>
+                        </div>
+                        
+                        <div class="bg-indigo-50 p-2 rounded border border-indigo-100 mb-3 text-indigo-800 font-medium text-xs">
+                            <i class="fas fa-flask mr-1"></i> <b>Preparation:</b> Dilute 1:10 in 0.9% NSS
+                        </div>
+                        
+                        <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                            <div class="bg-slate-50 p-2 rounded border border-slate-200">
+                                <div class="text-slate-500 mb-1">Initial (First 30m)</div>
+                                <div class="font-bold text-slate-800">${initRate}</div>
+                                <div class="text-purple-600 font-bold mt-1">${actInit}</div>
+                            </div>
+                            <div class="bg-slate-50 p-2 rounded border border-slate-200">
+                                <div class="text-slate-500 mb-1">Titration (q30m)</div>
+                                <div class="font-bold text-slate-800">${titRate}</div>
+                                <div class="text-purple-600 font-bold mt-1">${actTit}</div>
+                            </div>
+                            <div class="bg-slate-50 p-2 rounded border border-slate-200">
+                                <div class="text-slate-500 mb-1">Max Rate</div>
+                                <div class="font-bold text-slate-800">${maxRate}</div>
+                                <div class="text-purple-600 font-bold mt-1">${actMax}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    } else if (activeBotulismTab === 'big') {
+        let doseStr = '-', volStr = '-', initStr = '-', maintStr = '-';
+        if (hasW) {
+            let dose = wt * 75;
+            let vol = wt * 1.5;
+            let initR = wt * 25;
+            let maintR = wt * 50;
+            doseStr = rnd(dose) + ' mg';
+            volStr = rnd(vol) + ' mL';
+            initStr = rnd(initR) + ' mg/hr';
+            maintStr = rnd(maintR) + ' mg/hr';
+        }
+        
+        html += `
+            <div class="space-y-4">
+                ${!hasW ? '<div class="text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight first.</div>' : ''}
+                
+                <div class="border border-blue-200 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-blue-600 text-white font-bold p-2 text-sm flex justify-between items-center">
+                        <span>BabyBIG-IV Dosing (Infant < 1 yr)</span>
+                        <span class="text-blue-100 font-normal">75 mg/kg</span>
+                    </div>
+                    <div class="p-3 bg-white text-sm">
+                        <div class="grid grid-cols-2 gap-3 mb-3">
+                            <div class="bg-slate-50 p-2 rounded border border-slate-100">
+                                <div class="text-xs text-slate-500 mb-1">Calculated Dose</div>
+                                <div class="font-bold text-blue-700 text-lg">${doseStr} <span class="text-sm text-slate-500">(${volStr})</span></div>
+                            </div>
+                            <div class="bg-indigo-50 p-2 rounded border border-indigo-100">
+                                <div class="text-xs text-indigo-500 mb-1">Preparation</div>
+                                <div class="font-bold text-indigo-800 text-xs">Reconstitute to 50 mg/mL</div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-3 text-center">
+                            <div class="bg-slate-50 p-2 rounded border border-slate-200">
+                                <div class="text-xs text-slate-500 mb-1">Initial Rate (First 15m)</div>
+                                <div class="font-bold text-slate-800">25 mg/kg/hr</div>
+                                <div class="text-blue-600 font-bold mt-1">${initStr}</div>
+                            </div>
+                            <div class="bg-slate-50 p-2 rounded border border-slate-200">
+                                <div class="text-xs text-slate-500 mb-1">Maintenance Rate</div>
+                                <div class="font-bold text-slate-800">50 mg/kg/hr</div>
+                                <div class="text-blue-600 font-bold mt-1">${maintStr}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-3 text-center text-xs font-bold text-slate-500 border-t border-slate-100 pt-2">
+                            <i class="fas fa-clock mr-1"></i> Total infusion time: 97.5 mins
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    html += `
+        <div class="mt-4 border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+            <div class="bg-slate-100 p-2 text-sm font-bold text-slate-700 border-b border-slate-200 flex items-center gap-2">
+                <i class="fas fa-notes-medical text-slate-500"></i> Key Treatments & Supportive Care
+            </div>
+            <div class="p-3 bg-white text-xs text-slate-700 space-y-3">
+                <div class="bg-blue-50 p-2 rounded border border-blue-200">
+                    <span class="font-bold text-blue-800"><i class="fas fa-lungs mr-1"></i> Respiratory:</span> 
+                    Monitor NIF and vital capacity. Intubate if NIF < -30 cm H2O or VC < 20 mL/kg.
+                </div>
+                <div class="bg-yellow-50 p-2 rounded border border-yellow-200">
+                    <span class="font-bold text-yellow-800"><i class="fas fa-stomach mr-1"></i> GI Decontamination:</span> 
+                    Activated charcoal is recommended as supportive treatment.
+                </div>
+                <div class="bg-red-50 p-2 rounded border border-red-200">
+                    <span class="font-bold text-red-800"><i class="fas fa-band-aid mr-1"></i> Wound Care:</span> 
+                    Prompt debridement. Use Penicillin G. <b>AVOID aminoglycosides, fluoroquinolones, and clindamycin.</b>
+                </div>
+                <div class="mt-2 text-slate-600 border-t border-slate-100 pt-2">
+                    <div class="font-bold text-slate-700 mb-1">Safety & Precautions:</div>
+                    <ul class="list-disc pl-4 space-y-1">
+                        <li>Have epinephrine/diphenhydramine ready (hypersensitivity risk).</li>
+                        <li>H-BAT contains maltose (may falsely elevate glucose readings).</li>
+                        <li>BabyBIG-IV: Delay live-virus vaccines for >= 3 months.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    content.innerHTML = html;
+}
+
+
+let activeCalciumTab = 'general';
+
+function renderCalciumCalculator(container) {
+    container.innerHTML = `
+        <div class="border-b border-orange-100 flex flex-wrap bg-orange-50/50">
+            <button id="tab-cal-general" onclick="switchCalciumTab('general')" class="cal-tab flex-1 py-3 text-sm font-bold border-b-2 border-orange-600 text-orange-700 transition">General IV Bolus</button>
+            <button id="tab-cal-drip" onclick="switchCalciumTab('drip')" class="cal-tab flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-orange-600 transition">IV Drip Preparation</button>
+            <button id="tab-cal-hf" onclick="switchCalciumTab('hf')" class="cal-tab flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-orange-600 transition">Hydrofluoric Acid (HF)</button>
+        </div>
+        
+        <div class="p-4 bg-white">
+            <div id="calcium-content"></div>
+        </div>
+    `;
+}
+
+function switchCalciumTab(tab) {
+    activeCalciumTab = tab;
+    document.querySelectorAll('.cal-tab').forEach(b => {
+        b.classList.remove('border-orange-600', 'text-orange-700');
+        b.classList.add('border-transparent', 'text-slate-500');
+    });
+    const btn = document.getElementById('tab-cal-' + tab);
+    if(btn) {
+        btn.classList.remove('border-transparent', 'text-slate-500');
+        btn.classList.add('border-orange-600', 'text-orange-700');
+    }
+    calcCalcium();
+}
+
+function calcCalcium() {
+    const content = document.getElementById('calcium-content');
+    if (!content) return;
+    
+    const hasW = (P.calcWt && P.calcWt > 0);
+    const wt = hasW ? P.calcWt : 0;
+    const age = P.age || 0;
+    
+    let isPed = false;
+    if (age > 0 && age < 18) isPed = true;
+    if (hasW && wt < 50 && age === 0) isPed = true;
+    
+    let html = '';
+    
+    if (activeCalciumTab === 'general') {
+        let pDoseStr = '-', pVolStr = '-';
+        if (hasW) {
+            let pDoseMg = wt * 60;
+            if (pDoseMg > 3000) pDoseMg = 3000; // max adult dose
+            let pVolMl = pDoseMg / 100; // 10% solution = 100mg/mL
+            pDoseStr = rnd(pDoseMg) + " mg";
+            pVolStr = rnd(pVolMl) + " mL";
+        }
+        
+        html += `
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200">
+                    <div>
+                        <div class="text-xs text-slate-500 font-bold uppercase">Patient Type</div>
+                        <div class="font-bold text-slate-800">${isPed ? 'Pediatric' : 'Adult'}</div>
+                    </div>
+                </div>
+                
+                ${isPed ? `
+                <div class="border border-orange-200 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-orange-500 text-white font-bold p-2 text-sm flex justify-between">
+                        <span>Pediatric Dosing (60 mg/kg)</span>
+                        <span class="text-orange-100 font-normal">Max: 3 g</span>
+                    </div>
+                    <div class="p-3 bg-white text-sm">
+                        <div class="grid grid-cols-2 gap-3 mb-3">
+                            <div class="bg-slate-50 p-2 rounded border border-slate-100">
+                                <div class="text-xs text-slate-500 mb-1">Target Dose</div>
+                                <div class="font-bold text-slate-700 text-lg">${pDoseStr}</div>
+                            </div>
+                            <div class="bg-indigo-50 p-2 rounded border border-indigo-100">
+                                <div class="text-xs text-indigo-500 mb-1">10% Calcium Gluconate Vol</div>
+                                <div class="font-bold text-indigo-700 text-lg">${pVolStr}</div>
+                            </div>
+                        </div>
+                        ${!hasW ? '<div class="text-xs text-red-500 font-bold mb-2">Please enter patient weight first.</div>' : ''}
+                        
+                        <div class="bg-orange-50 p-2 rounded border border-orange-100 text-orange-800">
+                            <b>Administration:</b> Infused over 5-10 minutes (unless in extremis-deliver over 60 seconds). Repeat every 10-20 minutes up to 3-4 doses as necessary.
+                        </div>
+                    </div>
+                </div>
+                ` : `
+                <div class="border border-orange-200 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-orange-500 text-white font-bold p-2 text-sm">Adult Dosing</div>
+                    <div class="p-3 bg-white text-sm">
+                        <div class="flex items-baseline justify-between mb-2 border-b border-dashed border-slate-200 pb-2">
+                            <span class="text-slate-500 font-bold">Dose</span>
+                            <span class="font-bold text-lg text-slate-800">3 g</span>
+                        </div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-slate-500 font-bold">10% Calcium Gluconate Vol</span>
+                            <span class="font-bold text-lg text-indigo-700">30 mL</span>
+                        </div>
+                        
+                        <div class="bg-orange-50 p-2 rounded border border-orange-100 text-orange-800">
+                            <b>Administration:</b> Infused over 10 minutes (unless in extremis-deliver over 60 seconds). Repeat every 10-20 minutes up to 3-4 doses as necessary.
+                        </div>
+                    </div>
+                </div>
+                `}
+                
+                <div class="grid grid-cols-2 gap-3 text-xs mt-3">
+                    <div class="border border-slate-200 p-2 rounded bg-slate-50 text-center">
+                        <div class="font-bold text-slate-700 mb-1 border-b border-slate-200 pb-1">Calcium Gluconate 10%</div>
+                        <div class="text-slate-600">Volume: 10 mL<br>Elemental Ca: 93 mg<br>4.64 mEq (2.32 mmol)</div>
+                    </div>
+                    <div class="border border-slate-200 p-2 rounded bg-slate-50 text-center">
+                        <div class="font-bold text-slate-700 mb-1 border-b border-slate-200 pb-1">Calcium Chloride 10%</div>
+                        <div class="text-slate-600">Volume: 10 mL<br>Elemental Ca: 273 mg<br>13.6 mEq (6.8 mmol)</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    } else if (activeCalciumTab === 'drip') {
+        let maxRateText = isPed ? '100 mg/min' : '200 mg/min';
+        let f1Rate = '-', f2Rate = '-';
+        if (hasW) {
+            // Formula 1: 10% Ca 110ml + D5W 890ml (1000ml total). Ca gluconate = 11000mg total.
+            // 11mg/mL Ca gluconate
+            // Dose: 0.5 - 1.5 mg/kg/h of elemental Ca? Wait, 10% Calcium gluconate has 9.3mg elemental Ca per mL.
+            // Formula 1 has 110 mL of 10% = 11000 mg Ca gluconate. Elemental = 1023 mg.
+            // Rate is 24.4 - 73.3 ml/hr for 50kg. So 0.5-1.5 mg/kg/h of Elemental Ca.
+            // Vol required = (Dose * wt) / Conc = (0.5 * wt) / 1.02
+            f1Rate = rnd((0.5 * wt) / 1.02) + ' - ' + rnd((1.5 * wt) / 1.02) + ' mL/hr';
+            f2Rate = rnd((0.5 * wt) / 0.93) + ' - ' + rnd((1.5 * wt) / 0.93) + ' mL/hr';
+        }
+        
+        html += `
+            <div class="space-y-4">
+                ${!hasW ? '<div class="text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight first.</div>' : ''}
+                
+                <div class="flex items-center justify-around bg-orange-50 border border-orange-200 rounded p-2 text-xs text-orange-900 shadow-sm">
+                    <div><i class="fas fa-flask text-orange-500 mr-1"></i><b>Max Concentration:</b> 20 mg/mL</div>
+                    <div><i class="fas fa-tachometer-alt text-orange-500 mr-1"></i><b>Max Rate:</b> ${maxRateText}</div>
+                </div>
+
+                <div class="border border-indigo-200 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-indigo-600 text-white font-bold p-2 text-sm flex justify-between">
+                        <span>Loading Dose</span>
+                    </div>
+                    <div class="p-3 bg-white text-sm space-y-2">
+                        <div class="bg-slate-50 p-2 rounded border border-slate-200">
+                            <b>Preparation:</b> 10% Calcium gluconate 10-20 mL + 5%DW 50-100 mL
+                        </div>
+                        <div class="flex items-center gap-2 text-indigo-800">
+                            <i class="fas fa-tint"></i> <b>Administer:</b> IV drip in 10-20 min
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border border-teal-200 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-teal-600 text-white font-bold p-2 text-sm flex justify-between">
+                        <span>Maintenance Formula 1</span>
+                        <span class="text-teal-100 font-normal">0.5-1.5 mg/kg/h</span>
+                    </div>
+                    <div class="p-3 bg-white text-sm space-y-3">
+                        <div class="bg-slate-50 p-2 rounded border border-slate-200 text-xs">
+                            <b>Preparation:</b> 10% Calcium gluconate 110 mL + 5%DW 890 mL<br>
+                            <span class="text-slate-500">(Elemental Ca 1.02 mg/mL)</span>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-slate-100 pt-2">
+                            <span class="font-bold text-slate-700">Calculated Rate:</span>
+                            <span class="font-bold text-teal-700 text-lg">${f1Rate}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-blue-200 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-blue-600 text-white font-bold p-2 text-sm flex justify-between">
+                        <span>Maintenance Formula 2</span>
+                        <span class="text-blue-100 font-normal">0.5-1.5 mg/kg/h</span>
+                    </div>
+                    <div class="p-3 bg-white text-sm space-y-3">
+                        <div class="bg-slate-50 p-2 rounded border border-slate-200 text-xs">
+                            <b>Preparation:</b> 10% Calcium gluconate 50 mL + 5%DW 450 mL<br>
+                            <span class="text-slate-500">(Elemental Ca 0.93 mg/mL)</span>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-slate-100 pt-2">
+                            <span class="font-bold text-slate-700">Calculated Rate:</span>
+                            <span class="font-bold text-blue-700 text-lg">${f2Rate}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    } else if (activeCalciumTab === 'hf') {
+        html += `
+            <div class="space-y-3">
+                <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">Skin Exposure</div>
+                    <div class="p-3 bg-white text-xs">
+                        <div class="mb-1"><span class="font-bold">Dose:</span> 2.5% calcium gel</div>
+                        <div class="mb-1"><span class="font-bold text-indigo-700">Prep:</span> Mix 10% calcium gluconate 25 mL with 75 mL of K-Y Jelly or water-based gel (2.5%)</div>
+                        <div><span class="font-bold text-blue-700">Admin:</span> Apply for 30 min (twice). Reapply the dressing at least every 4 h until pain is relieved/ 2 days. (Irrigate all exposed areas promptly with water for >= 30 min before gel)</div>
+                    </div>
+                </div>
+                
+                <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">Intradermal Infiltration (If topical fails)</div>
+                    <div class="p-3 bg-white text-xs">
+                        <div class="mb-1"><span class="font-bold">Dose:</span> 0.5 mL of a 5% solution per cm² of surface burn</div>
+                        <div class="mb-1"><span class="font-bold text-indigo-700">Prep:</span> 5% calcium gluconate solution</div>
+                        <div><span class="font-bold text-blue-700">Admin:</span> Subcutaneous infiltration extending 0.5 cm beyond margin. <b>Do not use chloride salt!</b></div>
+                    </div>
+                </div>
+                
+                <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">Regional IV Infusion (Bier block)</div>
+                    <div class="p-3 bg-white text-xs">
+                        <div class="mb-1"><span class="font-bold">Dose:</span> 10-20 mL of 10% calcium gluconate</div>
+                        <div class="mb-1"><span class="font-bold text-indigo-700">Prep:</span> Dilute 10% calcium gluconate 10-20 mL with 30-40 mL of 0.9% NSS (2% - 2.5%).</div>
+                        <div><span class="font-bold text-blue-700">Admin:</span> Bier block technique. Ischemia maintained for 25-30 min; BP cuff sequentially released over 5 min.</div>
+                    </div>
+                </div>
+                
+                <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">Intra-arterial</div>
+                    <div class="p-3 bg-white text-xs">
+                        <div class="mb-1"><span class="font-bold">Dose:</span> 10 mL of 10% calcium gluconate</div>
+                        <div class="mb-1"><span class="font-bold text-indigo-700">Prep:</span> Dilute 10% calcium gluconate 10 mL with 50 mL of D5W (1.67%).</div>
+                        <div><span class="font-bold text-blue-700">Admin:</span> Infuse over 4 h either through brachial or radial artery catheter.</div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+                        <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">Eye Exposure</div>
+                        <div class="p-3 bg-white text-xs">
+                            <div class="mb-1"><span class="font-bold">Dose:</span> 1% calcium drops</div>
+                            <div class="mb-1"><span class="font-bold text-indigo-700">Prep:</span> Mix 10% calcium gluconate 50 mL with 450 mL of NSS (1%)</div>
+                            <div><span class="font-bold text-blue-700">Admin:</span> 1% solution every 4-6 h for 1-2 days. (Irrigate promptly with LR or NSS before drops)</div>
+                        </div>
+                    </div>
+                    <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+                        <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">Inhalation Exposure</div>
+                        <div class="p-3 bg-white text-xs">
+                            <div class="mb-1"><span class="font-bold">Dose:</span> 2.5% calcium gluconate</div>
+                            <div class="mb-1"><span class="font-bold text-indigo-700">Prep:</span> Mix 10% calcium gluconate 1.5 mL with 4.5 mL of sterile water or NSS (2.5%)</div>
+                            <div><span class="font-bold text-blue-700">Admin:</span> Nebulize</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    html += `
+        <div class="mt-4 border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+            <div class="bg-slate-100 p-2 text-sm font-bold text-slate-700 border-b border-slate-200 flex items-center gap-2">
+                <i class="fas fa-book-medical text-slate-500"></i> Reference & Guidelines
+            </div>
+            <div class="p-3 bg-white text-xs text-slate-700 space-y-3">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="bg-green-50 p-2 rounded border border-green-200">
+                        <div class="font-bold text-green-800 mb-1 border-b border-green-200 pb-1">Indications</div>
+                        <p class="text-green-900">CCB overdose, beta-blocker overdose, ethylene glycol, phosphate, hypermagnesemia, hyperkalemia, citrate toxicity, hydrofluoric acid and fluoride-releasing xenobiotics</p>
+                    </div>
+                    <div class="bg-red-50 p-2 rounded border border-red-200 md:col-span-2">
+                        <div class="font-bold text-red-800 mb-1 border-b border-red-200 pb-1">Safety & Precautions</div>
+                        <ul class="list-disc pl-4 space-y-1 text-red-900">
+                            <li>Do not mix with sodium bicarbonate (precipitate) or ceftriaxone.</li>
+                            <li>Not physically compatible with fluids containing phosphate.</li>
+                            <li>Do not give concurrently with minocycline.</li>
+                            <li><b>Calcium chloride is extremely irritating to tissue; never give IM, SC, or perivascularly (use central line).</b></li>
+                            <li>Calcium gluconate is preferred for peripheral administration.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    content.innerHTML = html;
+}
+
+
+let activeCarnitineTab = 'sx';
+
+function renderCarnitineCalculator(container) {
+    container.innerHTML = `
+        <div class="border-b border-indigo-100 flex flex-wrap bg-indigo-50/50">
+            <button id="tab-car-sx" onclick="switchCarnitineTab('sx')" class="car-tab flex-1 py-3 text-sm font-bold border-b-2 border-indigo-600 text-indigo-700 transition">Symptomatic (IV)</button>
+            <button id="tab-car-asx" onclick="switchCarnitineTab('asx')" class="car-tab flex-1 py-3 text-sm font-bold border-b-2 border-transparent text-slate-500 hover:text-indigo-600 transition">Asymptomatic (PO)</button>
+        </div>
+        
+        <div class="p-4 bg-white">
+            <div id="carnitine-content"></div>
+        </div>
+    `;
+}
+
+function switchCarnitineTab(tab) {
+    activeCarnitineTab = tab;
+    document.querySelectorAll('.car-tab').forEach(b => {
+        b.classList.remove('border-indigo-600', 'text-indigo-700');
+        b.classList.add('border-transparent', 'text-slate-500');
+    });
+    const btn = document.getElementById('tab-car-' + tab);
+    if(btn) {
+        btn.classList.remove('border-transparent', 'text-slate-500');
+        btn.classList.add('border-indigo-600', 'text-indigo-700');
+    }
+    calcCarnitine();
+}
+
+function calcCarnitine() {
+    const content = document.getElementById('carnitine-content');
+    if (!content) return;
+    
+    const hasW = (P.calcWt && P.calcWt > 0);
+    const wt = hasW ? P.calcWt : 0;
+    
+    let html = '';
+    
+    if (activeCarnitineTab === 'sx') {
+        let lDoseStr = '-', mDoseStr = '-';
+        if (hasW) {
+            let lDoseMg = wt * 100;
+            if (lDoseMg > 6000) lDoseMg = 6000;
+            let mDoseMg = wt * 15;
+            lDoseStr = rnd(lDoseMg) + " mg";
+            mDoseStr = rnd(mDoseMg) + " mg";
+        }
+        
+        html += `
+            <div class="space-y-4">
+                ${!hasW ? '<div class="text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight first.</div>' : ''}
+                
+                <div class="border border-indigo-200 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-indigo-600 text-white font-bold p-2 text-sm flex justify-between">
+                        <span>Loading Dose IV (100 mg/kg)</span>
+                        <span class="text-indigo-100 font-normal">Max: 6 g</span>
+                    </div>
+                    <div class="p-3 bg-white text-sm">
+                        <div class="flex items-center justify-between mb-3 border-b border-dashed border-slate-200 pb-2">
+                            <span class="font-bold text-slate-700">Calculated Dose</span>
+                            <span class="font-bold text-indigo-700 text-lg">${lDoseStr}</span>
+                        </div>
+                        <div class="bg-indigo-50 p-2 rounded border border-indigo-100 text-indigo-800 text-xs">
+                            <i class="fas fa-clock mr-1"></i> Administer over 30 mins
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-blue-200 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-blue-600 text-white font-bold p-2 text-sm">
+                        <span>Maintenance Dose IV (15 mg/kg/dose)</span>
+                    </div>
+                    <div class="bg-blue-50 text-xs font-bold text-blue-800 p-2 border-b border-blue-100">Every 6 hours</div>
+                    <div class="p-3 bg-white text-sm">
+                        <div class="flex items-center justify-between mb-3 border-b border-dashed border-slate-200 pb-2">
+                            <span class="font-bold text-slate-700">Calculated Dose</span>
+                            <span class="font-bold text-blue-700 text-lg">${mDoseStr}</span>
+                        </div>
+                        <div class="bg-slate-50 p-2 rounded border border-slate-200 text-slate-700 text-xs">
+                            <i class="fas fa-clock mr-1"></i> Administer over 10-30 mins
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    } else if (activeCarnitineTab === 'asx') {
+        let tDoseStr = '-', dDoseStr = '-';
+        if (hasW) {
+            let tDoseMg = wt * 100;
+            if (tDoseMg > 3000) tDoseMg = 3000;
+            let dDoseMg = tDoseMg / 3;
+            tDoseStr = rnd(tDoseMg) + " mg/day";
+            dDoseStr = rnd(dDoseMg) + " mg/dose";
+        }
+        
+        html += `
+            <div class="space-y-4">
+                ${!hasW ? '<div class="text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight first.</div>' : ''}
+                
+                <div class="border border-teal-200 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-teal-600 text-white font-bold p-2 text-sm flex justify-between">
+                        <span>Oral Dose (100 mg/kg/day)</span>
+                        <span class="text-teal-100 font-normal">Max: 3 g/day</span>
+                    </div>
+                    <div class="bg-teal-50 text-xs font-bold text-teal-800 p-2 border-b border-teal-100">Divided every 8 hours (q8h)</div>
+                    <div class="p-3 bg-white text-sm">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-bold text-slate-500 text-xs uppercase">Total Daily Dose</span>
+                            <span class="font-bold text-slate-700">${tDoseStr}</span>
+                        </div>
+                        <div class="flex items-center justify-between mb-3 border-b border-dashed border-slate-200 pb-2">
+                            <span class="font-bold text-slate-700">Calculated Single Dose</span>
+                            <span class="font-bold text-teal-700 text-lg">${dDoseStr}</span>
+                        </div>
+                        <div class="bg-slate-50 p-2 rounded border border-slate-200 text-slate-700 text-xs">
+                            <i class="fas fa-info-circle mr-1"></i> PO solution does not require dilution. Dilute in drinks to improve palatability.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    html += `
+        <div class="mt-4 border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+            <div class="bg-slate-100 p-2 text-sm font-bold text-slate-700 border-b border-slate-200 flex items-center gap-2">
+                <i class="fas fa-book-medical text-slate-500"></i> Reference & Guidelines
+            </div>
+            <div class="p-3 bg-white text-xs text-slate-700 space-y-3">
+                <div class="bg-green-50 p-2 rounded border border-green-200">
+                    <span class="font-bold text-green-800">Indications:</span> Valproic acid-induced hyperammonemia, hepatotoxicity, metabolic acidosis, and encephalopathy.
+                </div>
+                <div class="bg-red-50 p-2 rounded border border-red-200">
+                    <span class="font-bold text-red-800">Safety & Precautions:</span> Only L isomer should be used. D-isomer is harmful.
+                </div>
+            </div>
+        </div>
+    `;
+    
+    content.innerHTML = html;
+}
+
+// ----------------------------------------------------
+// DANTROLENE
+// ----------------------------------------------------
+
+function renderDantroleneCalculator(container) {
+    container.innerHTML = `
+        <div class="p-4 bg-white">
+            <div id="dantrolene-content"></div>
+        </div>
+    `;
+    calcDantrolene();
+}
+
+function calcDantrolene() {
+    const content = document.getElementById('dantrolene-content');
+    if (!content) return;
+    
+    const hasW = (P.calcWt && P.calcWt > 0);
+    const wt = hasW ? P.calcWt : 0;
+    
+    let html = '';
+    
+    let iBolusStr = '-', mBolusStr = '-', mDripStr = '-', maxTotalStr = '-';
+    if (hasW) {
+        iBolusStr = rnd(wt * 2.5) + " mg";
+        mBolusStr = rnd(wt * 1.0) + " mg";
+        mDripStr = rnd(wt * 0.25) + " mg/hr";
+        maxTotalStr = rnd(wt * 10) + " mg";
+    }
+    
+    html += `
+        <div class="space-y-4">
+            ${!hasW ? '<div class="text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight first.</div>' : ''}
+            
+            <div class="border border-red-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-red-600 text-white font-bold p-2 text-sm flex justify-between items-center">
+                    <span>Initial IV Bolus (2.5 mg/kg)</span>
+                    <span class="text-red-100 font-normal text-xs bg-red-700 px-1 py-0.5 rounded">Max total: ${maxTotalStr} (10 mg/kg)</span>
+                </div>
+                <div class="bg-red-50 text-xs font-bold text-red-800 p-2 border-b border-red-100">Every 15 mins</div>
+                <div class="p-3 bg-white text-sm">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-bold text-slate-700">Calculated Dose</span>
+                        <span class="font-bold text-red-700 text-xl">${iBolusStr}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border border-orange-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-orange-500 text-white font-bold p-2 text-sm">
+                    <span>After successful termination</span>
+                </div>
+                <div class="p-3 bg-white text-sm">
+                    <div class="text-xs text-slate-500 font-bold mb-2 uppercase text-center border-b border-slate-200 pb-2">Choose one maintenance option:</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="bg-slate-50 p-2 rounded border border-slate-200 text-center">
+                            <div class="font-bold text-slate-700 mb-1">IV Bolus (1 mg/kg)</div>
+                            <div class="text-xs text-slate-500 mb-1">Every 4-6 hrs for 24 hrs</div>
+                            <div class="font-bold text-orange-600 text-lg">${mBolusStr}</div>
+                        </div>
+                        <div class="bg-slate-50 p-2 rounded border border-slate-200 text-center">
+                            <div class="font-bold text-slate-700 mb-1">Continuous IV (0.25 mg/kg/h)</div>
+                            <div class="text-xs text-slate-500 mb-1">For 24 hrs</div>
+                            <div class="font-bold text-orange-600 text-lg">${mDripStr}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">Preparation: Dantrium / Revonto</div>
+                    <div class="p-3 bg-white text-xs space-y-1">
+                        <div><span class="font-bold text-slate-700">Vial:</span> 20 mg/vial</div>
+                        <div><span class="font-bold text-slate-700">Instructions:</span> Add 60 mL sterile water, shake ~20 sec until clear (pH 9.5).</div>
+                    </div>
+                </div>
+                <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+                    <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">Preparation: Ryanodex</div>
+                    <div class="p-3 bg-white text-xs space-y-1">
+                        <div><span class="font-bold text-slate-700">Vial:</span> 250 mg/vial</div>
+                        <div><span class="font-bold text-slate-700">Instructions:</span> Add 5 mL preservative-free sterile water, shake 10 sec until uniform orange suspension (pH 10.5).</div>
+                        <div class="text-red-600 font-bold mt-1">Incompatible with dextrose / 0.9% NaCl for reconstitution!</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4 border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-slate-100 p-2 text-sm font-bold text-slate-700 border-b border-slate-200 flex items-center gap-2">
+                    <i class="fas fa-book-medical text-slate-500"></i> Reference & Guidelines
+                </div>
+                <div class="p-3 bg-white text-xs text-slate-700 space-y-3">
+                    <div class="bg-green-50 p-2 rounded border border-green-200">
+                        <span class="font-bold text-green-800">Administration:</span> Administer via central vein or large peripheral vein to avoid tissue necrosis from extravasation. Ryanodex can be given IV bolus into free running 0.9% NaCl or D5W.
+                    </div>
+                    <div class="bg-red-50 p-2 rounded border border-red-200">
+                        <span class="font-bold text-red-800">Safety & Precautions:</span> Do not combine with verapamil (risk of hyperkalemia and hypotension). Safe to use with IV calcium salts.
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    content.innerHTML = html;
+}
+
+
+
+function makeCardsCollapsible(pageId) {
+    const page = document.getElementById(pageId);
+    if (!page) return;
+    const headers = page.querySelectorAll('.card-header, .section-title');
+    headers.forEach(h => {
+        if (!h.classList.contains('collapsible-setup')) {
+            h.classList.add('collapsible-setup');
+            h.classList.add('cursor-pointer');
+            h.classList.add('flex', 'justify-between', 'items-center');
+            
+            if (!h.querySelector('.fa-chevron-up') && !h.querySelector('.fa-chevron-down')) {
+                const icon = document.createElement('i');
+                icon.className = 'fas fa-chevron-up'; // Default to UP (Open)
+                h.appendChild(icon);
+            }
+            
+            const content = h.nextElementSibling;
+
+            h.onclick = function() {
+                if (content) {
+                    content.classList.toggle('hidden');
+                    const icon = h.querySelector('.fa-chevron-down, .fa-chevron-up');
+                    if (icon) {
+                        if (content.classList.contains('hidden')) {
+                            icon.classList.remove('fa-chevron-up');
+                            icon.classList.add('fa-chevron-down');
+                        } else {
+                            icon.classList.remove('fa-chevron-down');
+                            icon.classList.add('fa-chevron-up');
+                        }
+                    }
+                }
+            };
+        }
+    });
+}
+
+function filterDrugs(pageId, query) {
+    query = query.toLowerCase().trim();
+    if (!query) return; // Do nothing if query is empty
+
+    const page = document.getElementById(pageId);
+    if (!page) return;
+    
+    let matchedElement = null;
+
+    // Search in table rows
+    const rows = page.querySelectorAll('tbody tr');
+    for (let row of rows) {
+        if (row.textContent.toLowerCase().includes(query)) {
+            matchedElement = row;
+            break;
+        }
+    }
+
+    // If not found in rows, search in grid items (like inotropes)
+    if (!matchedElement) {
+        const gridItems = page.querySelectorAll('.grid > div');
+        for (let item of gridItems) {
+            if (item.textContent.toLowerCase().includes(query)) {
+                matchedElement = item;
+                break;
+            }
+        }
+    }
+
+    if (matchedElement) {
+        // Find the closest card
+        const card = matchedElement.closest('.card');
+        if (card) {
+            // Expand the card if it's collapsed
+            const header = card.querySelector('.card-header');
+            if (header) {
+                const content = header.nextElementSibling;
+                if (content && content.classList.contains('hidden')) {
+                    content.classList.remove('hidden');
+                    const icon = header.querySelector('.fa-chevron-down, .fa-chevron-up');
+                    if (icon) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    }
+                }
+            }
+        }
+
+        // Scroll into view
+        matchedElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // Highlight temporarily
+        const originalBg = matchedElement.style.backgroundColor;
+        matchedElement.style.backgroundColor = '#fffbeb'; // yellow-50
+        setTimeout(() => {
+            matchedElement.style.backgroundColor = originalBg;
+        }, 1500);
+    }
+}
+
+const origRenderAdult = renderAdult;
+renderAdult = function() {
+    origRenderAdult();
+    setTimeout(() => makeCardsCollapsible('page-adult'), 100);
+};
+
+
+const origRenderRsi = renderRsi;
+renderRsi = function() {
+    origRenderRsi();
+    setTimeout(() => makeCardsCollapsible('page-rsi'), 100);
+};
+
+const origRenderPedEm = renderPedEm;
+renderPedEm = function() {
+    origRenderPedEm();
+    setTimeout(() => makeCardsCollapsible('page-ped-em'), 100);
+};
+
+const origRenderNeonatal = renderNeonatal;
+renderNeonatal = function() {
+    origRenderNeonatal();
+    setTimeout(() => makeCardsCollapsible('page-neonatal'), 100);
+};
+
+const origRenderPedCommon = renderPedCommon;
+renderPedCommon = function() {
+    origRenderPedCommon();
+    setTimeout(() => makeCardsCollapsible('page-ped-common'), 100);
+};
+
+
+// Init app
+recalc();
+
+function populateSearchLists() {
+    // Collect Pediatric Drugs
+    let pedDrugs = new Set();
+    pedCommonGroups.forEach(g => {
+        if (g.items) g.items.forEach(d => pedDrugs.add(d.name));
+    });
+    // For pedDrips and pedEmDrugs, assuming they are arrays of objects with 'name' property
+    if (typeof pedDrips !== 'undefined') pedDrips.forEach(d => pedDrugs.add(d.name));
+    if (typeof pedEmDrugs !== 'undefined') pedEmDrugs.forEach(d => pedDrugs.add(d.name));
+
+    let pedDataList = document.getElementById('pedDrugList');
+    if (!pedDataList) {
+        pedDataList = document.createElement('datalist');
+        pedDataList.id = 'pedDrugList';
+        document.body.appendChild(pedDataList);
+    }
+    pedDataList.innerHTML = '';
+    pedDrugs.forEach(drug => {
+        if (drug) {
+            const option = document.createElement('option');
+            option.value = drug;
+            pedDataList.appendChild(option);
+        }
+    });
+
+    // Collect Adult Drugs
+    let adultDrugs = new Set();
+    if (typeof adultEmDrugs !== 'undefined') {
+        adultEmDrugs.forEach(cat => {
+            if (cat.items) cat.items.forEach(d => adultDrugs.add(d.name));
+        });
+    }
+
+    let adultDataList = document.getElementById('adultDrugList');
+    if (!adultDataList) {
+        adultDataList = document.createElement('datalist');
+        adultDataList.id = 'adultDrugList';
+        document.body.appendChild(adultDataList);
+    }
+    adultDataList.innerHTML = '';
+    adultDrugs.forEach(drug => {
+        if (drug) {
+            const option = document.createElement('option');
+            option.value = drug;
+            adultDataList.appendChild(option);
+        }
+    });
+}
+
+function handleGlobalSearch(query) {
+    let activePageId = null;
+    document.querySelectorAll('.page').forEach(el => {
+        if (el.classList.contains('active')) {
+            activePageId = el.id;
+        }
+    });
+    
+    if (activePageId && activePageId !== 'page-antidote' && activePageId !== 'page-home') {
+        filterDrugs(activePageId, query);
+    }
+}
+
+function startCalculation() {
+    // 1. Sync data
+    document.getElementById('gender').value = document.getElementById('entry-gender').value;
+    document.getElementById('age').value = document.getElementById('entry-yr').value;
+    document.getElementById('ageMo').value = document.getElementById('entry-mo').value;
+    document.getElementById('weight').value = document.getElementById('entry-tbw').value;
+    document.getElementById('height').value = document.getElementById('entry-ht').value;
+    
+    // 2. Set Weight for Calculate IF a weight was entered
+    const tbwVal = document.getElementById('entry-tbw').value;
+    if (tbwVal) {
+        document.getElementById('calcWt').value = tbwVal;
+    }
+    
+    // 3. Trigger recalculation
+    recalc();
+    onManualCalcWtInput();
+    
+    // 4. Navigate to home
+    navigate('home');
+}
 </script>
 </body>
 </html>
+
+
+
+
