@@ -904,11 +904,11 @@ function startCalculation() {
             
             <div id="antidoteDetailCard" class="card hidden border-purple-200 shadow-lg">
                 <div class="card-header bg-purple-600 text-lg font-bold" id="adTitle"><i class="fas fa-prescription-bottle-medical mr-2"></i>Antidote Details</div>
-                <div id="adRef" class="px-4 py-2 bg-indigo-50 border-b border-indigo-200 text-xs text-indigo-800 font-medium flex items-center gap-1.5">
-                    <i class="fas fa-book-medical text-indigo-500"></i> Reference: Goldfrank's Toxicologic Emergencies, Eleventh Edition (11th ed.)
-                </div>
                 <div class="p-0 bg-white" id="adContent">
                     <!-- Dynamic content depending on drug selected -->
+                </div>
+                <div id="adRef" class="px-4 py-2 bg-indigo-50 border-t border-indigo-200 text-xs text-indigo-800 font-medium flex items-center gap-1.5">
+                    <i class="fas fa-book-medical text-indigo-500"></i> Reference: Goldfrank's Toxicologic Emergencies, Eleventh Edition (11th ed.)
                 </div>
             </div>
         </div>
@@ -3460,9 +3460,6 @@ function calcDeferoxamine() {
     const conc = 1000 / 150;
 
     let html = '';
-    if (!hasW) {
-        html += '<div class="mb-4 text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight first.</div>';
-    }
 
     const p1dose = hasW ? rnd(wt * 5) : '-';
     const p1rate = hasW ? (wt * 5 / 60 / conc).toFixed(2) : '-';
@@ -3673,15 +3670,15 @@ function calcDeferoxamine() {
 function renderDigoxinFabCalculator(container) {
     container.innerHTML = `
         <div class="p-4 bg-white">
-            <div class="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 shadow-inner">
-                <div class="font-bold text-amber-700 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>Preparation</div>
-                DigiFab 40 mg/vial. Reconstitute each vial with 4 ml SWFI &rarr; 10 mg/ml. Each vial binds &asymp;0.5 mg digoxin. Give IV slowly over &ge;30 min (bolus if critically ill). Pediatric: may further dilute to 1 mg/ml with 36 ml NS.
-            </div>
             <div class="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <label class="block"><span class="font-semibold text-slate-600">Serum digoxin concentration SDC (ng/ml)</span><input id="digoxinFabSdc" type="number" min="0" step="0.1" class="inp mt-1" oninput="calcDigoxinFab()" placeholder="e.g. 5"></label>
                 <label class="block"><span class="font-semibold text-slate-600">Amount ingested (mg)</span><input id="digoxinFabIngested" type="number" min="0" step="0.1" class="inp mt-1" oninput="calcDigoxinFab()" placeholder="e.g. 12.5"></label>
             </div>
             <div id="digoxinFab-content"></div>
+            <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 shadow-inner">
+                <div class="font-bold text-amber-700 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>Preparation</div>
+                DigiFab 40 mg/vial. Reconstitute each vial with 4 ml SWFI &rarr; 10 mg/ml. Each vial binds &asymp;0.5 mg digoxin. Give IV slowly over &ge;30 min (bolus if critically ill). Pediatric: may further dilute to 1 mg/ml with 36 ml NS.
+            </div>
         </div>
     `;
 }
@@ -3702,9 +3699,6 @@ function calcDigoxinFab() {
     const orderVials = sdcVials !== '-' ? sdcVials : ingVials;
 
     let html = '';
-    if (!hasW) {
-        html += '<div class="mb-4 text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight first.</div>';
-    }
 
     html += `
         <div class="space-y-4">
@@ -3871,9 +3865,6 @@ function calcNac() {
     const wt = hasW ? P.calcWt : 0;
     
     let html = '';
-    if (!hasW) {
-        html += '<div class="mb-4 text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight first.</div>';
-    }
     
     if (activeNacTab === 'iv3') {
         let d1 = 200, d2 = 500, d3 = 1000;
@@ -4093,7 +4084,6 @@ function calcAtropine() {
                                 <div class="font-bold text-indigo-700 text-lg">${pMaintStr}</div>
                             </div>
                         </div>
-                        ${!hasW ? '<div class="text-xs text-red-500 font-bold">Please enter patient weight first.</div>' : ''}
                         
                         <div class="mt-3 bg-rose-50 p-2 rounded border border-rose-100 text-sm">
                             <span class="font-bold text-rose-800">Preparation Example:</span><br>
@@ -4401,7 +4391,6 @@ function calcBotulism() {
         
         html += `
             <div class="space-y-4">
-                ${!hasW ? '<div class="text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight first.</div>' : ''}
                 
                 <div class="border border-blue-200 rounded-lg overflow-hidden shadow-sm">
                     <div class="bg-blue-600 text-white font-bold p-2 text-sm flex justify-between items-center">
@@ -4556,7 +4545,6 @@ function calcCalcium() {
                                 <div class="font-bold text-indigo-700 text-lg">${pVolStr}</div>
                             </div>
                         </div>
-                        ${!hasW ? '<div class="text-xs text-red-500 font-bold mb-2">Please enter patient weight first.</div>' : ''}
                         
                         <div class="bg-orange-50 p-2 rounded border border-orange-100 text-orange-800">
                             <b>Administration:</b> Infused over 5-10 minutes (unless in extremis-deliver over 60 seconds). Repeat every 10-20 minutes up to 3-4 doses as necessary.
@@ -4611,7 +4599,6 @@ function calcCalcium() {
         
         html += `
             <div class="space-y-4">
-                ${!hasW ? '<div class="text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight first.</div>' : ''}
                 
                 <div class="flex items-center justify-around bg-orange-50 border border-orange-200 rounded p-2 text-xs text-orange-900 shadow-sm">
                     <div><i class="fas fa-flask text-orange-500 mr-1"></i><b>Max Concentration:</b> 20 mg/ml</div>
@@ -4808,7 +4795,6 @@ function calcCarnitine() {
         
         html += `
             <div class="space-y-4">
-                ${!hasW ? '<div class="text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight first.</div>' : ''}
                 
                 <div class="border border-indigo-200 rounded-lg overflow-hidden shadow-sm">
                     <div class="bg-indigo-600 text-white font-bold p-2 text-sm flex justify-between">
@@ -4855,7 +4841,6 @@ function calcCarnitine() {
         
         html += `
             <div class="space-y-4">
-                ${!hasW ? '<div class="text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight first.</div>' : ''}
                 
                 <div class="border border-teal-200 rounded-lg overflow-hidden shadow-sm">
                     <div class="bg-teal-600 text-white font-bold p-2 text-sm flex justify-between">
@@ -4932,7 +4917,6 @@ function calcDantrolene() {
     
     html += `
         <div class="space-y-4">
-            ${!hasW ? '<div class="text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight first.</div>' : ''}
             
             <div class="border border-red-200 rounded-lg overflow-hidden shadow-sm">
                 <div class="bg-red-600 text-white font-bold p-2 text-sm flex justify-between items-center">
