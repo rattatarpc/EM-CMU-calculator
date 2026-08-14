@@ -3056,7 +3056,7 @@ function calcCharcoal() {
     const hasW = (P.calcWt && P.calcWt > 0);
     const wt = hasW ? P.calcWt : 0;
     
-    let sdacDoseStr = '-', sdacVolStr = '-', mdacDoseStr = '-', mdacVolStr = '-';
+    let sdacDoseStr = '0', sdacVolStr = '0', mdacDoseStr = '0', mdacVolStr = '0';
     let sdacOrderStr = '-', mdacOrderStr = '-';
     
     if (hasW) {
@@ -3186,11 +3186,6 @@ function calcCharcoal() {
 function renderWbiCalculator(container) {
     container.innerHTML = `
         <div class="p-4 bg-white">
-            <div class="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 shadow-inner">
-                <div class="font-bold text-amber-700 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>Maharaj Formula Preparation</div>
-                1 set = PEG 4000 (90g) + Electrolytes (14.3g) = Total 104.3g.<br>
-                Mix with clean water 1,500 ml.
-            </div>
             <div id="wbi-content"></div>
             
             <div class="mt-4 border border-red-200 rounded-lg overflow-hidden shadow-sm">
@@ -3209,6 +3204,12 @@ function renderWbiCalculator(container) {
                     </ul>
                     <p class="pt-2 border-t border-slate-200 mt-2"><b>Special Consideration:</b> Pregnancy (FDA Category C), Breastfeeding (Infant risk cannot be ruled out)</p>
                 </div>
+            </div>
+
+            <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 shadow-inner">
+                <div class="font-bold text-amber-700 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>Maharaj Formula How to Mix/Dilute</div>
+                1 set = PEG 4000 (90g) + Electrolytes (14.3g) = Total 104.3g.<br>
+                Mix with clean water 1,500 ml.
             </div>
         </div>
     `;
@@ -3293,7 +3294,7 @@ function calcWbi() {
         
         <div class="mt-4 border border-blue-200 rounded-lg overflow-hidden shadow-sm">
             <div class="bg-blue-50 p-2 text-sm font-bold text-blue-800 border-b border-blue-200">
-                <i class="fas fa-info-circle mr-1"></i>Other PEG Preparation
+                <i class="fas fa-info-circle mr-1"></i>Other PEG How to Mix/Dilute
             </div>
             <div class="p-3 text-[11px] text-slate-700 space-y-2 bg-white">
                 <div class="font-bold text-slate-800 underline">แบบผสมก่อนใช้:</div>
@@ -3443,11 +3444,11 @@ function selectAntidote(name) {
 function renderDeferoxamineCalculator(container) {
     container.innerHTML = `
         <div class="p-4 bg-white">
-            <div class="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 shadow-inner">
-                <div class="font-bold text-amber-700 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>Preparation (Desferal Inj 0.5 g)</div>
+            <div id="deferoxamine-content"></div>
+            <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 shadow-inner">
+                <div class="font-bold text-amber-700 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>How to Mix/Dilute (Desferal Inj 0.5 g)</div>
                 Reconstitute powder with SWFI &asymp;100 mg/ml (500 mg + 5 ml SWFI; verify product label). Do <b>not</b> use NSS for reconstitution. For IV: dilute with NSS or Ringer to a final volume of 150 ml. Not compatible with heparin-containing solutions. Store &lt;25&deg;C; do not freeze.
             </div>
-            <div id="deferoxamine-content"></div>
         </div>
     `;
 }
@@ -3461,29 +3462,29 @@ function calcDeferoxamine() {
 
     let html = '';
 
-    const p1dose = hasW ? rnd(wt * 5) : '-';
-    const p1rate = hasW ? (wt * 5 / 60 / conc).toFixed(2) : '-';
-    const p1total = hasW ? rnd(wt * 5 * 0.25) : '-';
-    const p2dose = hasW ? rnd(wt * 10) : '-';
-    const p2rate = hasW ? (wt * 10 / 60 / conc).toFixed(2) : '-';
-    const p2total = hasW ? rnd(wt * 10 * 0.25) : '-';
-    const p3dose = hasW ? rnd(Math.min(wt * 15, 1000)) : '-';
-    const p3rate = hasW ? (Math.min(wt * 15, 1000) / 60 / conc).toFixed(2) : '-';
-    const p3total = hasW ? rnd(wt * 15 * 0.5) : '-';
+    const p1dose = hasW ? rnd(wt * 5) : '0';
+    const p1rate = hasW ? (wt * 5 / 60 / conc).toFixed(2) : '0';
+    const p1total = hasW ? rnd(wt * 5 * 0.25) : '0';
+    const p2dose = hasW ? rnd(wt * 10) : '0';
+    const p2rate = hasW ? (wt * 10 / 60 / conc).toFixed(2) : '0';
+    const p2total = hasW ? rnd(wt * 10 * 0.25) : '0';
+    const p3dose = hasW ? rnd(Math.min(wt * 15, 1000)) : '0';
+    const p3rate = hasW ? (Math.min(wt * 15, 1000) / 60 / conc).toFixed(2) : '0';
+    const p3total = hasW ? rnd(wt * 15 * 0.5) : '0';
     const p4dose = p3dose;
     const p4rate = p3rate;
     const p4total = p3total;
     const p3capped = hasW && wt * 15 > 1000;
 
-    const mDose = hasW ? rnd(wt * 15) : '-';
-    const mRate = hasW ? rnd((wt * 15) / conc) : '-';
-    const imload = hasW ? rnd(wt * 90) : '-';
-    const imMaint = hasW ? rnd(wt * 45) : '-';
+    const mDose = hasW ? rnd(wt * 15) : '0';
+    const mRate = hasW ? rnd((wt * 15) / conc) : '0';
+    const imload = hasW ? rnd(wt * 90) : '0';
+    const imMaint = hasW ? rnd(wt * 45) : '0';
 
     const maintRateMlMin = (125 / 60 / conc).toFixed(2);
     const maintTotal = 125 * 23;
-    const loadingTotal = hasW ? Math.round(wt * 1.25 + wt * 2.5 + wt * 7.5 + wt * 7.5) : '-';
-    const dailyTotal = hasW ? (loadingTotal + 125 * 23) : '-';
+    const loadingTotal = hasW ? Math.round(wt * 1.25 + wt * 2.5 + wt * 7.5 + wt * 7.5) : '0';
+    const dailyTotal = hasW ? (loadingTotal + 125 * 23) : '0';
     const dailyOver = hasW && dailyTotal > 6000;
 
     html += `
@@ -3540,7 +3541,7 @@ function calcDeferoxamine() {
                         </div>
                         ${p3capped ? '<div class="bg-red-50 p-2 border-t border-red-200 text-xs font-bold text-red-700"><i class="fas fa-exclamation-triangle mr-1"></i>15 mg/kg/hr &times; weight exceeds 1,000 mg/hr &mdash; dose capped at 1,000 mg/hr.</div>' : ''}
                         <div class="bg-slate-50 p-2 border-t border-slate-200 text-xs text-slate-700">
-                            <span class="font-bold text-slate-800">Preparation:</span> deferoxamine 500 mg + sterile water 5 ml (100 mg/ml), then mixed with NSS or Ringer up to 150 ml (final conc. &asymp;6.67 mg/ml).
+                            <span class="font-bold text-slate-800">How to Mix/Dilute:</span> deferoxamine 500 mg + sterile water 5 ml (100 mg/ml), then mixed with NSS or Ringer up to 150 ml (final conc. &asymp;6.67 mg/ml).
                         </div>
                     </div>
 
@@ -3611,7 +3612,7 @@ function calcDeferoxamine() {
                         <span class="font-bold text-slate-800">${imMaint} mg every 4&ndash;6 hr (45 mg/kg/dose)</span>
                     </div>
                     <div class="bg-slate-50 p-2 mt-2 rounded border border-slate-200 text-xs text-slate-700">
-                        <div class="mb-1"><span class="font-bold text-slate-800">Preparation:</span> Reconstitute with SWFI 2 ml (&asymp;213 mg/ml).</div>
+                        <div class="mb-1"><span class="font-bold text-slate-800">How to Mix/Dilute:</span> Reconstitute with SWFI 2 ml (&asymp;213 mg/ml).</div>
                         <div><span class="font-bold text-slate-800">Note:</span> IM is painful and is not a substitute for urgent IV therapy in shock, coma, acidosis or hemodynamic instability.</div>
                     </div>
                 </div>
@@ -3625,7 +3626,7 @@ function calcDeferoxamine() {
                         <span class="font-bold text-slate-800">Over 8&ndash;12 hr via appropriate pump/device</span>
                     </div>
                     <div class="bg-slate-50 p-2 mt-2 rounded border border-slate-200 text-xs text-slate-700">
-                        <div><span class="font-bold text-slate-800">Preparation:</span> Reconstitute with SWFI 5 ml. Use an appropriate administration device/pump.</div>
+                        <div><span class="font-bold text-slate-800">How to Mix/Dilute:</span> Reconstitute with SWFI 5 ml. Use an appropriate administration device/pump.</div>
                     </div>
                 </div>
             </div>
@@ -3676,7 +3677,7 @@ function renderDigoxinFabCalculator(container) {
             </div>
             <div id="digoxinFab-content"></div>
             <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 shadow-inner">
-                <div class="font-bold text-amber-700 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>Preparation</div>
+                <div class="font-bold text-amber-700 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>How to Mix/Dilute</div>
                 DigiFab 40 mg/vial. Reconstitute each vial with 4 ml SWFI &rarr; 10 mg/ml. Each vial binds &asymp;0.5 mg digoxin. Give IV slowly over &ge;30 min (bolus if critically ill). Pediatric: may further dilute to 1 mg/ml with 36 ml NS.
             </div>
         </div>
@@ -3693,10 +3694,11 @@ function calcDigoxinFab() {
     const sdc = sdcEl ? (parseFloat(sdcEl.value) || 0) : 0;
     const ingested = ingestedEl ? (parseFloat(ingestedEl.value) || 0) : 0;
 
-    const sdcVials = (hasW && sdc > 0) ? Math.ceil((sdc * wt) / 100) : '-';
-    const tbl = ingested > 0 ? rnd(ingested * 0.8) : '-';
-    const ingVials = ingested > 0 ? Math.ceil((ingested * 0.8) / 0.5) : '-';
-    const orderVials = sdcVials !== '-' ? sdcVials : ingVials;
+    const hasCalc = (hasW && sdc > 0) || ingested > 0;
+    const sdcVials = (hasW && sdc > 0) ? Math.ceil((sdc * wt) / 100) : '0';
+    const tbl = ingested > 0 ? rnd(ingested * 0.8) : '0';
+    const ingVials = ingested > 0 ? Math.ceil((ingested * 0.8) / 0.5) : '0';
+    const orderVials = hasCalc ? (sdcVials !== '0' ? sdcVials : ingVials) : null;
 
     let html = '';
 
@@ -3760,7 +3762,7 @@ function calcDigoxinFab() {
 
             <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs text-slate-700">
                 <div class="font-bold text-slate-800 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>How to order:</div>
-                DigiFab ${orderVials === '-' ? '(per calculated dose above)' : orderVials} vials &mdash; reconstitute each with 4 ml SWFI (10 mg/ml), IV infusion over &ge;30 min
+                DigiFab ${orderVials === null ? '(per calculated dose above)' : orderVials} vials &mdash; reconstitute each with 4 ml SWFI (10 mg/ml), IV infusion over &ge;30 min
             </div>
 
             <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
@@ -3882,8 +3884,8 @@ function calcNac() {
         html += renderNacBag('Bag 3', 100, cWt, null, d3, '16 hours', 'teal');
                
     } else if (activeNacTab === 'po') {
-        let loadVol20Str = '-', loadDiluentStr = '-', loadTotalStr = '-';
-        let maintVol20Str = '-', maintDiluentStr = '-', maintTotalStr = '-';
+    let loadVol20Str = '0', loadDiluentStr = '0', loadTotalStr = '0';
+    let maintVol20Str = '0', maintDiluentStr = '0', maintTotalStr = '0';
         
         if (hasW) {
             const cWt = Math.min(wt, 110);
@@ -4049,7 +4051,7 @@ function calcAtropine() {
         if (age > 0 && age < 15) isPed = true;
         if (hasW && wt < 50 && age === 0) isPed = true;
         
-        let pDoseStr = '-', pMaintStr = '-';
+        let pDoseStr = '0', pMaintStr = '0';
         if (hasW) {
             pDoseStr = rnd(wt * 0.02) + " mg";
             pMaintStr = rnd(wt * 0.025) + " mg/hr";
@@ -4086,7 +4088,7 @@ function calcAtropine() {
                         </div>
                         
                         <div class="mt-3 bg-rose-50 p-2 rounded border border-rose-100 text-sm">
-                            <span class="font-bold text-rose-800">Preparation Example:</span><br>
+                            <span class="font-bold text-rose-800">How to Mix/Dilute Example:</span><br>
                             ${orderStr} 
                             <div class="text-xs text-rose-600 mt-1">(Rate 10 ml/hr = 10% of loading dose per hour)</div>
                         </div>
@@ -4101,7 +4103,7 @@ function calcAtropine() {
                             <div class="mb-2"><span class="font-bold text-slate-700">Titration:</span> Double dose every 3-5 mins until improvement</div>
                             <div><span class="font-bold text-slate-700">Maintenance:</span> 10% to 20% of loading dose per hour</div>
                             <div class="mt-2 bg-rose-50 p-2 rounded border border-rose-100 text-sm">
-                                <span class="font-bold text-rose-800">Preparation Example:</span><br>
+                                <span class="font-bold text-rose-800">How to Mix/Dilute Example:</span><br>
                                 Atropine total of bolus (mg) + NSS 100 ml IV drip rate 10 ml/hr 
                                 <div class="text-xs text-rose-600 mt-1">(Rate 10 ml/hr = 10% of loading dose per hour)</div>
                             </div>
@@ -4114,7 +4116,7 @@ function calcAtropine() {
                             <div class="mb-2"><span class="font-bold text-slate-700">Titration:</span> Double dose every 3-5 mins until improvement</div>
                             <div><span class="font-bold text-slate-700">Maintenance:</span> 10% to 20% of loading dose per hour</div>
                             <div class="mt-2 bg-rose-50 p-2 rounded border border-rose-100 text-sm">
-                                <span class="font-bold text-rose-800">Preparation Example:</span><br>
+                                <span class="font-bold text-rose-800">How to Mix/Dilute Example:</span><br>
                                 Atropine total of bolus (mg) + NSS 100 ml IV drip rate 10 ml/hr 
                                 <div class="text-xs text-rose-600 mt-1">(Rate 10 ml/hr = 10% of loading dose per hour)</div>
                             </div>
@@ -4308,13 +4310,13 @@ function calcBotulism() {
             maxRate = '0.03 ml/kg/min';
         } else if (pGroup === 'Pediatric (<= 30 kg)') {
             doseCalc = hasW ? rnd(2 * wt) + '% of Adult Dose' : '2 x Weight (kg) = % of Adult Dose';
-            calcPct = hasW ? rnd(2 * wt) + '%' : '-';
+            calcPct = hasW ? rnd(2 * wt) + '%' : '0';
             initRate = '0.01 ml/kg/min';
             titRate = 'Increase 0.01 ml/kg/min every 30 min';
             maxRate = '0.03 ml/kg/min';
         } else {
             doseCalc = hasW ? rnd(wt + 30) + '% of Adult Dose' : 'Weight (kg) + 30 = % of Adult Dose';
-            calcPct = hasW ? rnd(wt + 30) + '%' : '-';
+            calcPct = hasW ? rnd(wt + 30) + '%' : '0';
             initRate = '0.01 ml/kg/min';
             titRate = 'Increase 0.01 ml/kg/min every 30 min';
             maxRate = '0.03 ml/kg/min';
@@ -4352,7 +4354,7 @@ function calcBotulism() {
                         </div>
                         
                         <div class="bg-indigo-50 p-2 rounded border border-indigo-100 mb-3 text-indigo-800 font-medium text-xs">
-                            <i class="fas fa-flask mr-1"></i> <b>Preparation:</b> Dilute 1:10 in 0.9% NSS
+                            <i class="fas fa-flask mr-1"></i> <b>How to Mix/Dilute:</b> Dilute 1:10 in 0.9% NSS
                         </div>
                         
                         <div class="grid grid-cols-3 gap-2 text-center text-xs">
@@ -4377,7 +4379,7 @@ function calcBotulism() {
             </div>
         `;
     } else if (activeBotulismTab === 'big') {
-        let doseStr = '-', volStr = '-', initStr = '-', maintStr = '-';
+        let doseStr = '0', volStr = '0', initStr = '0', maintStr = '0';
         if (hasW) {
             let dose = wt * 75;
             let vol = wt * 1.5;
@@ -4404,7 +4406,7 @@ function calcBotulism() {
                                 <div class="font-bold text-blue-700 text-lg">${doseStr} <span class="text-sm text-slate-500">(${volStr})</span></div>
                             </div>
                             <div class="bg-indigo-50 p-2 rounded border border-indigo-100">
-                                <div class="text-xs text-indigo-500 mb-1">Preparation</div>
+                                <div class="text-xs text-indigo-500 mb-1">How to Mix/Dilute</div>
                                 <div class="font-bold text-indigo-800 text-xs">Reconstitute to 50 mg/ml</div>
                             </div>
                         </div>
@@ -4510,7 +4512,7 @@ function calcCalcium() {
     let html = '';
     
     if (activeCalciumTab === 'general') {
-        let pDoseStr = '-', pVolStr = '-';
+        let pDoseStr = '0', pVolStr = '0';
         if (hasW) {
             let pDoseMg = wt * 60;
             if (pDoseMg > 3000) pDoseMg = 3000; // max adult dose
@@ -4611,7 +4613,7 @@ function calcCalcium() {
                     </div>
                     <div class="p-3 bg-white text-sm space-y-2">
                         <div class="bg-slate-50 p-2 rounded border border-slate-200">
-                            <b>Preparation:</b> 10% Calcium gluconate 10-20 ml + 5%DW 50-100 ml
+                            <b>How to Mix/Dilute:</b> 10% Calcium gluconate 10-20 ml + 5%DW 50-100 ml
                         </div>
                         <div class="flex items-center gap-2 text-indigo-800">
                             <i class="fas fa-tint"></i> <b>Administer:</b> IV drip in 10-20 min
@@ -4626,7 +4628,7 @@ function calcCalcium() {
                     </div>
                     <div class="p-3 bg-white text-sm space-y-3">
                         <div class="bg-slate-50 p-2 rounded border border-slate-200 text-xs">
-                            <b>Preparation:</b> 10% Calcium gluconate 110 ml + 5%DW 890 ml<br>
+                            <b>How to Mix/Dilute:</b> 10% Calcium gluconate 110 ml + 5%DW 890 ml<br>
                             <span class="text-slate-500">(Elemental Ca 1.02 mg/ml)</span>
                         </div>
                         <div class="flex justify-between items-center border-t border-slate-100 pt-2">
@@ -4643,7 +4645,7 @@ function calcCalcium() {
                     </div>
                     <div class="p-3 bg-white text-sm space-y-3">
                         <div class="bg-slate-50 p-2 rounded border border-slate-200 text-xs">
-                            <b>Preparation:</b> 10% Calcium gluconate 50 ml + 5%DW 450 ml<br>
+                            <b>How to Mix/Dilute:</b> 10% Calcium gluconate 50 ml + 5%DW 450 ml<br>
                             <span class="text-slate-500">(Elemental Ca 0.93 mg/ml)</span>
                         </div>
                         <div class="flex justify-between items-center border-t border-slate-100 pt-2">
@@ -4784,7 +4786,7 @@ function calcCarnitine() {
     let html = '';
     
     if (activeCarnitineTab === 'sx') {
-        let lDoseStr = '-', mDoseStr = '-';
+        let lDoseStr = '0', mDoseStr = '0';
         if (hasW) {
             let lDoseMg = wt * 100;
             if (lDoseMg > 6000) lDoseMg = 6000;
@@ -4830,7 +4832,7 @@ function calcCarnitine() {
             </div>
         `;
     } else if (activeCarnitineTab === 'asx') {
-        let tDoseStr = '-', dDoseStr = '-';
+        let tDoseStr = '0', dDoseStr = '0';
         if (hasW) {
             let tDoseMg = wt * 100;
             if (tDoseMg > 3000) tDoseMg = 3000;
@@ -4907,7 +4909,7 @@ function calcDantrolene() {
     
     let html = '';
     
-    let iBolusStr = '-', mBolusStr = '-', mDripStr = '-', maxTotalStr = '-';
+    let iBolusStr = '0', mBolusStr = '0', mDripStr = '0', maxTotalStr = '0';
     if (hasW) {
         iBolusStr = rnd(wt * 2.5) + " mg";
         mBolusStr = rnd(wt * 1.0) + " mg";
@@ -4955,14 +4957,14 @@ function calcDantrolene() {
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
-                    <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">Preparation: Dantrium / Revonto</div>
+                    <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">How to Mix/Dilute: Dantrium / Revonto</div>
                     <div class="p-3 bg-white text-xs space-y-1">
                         <div><span class="font-bold text-slate-700">Vial:</span> 20 mg/vial</div>
                         <div><span class="font-bold text-slate-700">Instructions:</span> Add 60 ml sterile water, shake ~20 sec until clear (pH 9.5).</div>
                     </div>
                 </div>
                 <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
-                    <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">Preparation: Ryanodex</div>
+                    <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">How to Mix/Dilute: Ryanodex</div>
                     <div class="p-3 bg-white text-xs space-y-1">
                         <div><span class="font-bold text-slate-700">Vial:</span> 250 mg/vial</div>
                         <div><span class="font-bold text-slate-700">Instructions:</span> Add 5 ml preservative-free sterile water, shake 10 sec until uniform orange suspension (pH 10.5).</div>
@@ -5213,6 +5215,7 @@ function startCalculation() {
 </script>
 </body>
 </html>
+
 
 
 
