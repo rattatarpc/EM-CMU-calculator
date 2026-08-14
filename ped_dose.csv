@@ -1,0 +1,68 @@
+,,,,,,,,,,,,,,,
+Age :,,year,,,,,,,,,,Formular,,,
+Calculated weight:,,kg,,,,,,,,,,Calculated weight formula:,(Age x 2) + 8,,
+,,,,,,,,,,,,Cuffed Size formula:,(Age / 4) + 3.5,,
+Weight :,,kg,,,,,,,,,,Uncuffed Size formula:,(Age / 4) + 4,,
+,,,,,,,,,,,,Insertion Depth formula:,(Age / 2) + 12,size tube x 3,
+,,,,,,,,,,,,,,,
+Emergency Medication,Preparation,Dose (mg/kg),Calculated Dose (mg),Maximum Dose (mg),Note,Route,Reference,,,,,Manula Calculator,,,
+Epinephrine (Cardiac Arrest),Adrenaline 1 mg/mL (1:1000),0.01 mg/kg (0.1 ml/kg),0 mg (0 ml),1,"- Max dose: 1 mg (adult dose)
+- ยา 1 mg (1 mL) ผสม NSS , SWFI 9 mL (Adrenaline 1 : 10,000)",IV/IO,AHA 2025,,,,,Weight,,kg,
+Epinephrine (Anaphylaxis),Adrenaline 1 mg/mL (1:1000),0.01,0,0.5,"Max dose: 0.5 mg",IM,Thai Guidelines,,,,,Drug ,,mg,
+Amiodarone,,5,0,300,,IV/IO,AHA 2025,,,,,Solution,,ml,
+Lidocaine,,1,0,100,,IV/IO,AHA 2025,,,,,Concentration,,mg/ml (mcg/ml),
+Atropine,,0.02,0,0.5 (Min: 0.1),,IV/IO,AHA 2025,,,,,Dose (rate),,mcg/kg/min,
+Adenosine (1st dose),,0.1,0,6,,IV/IO,AHA 2025,,,,,Calculated drip rate,,ml/hr,
+Adenosine (2nd dose),,0.2,0,12,,IV/IO,AHA 2025,,,,,,,,
+Midazolam (Intranasal/Buccal),,0.3,0,10,,IN/Buccal,ERC 2025,,,,,Adrenaline (Epinephrine) IV Infusion Preparation,,,
+Midazolam (IV/IO),,0.1 - 0.2,0 - 0,10,,IV/IO,ERC 2025,,,,,"Ususal: ผสมยา 1 mg (1 mL) ใน NSS, D5W 250-1,000 mL",,,
+Lorazepam,,0.1,0,4,,IV/IO,ERC 2025,,,,,Concentration,Preparation Method,,Volume
+Electrical Cardiversion,,Dose (mg/kg),Calculated Dose (mg),Maximum Dose (mg),Note,Route,Reference,,,,,10 mcg/mL,"ผสมยา 1 mg (1 mL) ใน NSS, D5W 100 mL",,100 mL
+Defibrillation,1st shock,2,0,,,External,AHA 2025,,,,,16 mcg/mL,"ผสมยา 4 mg (4 mL) ใน NSS, D5W 250 mL",,250 mL
+,2nd shock,4,0,,,External,AHA 2025,,,,,32 mcg/mL,"ผสมยา 8 mg (8 mL) ใน NSS, D5W 250 mL",,250 mL
+Cardioversion,1st shock,0.5,0,,,External,AHA 2025,,,,,,,,
+,2nd shock,2,0,,,External,AHA 2025,,,,,Norepinephrine IV Infusion Preparation,,,
+,,,,,,,,,,,,"Ususal: ยา 1 vial ผสม D5W , D5S ให้ได้ปริมาตรสุดท้าย 62.5-1,000 mL",,,
+,,,,,,,,,,,,Concentration,Preparation Method,,Volume
+,,,,,,,,,,,,8 mcg/mL,"ผสมยา 2 mg (2 mL) ใน D5W, D5S 250 mL",,250 mL
+,,,,,,,,,,,,16 mcg/mL,"ผสมยา 4 mg (4 mL) ใน D5W, D5S 250 mL",,250 mL
+,,,,,,,,,,,,32 mcg/mL,"ผสมยา 8 mg (8 mL) ใน D5W, D5S 250 mL",,250 mL
+,,,,,,,,,,,,,,,
+Continuous Drip,,,,,,,,,,,,Dopamine IV Infusion Preparation,,,
+Drug,Preparation,,Initial range (mcg/kg/min),Max Dose (mcg/kg/min),innitial rate (ml/hr),Max rate (ml/hr),How to prepare,Usual Concentration (Max),สารน้ำที่แนะนำ,Reference,,Concentration,Preparation Method,,Volume
+Epinephrine (Inotropic),1 mg/mL (1:1000),,0.05,0.5,0,0,"ผสมยา 1 mg (1 mL) ใน NSS, D5W 100 mL (10 mcg/mL)",1-64 mcg/mL (64 mcg/ml),"D5W, D10W, D5S, D10S, D10S/2, D5S/2, 0.45%NSS, NSS, SWFI, LRS",Fuhrman & Zimmerman 6th ed,,1 mg/mL (1:1),ยา 100 mg (4 mL) + D5W หรือ NSS 96 mL,,100 mL
+Epinephrine (Pressor),1 mg/mL (1:1000),,0.1,1,0,0,"ผสมยา 1 mg (1 mL) ใน NSS, D5W 100 mL (10 mcg/mL)",1-64 mcg/mL (64 mcg/ml),"D5W, D10W, D5S, D10S, D10S/2, D5S/2, 0.45%NSS, NSS, SWFI, LRS",Fuhrman & Zimmerman 6th ed,,2 mg/mL (2:1),ยา 200 mg (8 mL) + D5W หรือ NSS 92 mL,,100 mL
+Norepinephrine (Hypotension/ Shock),4 mg/4 mL (1 mg/mL),,0.05 - 0.1,2,0 - 0,0,ยา 1 vial (4 mg) ผสม D5W หรือ D5S 250 mL (16 mcg/mL),8-16 mcg/mL (Max 16 mcg/mL),"D5W, D5S (ห้ามผสม NSS เดี่ยว)",Fuhrman & Zimmerman 6th ed,,,,,
+Dopamine (Inotropic),250 mg/10 mL,,2,20,0,0,ยา 200 mg (8 mL) + D5W หรือ NSS 92 mL (2:1) (2 mg/mL),1.6-3.2 mg/mL (Max 3.2 mg/mL),"NSS, D5W, D5S, D5S/2, LR, 5% Dextrose in LRS",Fuhrman & Zimmerman 6th ed,,Dobutamine IV Infusion Preparation,,,
+Dopamine (Pressor),250 mg/10 mL,,>20,30,0,0,ยา 200 mg (8 mL) + D5W หรือ NSS 92 mL (2:1) (2 mg/mL),1.6-3.2 mg/mL (Max 3.2 mg/mL),"NSS, D5W, D5S, D5S/2, LR, 5% Dextrose in LRS",Fuhrman & Zimmerman 6th ed,,"ยา 1 vial ต่อสารน้ำ ดังนี้ D5W, NSS, LRS, D5S, D5S/2 ให้ได้ปริมาตรสุดท้าย 70-500 mL",,,
+Dobutamine,250 mg/20 mL,,2,20,0,0,ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL (1000 mcg/mL),1-4 mg/mL (Max 4 mg/mL),"D5W, NSS, LRS, D5S, D5S/2",Fuhrman & Zimmerman 6th ed,,Concentration,Preparation Method,,Volume
+Milrinone,Primacor 10 mg/10 mL,,0.25,0.75,0,0,ยา 10 mg (10 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL (100 mcg/mL),100-200 mcg/mL (Max 200 mcg/mL),"NSS, NSS/2, D5W",Fuhrman & Zimmerman 6th ed,,1 mg/mL,ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL,,250 mL
+Isoproterenol,Isoprenaline 0.2 mg/mL,,0.02,0.5 (Max 2),0,0 (Max 0),"ยา 10 mL (2 mg) ผสม D5W, NSS ให้ได้ปริมาตรสุดท้าย 500 mL (4 mcg/mL)",5-20 mcg/mL (Max 20 mcg/mL),"D5W, NSS",Fuhrman & Zimmerman 6th ed,,2 mg/mL,ยา 2 vial (500 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL,,250 mL
+,,,,,,,,,,,,4 mg/mL,ยา 4 vial (1000 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL,,250 mL
+Equipment Name/Item,Size (based on weight/age),,Insertion Depth/Length,Reference,,,,,,,,,,,
+ET Tube (Cuffed),4.75,,14.5,Uptodate 2024,,,,,,,,Milrinone IV Infusion Preparation,,,
+ET Tube (Uncuffed),5.25,,14.5,Uptodate 2024,,,,,,,,"Loading: สามารถให้ยาได้ โดยไม่ต้องเจือจาง หรืออาจ เจือจางด้วย NSS, NSS/2, D5W ให้ได้ปริมาตรสุดท้าย 10-20 mL",,,
+NG or OG tube,10.5,,,,,,,,,,,"Maintenance: เจือจางได้ใน NSS, NSS/2, D5W' ให้ได้ ความเข้มข้น (final conc.) = 100 , 150 หรือ 200 mcg/mL",,,
+Foley tube,10.5,,,,,,,,,,,Concentration,Preparation Method,,Volume
+Chest tube (max size),21,,,,,,,,,,,100 mcg/mL,ยา 10 mg (10 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL,,100 mL
+LMA,,,,Anes Sirirah 2557,,,,,,,,150 mcg/mL,ยา 15 mg (15 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL,,100 mL
+,,,,,,,,,,,,200 mcg/mL,ยา 10 mg (10 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 50 mL,,50 mL
+,,,,,,,,,,,,,,,
+,Equipment Checklist,,,,,,,,,,,Isoproterenol IV Infusion Preparation,,,
+,Equipment,,Check,,,,,,,,,"ยา 10 mL (2 mg) ใน D5W, NSS 500 mL (Final concentration 4 mcg/mL)",,,
+,ET Tube (Cuffed),,FALSE,,,,,,,,,Concentration,Preparation Method,,Volume
+,ET Tube (Uncuffed),,FALSE,,,,,,,,,4 mcg/mL,ยา 10 mL (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 mL,,500 mL
+,NG or OG tube,,FALSE,,,,,,,,,20 mcg/mL,ยา 10 mL (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL,,100 mL
+,Foley tube,,FALSE,,,,,,,,,,,,
+,Chest tube (max size),,FALSE,,,,,,,,,,,,
+,LMA,,FALSE,,,,,,,,,,,,
+,Stylet,,FALSE,,,,,,,,,,,,
+,Anesthetic Face Mask,,FALSE,,,,,,,,,,,,
+,Self-Inflating Bag,,FALSE,,,,,,,,,,,,
+,Oropharyngeal Airway,,FALSE,,,,,,,,,,,,
+,Sterile gloves,,FALSE,,,,,,,,,,,,
+,Plastic goggles,,FALSE,,,,,,,,,,,,
+,Monitor ET-CO2,,FALSE,,,,,,,,,,,,
+,Plaster tape,,FALSE,,,,,,,,,,,,
+,Syringe,,FALSE,,,,,,,,,,,,
+,IV fluid set,,FALSE,,,,,,,,,,,,

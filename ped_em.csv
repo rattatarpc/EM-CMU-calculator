@@ -1,0 +1,109 @@
+,,,,,,,,,,,,,,,,,,,,,,,,,
+Age :,,month,Formular,,Age Estimated Weight (kg),,,,,,,Formular,,,,,,,,,,,,,
+Calculated weight (For age 1-11 month):,,kg,(Age in months + 9) / 2,,1-11 mos (age in months + 9) / 2,,,,,,,Calculated weight formula:,(Age x 2) + 8,,,,,,,,,,,,
+Calculated weight (For age >= 1 year):,,kg,(Age x 2) + 8,,1-4 yrs (age in years + 5) x 2,,,,,,,Cuffed Size formula:,(Age / 4) + 3.5,,,,,,,,,,,,
+,,,,,5-14 yrs Age in years x 4,,,,,,,Uncuffed Size formula:,(Age / 4) + 4,,,,,,,,,,,,
+Weight :,,kg,,,,,,,,,,Insertion Depth formula:,(Age / 2) + 12,size tube x 3,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,Manula Calculator,,,,,,,,,,,,,
+Normal V/S rang by Age,SBP (mmHg),MAP (mmHg),Heart rate (bpm),Respi Rate (RR),,,,,,,,Weight,,kg,,,,,,,,,,,
+,,,,,,,,,,,,Drug ,,mg,,,,,,,,,,,
+,,,,,,,,,,,,Solution,,ml,,,,,,,,,,,
+Emergency Medication,Preparation,Dose (mg/kg),Calculated Dose (mg),Maximum Dose (mg),Note,Route,Reference,,,,,Concentration,,mg/ml (mcg/ml),,,,,,,,,,,
+Epinephrine (Cardiac Arrest),Adrenaline 1 mg/mL (1:1000),0.01 mg/kg (0.1 ml/kg),0 mg (0 ml),1,"- Max dose: 1 mg (adult dose)
+- ยา 1 mg (1 mL) ผสม NSS , SWFI 9 mL (Adrenaline 1 : 10,000)",IV/IO,AHA 2025,,,,,Dose (rate),,mcg/kg/min,,,,,,,,,,,
+Epinephrine (Anaphylaxis),Adrenaline 1 mg/mL (1:1000),0.01,0,0.5,"Max dose: 0.5 mg",IM,Thai Guidelines,,,,,Calculated drip rate,,ml/hr,,,,,,,,,,,
+Amiodarone,150 mg/3 ml,5,0,300 or 15 MKDay,,IV/IO,AHA 2025,,,,,,,,,,,,,,,,,,
+Lidocaine,2%w/v 10 mL (200 mg/10 mL),1,0,100,,IV/IO,AHA 2025,,,,,Adrenaline (Epinephrine) IV Infusion Preparation,,,,,,,,,,,,,
+Atropine,0.6 mg/ml,0.02,0,0.5 (Min: 0.1),,IV/IO,AHA 2025,,,,,"Ususal: ผสมยา 1 mg (1 mL) ใน NSS, D5W 250-1,000 mL",,,,,,,,,,,,,
+Adenosine (1st dose),2 mg/2 ml,0.1,0,6,,IV/IO,AHA 2025,,,,,Concentration,Preparation Method,,Volume,,,,,,,,,,
+Adenosine (2nd dose),2 mg/2 ml,0.2,0,12,,IV/IO,AHA 2025,,,,,10 mcg/mL,"ผสมยา 1 mg (1 mL) ใน NSS, D5W 100 mL",,100 mL,,,,,,,,,,
+MgSO4,"50% Magnesium sulfate
+2 mL/Ampule
+MgSO4 = 1 g/2 mL = 0.5 g/mL",25 - 50 mg/kg,0 - 0,N/A,"IV bolus over 1-2 min, IV over 10-20 min in TdP or VT with pulse)
+เจือจางด้วย NSS, D5W ให้มีความเข้มข้น ไม่เกิน 20% (200 mg/mL)",IV/IO,,,,,,16 mcg/mL,"ผสมยา 4 mg (4 mL) ใน NSS, D5W 250 mL",,250 mL,,,,,,,,,,
+Sodium bicarbonate,Sodium bicarbonate 7.5 % (0.892 mEq/mL),1 mEq/kg,0,N/A,max 10 mEq/min,IV/IO,,,,,,32 mcg/mL,"ผสมยา 8 mg (8 mL) ใน NSS, D5W 250 mL",,250 mL,,,,,,,,,,
+10% Ca gluconate dose,"10% Calcium gluconate injection 10 ml
+ใน 10 ml มี Calcium 1000 mg หรือ Ca2+ 4.5 mEq",60 mg/kg,0,N/A,"ยา 1 g ต่อ D5W, NSS 50-100 ml, rate Max : 100 mg/min
+Concentration Usual : 10-50 mg/mL, Max : 20 mg/mL5",IV/IO,,,,,,,,,,,,,,,,,,,
+Midazolam (Intranasal/Buccal),5 mg/ 1 ml,0.3,0,10,,IN/Buccal,ERC 2025,,,,,Norepinephrine IV Infusion Preparation,,,,,,,,,,,,,
+Midazolam (IV/IO),5 mg/ 1 ml,0.1 - 0.2,0 - 0,10,,IV/IO,ERC 2025,,,,,"Ususal: ยา 1 vial ผสม D5W , D5S ให้ได้ปริมาตรสุดท้าย 62.5-1,000 mL",,,,,,,,,,,,,
+Lorazepam,,0.1,0,4,,IV/IO,ERC 2025,,,,,Concentration,Preparation Method,,Volume,,,,,,,,,,
+Electrical Cardiversion,,Dose (mg/kg),Calculated Dose (mg),Maximum Dose (mg),Note,Route,Reference,,,,,8 mcg/mL,"ผสมยา 2 mg (2 mL) ใน D5W, D5S 250 mL",,250 mL,,,,,,,,,,
+Defibrillation,1st shock,2,0,,,External,AHA 2025,,,,,16 mcg/mL,"ผสมยา 4 mg (4 mL) ใน D5W, D5S 250 mL",,250 mL,,,,,,,,,,
+,2nd shock,4,0,,,External,AHA 2025,,,,,32 mcg/mL,"ผสมยา 8 mg (8 mL) ใน D5W, D5S 250 mL",,250 mL,,,,,,,,,,
+Cardioversion,1st shock,0.5,0,,,External,AHA 2025,,,,,,,,,,,,,,,,,,
+,2nd shock,2,0,,,External,AHA 2025,,,,,Dopamine IV Infusion Preparation,,,,,,,,,,,,,
+,,,,,,,,,,,,Concentration,Preparation Method,,Volume,,,,,,,,,,
+Continuous Drip,,,,,,,,,,,,1 mg/mL (1:1),ยา 100 mg (4 mL) + D5W หรือ NSS 96 mL,,100 mL,,,,,,,,,,
+Drug,Preparation,Initial range (mcg/kg/min),High Dose (mcg/kg/min),innitial rate (ml/hr),High rate (ml/hr),How to prepare,Usual Concentration (Max),สารน้ำที่แนะนำ,Reference,,,2 mg/mL (2:1),ยา 200 mg (8 mL) + D5W หรือ NSS 92 mL,,100 mL,,,,,,,,,,
+Epinephrine (Inotropic),1 mg/mL (1:1000),0.05,0.5,0,0,"ผสมยา 1 mg (1 mL) ใน NSS, D5W 100 mL (10 mcg/mL)",1-64 mcg/mL (64 mcg/ml),"D5W, D10W, D5S, D10S, D10S/2, D5S/2, 0.45%NSS, NSS, SWFI, LRS",Fuhrman & Zimmerman 6th ed,,,,,,,,,,,,,,,,
+Epinephrine (Pressor),1 mg/mL (1:1000),0.1,1,0,0,"ผสมยา 1 mg (1 mL) ใน NSS, D5W 100 mL (10 mcg/mL)",1-64 mcg/mL (64 mcg/ml),"D5W, D10W, D5S, D10S, D10S/2, D5S/2, 0.45%NSS, NSS, SWFI, LRS",Fuhrman & Zimmerman 6th ed,,,Dobutamine IV Infusion Preparation,,,,,,,,,,,,,
+Norepinephrine (Hypotension/ Shock),4 mg/4 mL (1 mg/mL),0.05 - 0.1,2,0 - 0,0,ยา 1 vial (4 mg) ผสม D5W หรือ D5S 250 mL (16 mcg/mL),8-16 mcg/mL (Max 16 mcg/mL),"D5W, D5S (ห้ามผสม NSS เดี่ยว)",Fuhrman & Zimmerman 6th ed,,,"ยา 1 vial ต่อสารน้ำ ดังนี้ D5W, NSS, LRS, D5S, D5S/2 ให้ได้ปริมาตรสุดท้าย 70-500 mL",,,,,,,,,,,,,
+Dopamine (Inotropic),250 mg/10 mL,2,20,0,0,ยา 200 mg (8 mL) + D5W หรือ NSS 92 mL (2:1) (2 mg/mL),1.6-3.2 mg/mL (Max 3.2 mg/mL),"NSS, D5W, D5S, D5S/2, LR, 5% Dextrose in LRS",Fuhrman & Zimmerman 6th ed,,,Concentration,Preparation Method,,Volume,,,,,,,,,,
+Dopamine (Pressor),250 mg/10 mL,>20,30,0,0,ยา 200 mg (8 mL) + D5W หรือ NSS 92 mL (2:1) (2 mg/mL),1.6-3.2 mg/mL (Max 3.2 mg/mL),"NSS, D5W, D5S, D5S/2, LR, 5% Dextrose in LRS",Fuhrman & Zimmerman 6th ed,,,1 mg/mL,ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL,,250 mL,,,,,,,,,,
+Dobutamine,250 mg/20 mL,2,20,0,0,ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL (1000 mcg/mL),1-4 mg/mL (Max 4 mg/mL),"D5W, NSS, LRS, D5S, D5S/2",Fuhrman & Zimmerman 6th ed,,,2 mg/mL,ยา 2 vial (500 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL,,250 mL,,,,,,,,,,
+Milrinone,Primacor 10 mg/10 mL,0.25,0.75,0,0,ยา 10 mg (10 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL (100 mcg/mL),100-200 mcg/mL (Max 200 mcg/mL),"NSS, NSS/2, D5W",Fuhrman & Zimmerman 6th ed,,,4 mg/mL,ยา 4 vial (1000 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 mL,,250 mL,,,,,,,,,,
+Isoproterenol,Isoprenaline 0.2 mg/mL,0.02,0.5 (Max 2),0,0 (Max 0),"ยา 10 mL (2 mg) ผสม D5W, NSS ให้ได้ปริมาตรสุดท้าย 500 mL (4 mcg/mL)",5-20 mcg/mL (Max 20 mcg/mL),"D5W, NSS",Fuhrman & Zimmerman 6th ed,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,Milrinone IV Infusion Preparation,,,,,,,,,,,,,
+Equipment Name/Item,Size (based on weight/age),Insertion Depth/Length,Reference,,,,,,,,,"Loading: สามารถให้ยาได้ โดยไม่ต้องเจือจาง หรืออาจ เจือจางด้วย NSS, NSS/2, D5W ให้ได้ปริมาตรสุดท้าย 10-20 mL",,,,,,,,,,,,,
+ET Tube (Cuffed),4.75,14.5,Uptodate 2024,,,,,,,,,"Maintenance: เจือจางได้ใน NSS, NSS/2, D5W' ให้ได้ ความเข้มข้น (final conc.) = 100 , 150 หรือ 200 mcg/mL",,,,,,,,,,,,,
+ET Tube (Uncuffed),5.25,14.5,Uptodate 2024,,,,,,,,,Concentration,Preparation Method,,Volume,,,,,,,,,,
+NG or OG tube,10.5,,,,,,,,,,,100 mcg/mL,ยา 10 mg (10 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL,,100 mL,,,,,,,,,,
+Foley tube,10.5,,,,,,,,,,,150 mcg/mL,ยา 15 mg (15 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL,,100 mL,,,,,,,,,,
+Chest tube (max size),21,,,,,,,,,,,200 mcg/mL,ยา 10 mg (10 mL) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 50 mL,,50 mL,,,,,,,,,,
+LMA,,,Anes Sirirah 2557,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,Isoproterenol IV Infusion Preparation,,,,,,,,,,,,,
+,Equipment Checklist,,,,,,,,,,,"ยา 10 mL (2 mg) ใน D5W, NSS 500 mL (Final concentration 4 mcg/mL)",,,,,,,,,,,,,
+,Equipment,Check,,,,,,,,,,Concentration,Preparation Method,,Volume,,,,,,,,,,
+,ET Tube (Cuffed),FALSE,,,,,,,,,,4 mcg/mL,ยา 10 mL (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 mL,,500 mL,,,,,,,,,,
+,ET Tube (Uncuffed),FALSE,,,,,,,,,,20 mcg/mL,ยา 10 mL (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 mL,,100 mL,,,,,,,,,,
+,NG or OG tube,FALSE,,,,,,,,,,,,,,,,,,,,,,,
+,Foley tube,FALSE,,,,,,,,,,,,,,,,,,,,,,,
+,Chest tube (max size),FALSE,,,,,,,,,,Age,Respiratory rate (breaths/minute),,,Heart rate (beats/minute),,,,Category,For children aged 1 to <13 years,For children aged ≥13 years,,,
+,LMA,FALSE,,,,,,,,,,,"Lower limit
+ (1st percentile)","Normal range
+ (10th to 90th percentile)","Upper limit
+ (99th percentile)","Lower limit
+ (1st percentile)","Normal range
+ (10th to 90th percentile)","Upper limit
+ (99th percentile)",,Normal BP,Systolic and diastolic BP <90th percentile,Systolic BP <120 and diastolic BP <80 mmHg,,,
+,Stylet,FALSE,,,,,,,,,,0 to 3 months,25,34 to 57,66,107,123 to 164,181,,Elevated BP,"Systolic and diastolic BP ≥90th percentile to <95th percentile, or 120/<80 mmHg to <95th percentile (whichever is lower)",Systolic BP 120 to 129 and diastolic BP <80 mmHg,,,
+,Anesthetic Face Mask,FALSE,,,,,,,,,,3 to <6 months,24,33 to 55,64,104,120 to 159,175,,Stage 1 HTN,"Systolic and diastolic BP ≥95th percentile to <95th percentile+12 mmHg, or 130/80 to 139/89 mmHg (whichever is lower)",130/80 to 139/89 mmHg,,,
+,Self-Inflating Bag,FALSE,,,,,,,,,,6 to <9 months,23,31 to 52,61,98,114 to 152,168,,Stage 2 HTN,"Systolic and diastolic BP ≥95th percentile+12 mmHg, or ≥140/90 mmHg (whichever is lower)",≥140/90 mmHg,,,
+,Oropharyngeal Airway,FALSE,,,,,,,,,,9 to <12 months,22,30 to 50,58,93,109 to 145,161,,"Adapted with permission from Pediatrics, Vol. 140, Page e20171904, Copyright © 2017 by the AAP.",,,,,
+,Sterile gloves,FALSE,,,,,,,,,,12 to <18 months,21,28 to 46,53,88,103 to 140,156,,,,,,,
+,Plastic goggles,FALSE,,,,,,,,,,18 to <24 months,19,25 to 40,46,82,98 to 135,149,,,,,,,
+,Monitor ET-CO2,FALSE,,,,,,,,,,2 to <3 years,18,22 to 34,38,76,92 to 128,142,,,,,,,
+,Plaster tape,FALSE,,,,,,,,,,3 to <4 years,17,21 to 29,33,70,86 to 123,136,,,,,,,
+,Syringe,FALSE,,,,,,,,,,4 to <6 years,17,20 to 27,29,65,81 to 117,131,,,,,,,
+,IV fluid set,FALSE,,,,,,,,,,6 to <8 years,16,18 to 24,27,59,74 to 111,123,,,,,,,
+,,,,,,,,,,,,8 to <12 years,14,16 to 22,25,52,67 to 103,115,,,,,,,
+,,,,,,,,,,,,12 to <15 years,12,15 to 21,23,47,62 to 96,108,,,,,,,
+,,,,,,,,,,,,15 to 18 years,11,13 to 19,22,43,58 to 92,104,,,,,,,
+,,,,,,,,,,,,"Data from: Fleming S, Thompson M, Stevens R, et al. Normal ranges of heart rate and respiratory rate in children from birth to 18 years of age: A systematic review of observational studies. Lancet 2011; 377:1011.",,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,MAP,Percentiles,,,,,,,,,,,,
+,,,,,,,,,,,,Age Group,1%,5%,10%,20%,30%,40%,50%,60%,70%,80%,90%,95%,99%
+,,,,,,,,,,,,37 wk post-menstrual age to 30 d,32,39,42,47,50,53,56,59,63,67,73,79,91
+,,,,,,,,,,,,1–3 mo,34,41,44,49,52,55,59,62,65,70,76,82,93
+,,,,,,,,,,,,3–6 mo,37,44,47,52,56,59,62,66,69,74,80,86,96
+,,,,,,,,,,,,6–12 mo,41,48,52,57,61,64,67,71,75,80,86,92,101
+,,,,,,,,,,,,1–2 yr,45,52,56,62,66,69,72,76,80,84,91,96,105
+,,,,,,,,,,,,2–3 yr,45,53,56,61,65,68,71,74,78,82,88,94,103
+,,,,,,,,,,,,3–4 yr,45,52,55,60,63,66,69,72,75,78,84,90,100
+,,,,,,,,,,,,4–5 yr,45,52,55,60,63,66,69,71,74,77,83,88,98
+,,,,,,,,,,,,5–6 yr,46,53,56,61,64,67,69,72,75,78,83,88,99
+,,,,,,,,,,,,6–7 yr,47,54,58,62,65,68,71,73,76,79,85,89,99
+,,,,,,,,,,,,7–8 yr,48,55,59,63,66,69,72,74,77,81,86,90,100
+,,,,,,,,,,,,8–9 yr,49,55,59,64,67,70,72,75,78,81,86,91,101
+,,,,,,,,,,,,9–10 yr,49,56,59,64,67,70,73,76,78,82,87,92,101
+,,,,,,,,,,,,10–11 yr,49,56,59,64,67,70,73,76,79,82,87,92,102
+,,,,,,,,,,,,11–12 yr,49,56,59,64,67,70,73,76,79,82,87,92,102
+,,,,,,,,,,,,12–13 yr,49,56,59,64,67,70,73,76,79,82,88,92,103
+,,,,,,,,,,,,13–14 yr,49,56,59,64,68,71,74,76,79,83,88,93,103
+,,,,,,,,,,,,14–15 yr,49,56,60,65,68,71,74,77,80,83,89,94,104
+,,,,,,,,,,,,15–16 yr,49,56,60,65,69,72,75,77,80,84,90,94,105
+,,,,,,,,,,,,16–17 yr,49,57,61,66,69,72,75,78,81,85,90,95,106
+,,,,,,,,,,,,17–18 yr,49,57,62,66,70,73,76,79,82,86,91,96,107
+,,,,,,,,,,,,"Ref: Roberts JS, Yanay O, Barry D. Age-Based Percentiles of Measured Mean Arterial Pressure in Pediatric Patients in a Hospital Setting. Pediatr Crit Care Med. 2020;21(9):e759-e768. doi:10.1097/PCC.0000000000002495",,,,,,,,,,,,,

@@ -1,0 +1,33 @@
+,,,,,
+Gender,Male,,,,
+total body weight (TBW),,kg,,,
+Height,,cm,,,
+IBW,,kg,,,
+LBW,,kg,,,
+,,,,,
+,,,,,
+weight,,Kg,,,
+,,,,,
+,,,,,
+,,,,,
+IV NAC Protocol (Three-Bag Method),,,,,
+Dose,Target Dose (mg/kg),Total Dose (g),20% NAC Volume (mL),D5W Diluent Volume (mL),Duration
+Loading Dose,150,15.00,75.0,200.0,60 minutes
+Second Dose,50,5.00,25.0,500.0,4 hours
+Third Dose,100,10.00,50.0,1000.0,16 hours
+Note: Max Body Weight = 100 kg,,,,,
+Oral NAC Protocol (72-hour),,,,,
+Dose,Target Dose (mg/kg),Total Dose (g),20% NAC Volume (mL),5% Diluent Volume (mL),Total Volume (mL)
+Loading Dose,140,14.00,70.0,210.0,280.0
+Maintenance Dose (x17),70,7.00,35.0,105.0,140.0
+,,,,,
+Simplified 2-Bag Protocol (20-hour),,,,,
+Dose,Target Dose (mg/kg),Total Dose (g),20% NAC Volume (mL),D5W Diluent Volume (mL),Duration
+Bag 1,200,0.00,0.0,500.0,4 hours
+Bag 2,100,0.00,0.0,1000.0,16 hours
+"Note: Max Body Weight = 100 kg (Bag 1 Max Dose = 22 g, Bag 2 Max Dose = 11 g)",,,,,
+SNAP 2-Bag Protocol (12-hour),,,,,
+Dose,Target Dose (mg/kg),Total Dose (g),20% NAC Volume (mL),D5W Diluent Volume (mL),Duration
+Bag 1,100,10.00,50.0,200.0,2 hours
+Bag 2,200,20.00,100.0,1000.0,10 hours
+Note: Max Body Weight = 100 kg,,,,,

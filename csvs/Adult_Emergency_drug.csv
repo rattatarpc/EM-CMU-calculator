@@ -1,0 +1,94 @@
+Gender,Male,,,,,,,,,,Adrenaline (Epinephrine) IV Infusion Preparation,,,
+total body weight (TBW),15,kg,,,,,,Male,Female,,"Usual: ????? 1 mg (1 mL) ?? NSS, D5W 250-1,000 mL",,,
+Height,,cm,,,,,Ideal body weight (IBW), 50 kg + 2.3 kg x (Height (in) - 60),50 kg + 2.3 kg x (Height (in) - 60),,Concentration,Preparation Method,,Volume
+IBW,,kg,,,,,,Height (cm) - 100,Height (cm) - 110,,1 mcg/mL,?? 1 mg (1 mL) ????????? 999 mL,,"1,000 mL"
+LBW,,kg,,,,,Lean body weight (LBW),0.407 x Weight (kg) + 0.267 x Height (cm) - 19,0.252 x Weight (kg) + 0.473 x Height (cm) - 48.3,,4 mcg/mL,?? 1 mg (1 mL) ????????? 249 mL,,250 mL
+,,,,,,,,,,,16 mcg/mL,?? 4 mg (4 mL) ????????? 246 mL,,250 mL
+,,,,,,,,,,,64 mcg/mL,?? 16 mg (16 mL) ????????? 234 mL,,250 mL
+weight,80,Kg,,,,,,,,,60 mcg/mL,?? 6 mg (6 mL) ????????? 94 mL,,100 mL
+,,,,,,,,,,,100 mcg/mL,?? 10 mg (10 mL) ????????? 100 mL,,100 mL
+Emergency Medication,,,,,,,,,,,Ped Anaphylasix,?? 0.6 x BW  ????????? 100 mL  then drip rate 1 ml/hr (= 0.1 mcg/kg/min),,100 mL
+Drug,Preparation,Dose (mg),Route,Reference,,,,,,,,,,
+Epinephrine (Cardiac Arrest),Adrenaline 1 mg/mL (1:1000),1,IV/IO,AHA 2025,,,,,,,Norepinephrine IV Infusion Preparation,,,
+Epinephrine (Anaphylaxis),Adrenaline 1 mg/mL (1:1000),0.5,IM,AHA 2025,,,,,,,"Ususal: ?? 1 vial ??? D5W , D5S ???????????????????? 62.5-1,000 mL",,,
+Amiodarone,150 mg/3 ml,300,IV/IO,AHA 2025,,,,,,,Concentration,Preparation Method,,Volume
+Lidocaine,2%w/v 10 mL (200 mg/10 mL),80 - 120,IV/IO,AHA 2025,,,,,,,8 mcg/mL,"????? 2 mg (2 mL) ?? D5W, D5S 250 mL",,250 mL
+Atropine,0.6 mg/ml,1,IV/IO,AHA 2025,,,,,,,16 mcg/mL,"????? 4 mg (4 mL) ?? D5W, D5S 250 mL",,250 mL
+Adenosine (1st dose),2 mg/2 ml,6,IV/IO,AHA 2025,,,,,,,32 mcg/mL,"????? 8 mg (8 mL) ?? D5W, D5S 250 mL",,250 mL
+Adenosine (2nd dose),2 mg/2 ml,12,IV/IO,AHA 2025,,,,,,,40 mcg/mL,"????? 4 mg (4 mL) ?? D5W, D5S 100 mL",,100 mL
+Dopamine (Bradycardia),250 mg/10 mL,,,,,,,,,,80 mcg/mL,"????? 8 mg (8 mL) ?? D5W, D5S 100 mL",,100 mL
+Epinephrine (Bradycardia),Adrenaline 1 mg/mL (1:1000),,,,,,,,,,,,,
+,,,,,,,,,,,Dopamine IV Infusion Preparation,,,
+,,,,,,,,,,,Concentration,Preparation Method,,Volume
+,,,,,,,,,,,1 mg/mL (1:1),?? 100 mg (4 mL) + D5W ???? NSS 96 mL,,100 mL
+,,,,,,,,,,,2 mg/mL (2:1),?? 200 mg (8 mL) + D5W ???? NSS 92 mL,,100 mL
+,,,,,,,,,,,,,,
+Intotropic drug,,,,,,,,,,,Dobutamine IV Infusion Preparation,,,
+Drug,Preparation,Initial dose,Max Dose,innitial rate (ml/hr),Max rate (ml/hr),How to prepare,Usual Concentration (Max),??????????????,Reference,,"?? 1 vial ????????? ?????? D5W, NSS, LRS, D5S, D5S/2 ???????????????????? 70-500 mL",,,
+Epinephrine (mcg/kg/min),1 mg/mL (1:1000),0.05,2,60,2400,?? 1 mg (1 mL) ????????? 249 mL (4 mcg/mL),1-4 mcg/mL (Max 16 mcg/mL),"D5W, D10W, D5S, D10S, D10S/2, D5S/2, 0.45%NSS, NSS, SWFI, LRS",AHA 2025 and CMU Phamabot,,Concentration,Preparation Method,,Volume
+Norepinephrine (Cardiogenic shock),4 mg/4 mL (1 mg/mL),0.05,0.4,15,120,?? 1 vial (4 mg) ??? D5W ???? D5S 250 mL (16 mcg/mL),16-32 mcg/mL (Max 64 mcg/mL),"D5W, D5S (??????? NSS ??????)",AHA 2025 and CMU Phamabot,,1 mg/mL,?? 1 vial (250 mg) ????????????????????????????? 250 mL,,250 mL
+"Norepinephrine (Post-cardiac arrest shock, septic)",4 mg/4 mL (1 mg/mL),0.05 - 0.15,3.3,15 - 45,990,?? 1 vial (4 mg) ??? D5W ???? D5S 250 mL (16 mcg/mL),16-32 mcg/mL (Max 64 mcg/mL),"D5W, D5S (??????? NSS ??????)",AHA 2025 and CMU Phamabot,,2 mg/mL,?? 2 vial (500 mg) ????????????????????????????? 250 mL,,250 mL
+Dopamine IV infusion,250 mg/10 mL,2,20 (Max 50),4.8,48 (Max 120),?? 200 mg (8 mL) + D5W ???? NSS 92 mL (2:1) (2 mg/mL),1.6-3.2 mg/mL (Max 3.2 mg/mL),"NSS, D5W, D5S, D5S/2, LR, 5% Dextrose in LRS",AHA 2025 and CMU Phamabot,,4 mg/mL,?? 4 vial (1000 mg) ????????????????????????????? 250 mL,,250 mL
+Dobutamine,250 mg/20 mL,2,20 (Max 40),9.6,96 (Max 192),?? 1 vial (250 mg) ????????????????????????????? 250 mL (1000 mcg/mL),0.5-4 mg/mL (Max 4 mg/mL),"D5W, NSS, LRS, D5S, D5S/2",AHA 2025 and CMU Phamabot,,,,,
+Milrinone,Primacor 10 mg/10 mL,0.375,0.75,18,36,?? 10 mg (10 mL) ????????????????????????????? 100 mL (100 mcg/mL),100-200 mcg/mL (Max 200 mcg/mL),"NSS, NSS/2, D5W",AHA 2025 and CMU Phamabot,,Milrinone IV Infusion Preparation,,,
+Isoproterenol (mcg/min),Isoprenaline 0.2 mg/mL,2,10 (Max 30),30,150 (Max 450),"?? 10 mL (2 mg) ??? D5W, NSS ???????????????????? 500 mL (4 mcg/mL)",2-16 mcg/mL (Max 20 mcg/mL),"D5W, NSS",AHA 2025 and CMU Phamabot,,"Loading: ?????????????? ????????????????? ??????? ??????????? NSS, NSS/2, D5W ???????????????????? 10-20 mL",,,
+Anti-hypetensive Drug,,,,,,,,,,,"Maintenance: ???????????? NSS, NSS/2, D5W' ?????? ??????????? (final conc.) = 100 , 150 ???? 200 mcg/mL",,,
+NTG,50 mg/10 ml,5 mcg/min,200 mcg/min,0.75,30,NTG 50 mg + NSS 115 ml IV,,,AHA HT 2025,,Concentration,Preparation Method,,Volume
+Nicardipine,"10 mg/10 mL, 2 mg/2 mL",5 mg/hr,15 mg/hr,25,75,Nicadipine 20 mg + NSS up to 100 ml,,,AHA HT 2025,,100 mcg/mL,?? 10 mg (10 mL) ????????????????????????????? 100 mL,,100 mL
+Labetarol,100 mg/ 20 ml (1 vial),0.5 mg/min,2 mg/min,15,60,Labetalol 200 mg (40 ml) + NSS 60 ml,,"NSS, D5W, LRS",2019 AHA ischemic stroke,,150 mcg/mL,?? 15 mg (15 mL) ????????????????????????????? 100 mL,,100 mL
+Esmolol,,50 µg/kg/min,300 µg/kg/min,,,bolus of 500 µg/kg administered over 1 minute,,,ESC AF 2024,,200 mcg/mL,?? 10 mg (10 mL) ????????????????????????????? 50 mL,,50 mL
+Anti-Arrhythmic Drug,,,,,,,,,,,,,,
+Lidocain,2%w/v 10 mL (200 mg/10 mL),1 mg/min,4 mg/min,15,60,Lidocaine 2% 1000 mg (50 ml) + NSS or D5W upto 250 ml (4 mg/ml),4 - 8 mg/mL,,AHA HT 2025,,Isoproterenol IV Infusion Preparation,,,
+Diltiazam,10 mg,5 mg/hr,15 mg/hr,5,15,"bolus of 0.25 mg/kg administered over 5 minutes then Diltiazem 100 mg + NSS 100 ml IV (?????? NSS, D5W 25 - 50 mL/ 1 ampule)",,,ESC AF 2024,,"?? 10 mL (2 mg) ?? D5W, NSS 500 mL (Final concentration 4 mcg/mL)",,,
+Amiodalone,150 mg/3 ml,"150-300 mg i.v. diluted in 250 mL of 5% dextrose IV over 30–60 minutes, Followed by 900–1200 mg i.v. over 24 hours diluted in 500–1000 mL",,-,-,,,,ESC AF 2024,,Concentration,Preparation Method,,Volume
+Anti-dote,,,,,,,,,,,4 mcg/mL,?? 10 mL (2 mg) ????????????????????????????? 500 mL,,500 mL
+Naloxone,0.4 mg/ml,,,,,,,,,,20 mcg/mL,?? 10 mL (2 mg) ????????????????????????????? 100 mL,,100 mL
+Atropine,0.6 mg/ml,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+Sedation Drug,,,,,,,,,,,,,,
+Drug,Preparation,Loading Dose,Maintenance Dose,Loading (mg),Maintenance (ml/hr),How to prepare,Adverse Effects,Reference,,,,,,
+Midazolam,"5 mg/ml, 15 mg/ 3 ml",0.01 - 0.05 mg/kg (0.8 - 4 mg),0.02 - 0.1 mg/kg/hr (1.6 - 8 mg/hr),0.8 - 4,3.2 - 16,"Midazolam 50 mg + NSS up to 100 ml (Final concentration 0.5 mg/ml, Max 5 mg/ml)","Respiratory depression, hypotension",PADIS guideline,,,,,,
+Lorazepam,,0.02 - 0.04 mg/kg (max 2 mg) (1.6 - 2 mg),0.02 - 0.06 mg/kg q2-6h PRN OR 0.01 - 0.1 mg/kg/hr (max 10 mg/hr),1.6 - 2,,,"Respiratory depression, hypotension; propylene glycol-related acidosis, nephrotoxicity",PADIS guideline,,,,,,
+Diazepam,,5 - 10 mg (fixed dose),0.03 - 0.1 mg/kg q0.5-6h PRN (2.4 - 8 mg),5 - 10,,,"Respiratory depression, hypotension, phlebitis",PADIS guideline,,,,,,
+Propofol,200 mg/ 20 ml,5 mcg/kg/min over 5 min,5 - 50 mcg/kg/min,2,2.4 - 24,Propofol 200 mg / 20 ml (??????) ,"Pain on injection, hypotension, respiratory depression, hypertriglyceridemia, pancreatitis, allergic reactions, propofol-related infusion syndrome",PADIS guideline,,,,,,
+Dexmedetomidine,,1 mcg/kg over 10 min (80 mcg),0.2 - 0.7 mcg/kg/hr (16 - 56 mcg/hr),0.08,,,"Bradycardia, hypotension; hypertension with loading dose; loss of airway reflexes",PADIS guideline,,,,,,
+Fentanyl,,0.35-0.5 mcg/kg,0.7-10 mcg/kg/hr,0.028 - 0.04,11.2 - 160,Fentanyl 500 mcg + NSS 100 ml IV drip,,,,,,,,
+,,,,,,,,,,,,,,
+Anti-epileptic Drug,,,,,,,,,,,,,,
+Drug,Phase,Recommend Dose,Unit,Calculated Dose,Max Dose,How to prepare / Route,Reference,,,,,,,
+Diazepam (10 mg/ 2 ml),Loading,0.3,mg/kg,4.5,10 mg,10 mg/2mL/vial (Do not dilute) / IV (rate <2 mg/min),CPG Epilepsy 2021,,,,,,,
+Midazolam (5 mg/ 1 ml),Loading (Bolus),0.2,mg/kg,,10 mg,IM or IV,CPG Epilepsy 2021,,,,,,,
+,Loading (start drip),0.1 - 0.3,mg/kg,1.5 - 4.5,10 mg,5 mg/1 ml/vial mix in 0.9%NSS or 5%DW / IV (rate <4 mg/min),,,,,,,,
+,Maintenance,0.05 - 0.4,mg/kg/hr,0.75 - 6,NA,5 mg/1 ml/vial mix in 0.9%NSS or 5%DW,,,,,,,,
+Phenytoin (250 mg/ 5 ml),Loading,20 - 30,mg/kg,300 - 450,1500 mg,250 mg/5ml/vial mix in 0.9%NSS only / IV (rate <50 mg/min),CPG Epilepsy 2021,,,,,,,
+,Maintenance,5 - 8,mg/kg/day div q8h,75 - 120,NA,250 mg/5ml/vial mix in 0.9%NSS only,,,,,,,,
+Phenobarbital (200 mg/ 1 ml),Maintenance,300 - 500,mg/day div q8h,300 - 500,1000 mg,"200 mg/1mL/vial mix in Sterile water 10 ml then NSS, RL, 5%DW",CPG Epilepsy 2021,,,,,,,
+Sodium Valproate (400 mg/ 4 ml),Loading,20 - 30,mg/kg,300 - 450,NA,400 mg/4ml/vial mix in 0.9%NSS or 5%D/W / IV (rate <100 mg/min),CPG Epilepsy 2021,,,,,,,
+,Maintenance,1 - 2,mg/kg/hr,15 - 30,NA,400 mg/4ml/vial mix in 0.9%NSS or 5%D/W,,,,,,,,
+Levetiracetam (500 mg/ 5 ml),Loading,30 - 40,mg/kg,450 - 600,4000 mg,"500 mg/5ml/vial mix in 0.9%NSS, RL, 5%D/W / IV (>15 min)",CPG Epilepsy 2021,,,,,,,
+,Maintenance,10 - 30,mg/kg q12h,150 - 450,NA,"500 mg/5ml/vial mix in 0.9%NSS, RL, 5%D/W",,,,,,,,
+Lacosamide (200 mg/ 20 ml),Loading,400,mg,400,400 mg,"200mg/20ml/vial mix in 0.9%NSS, RL, 5%D/W / IV",CPG Epilepsy 2021,,,,,,,
+,Maintenance,200 - 400,mg/day,200 - 400,400 mg,"200mg/20ml/vial mix in 0.9%NSS, RL, 5%D/W",,,,,,,,
+Propofol (200 mg/ 20 ml),Loading,2,mg/kg,30,NA,200 mg/20ml/vial (no dilution) / IV (rate <0.05 mg/kg/min),CPG Epilepsy 2021,,,,,,,
+Thiopental (1 g/ vial),Loading,2,mg/kg,30,NA,"1g/vial mix in NSS, 5%DW, Sterile water to 2.5% solution / IV (rate <0.05 mg/kg/min)",CPG Epilepsy 2021,,,,,,,
+,Maintenance,3 - 5,mg/kg/hr,45 - 75,NA,"1g/vial mix in NSS, 5%DW, Sterile water to 2.5% solution",,,,,,,,
+Ketamine (500 mg/ 10 ml),Loading,1 - 2,mg/kg,15 - 30,NA,"500 mg/10ml/vial mix in NSS, 5%DW, Sterile water to <= 2 mg/ml / IV",CPG Epilepsy 2021,,,,,,,
+,Maintenance,0.6 - 5,mg/kg/hr,9 - 75,NA,"500 mg/10ml/vial mix in NSS, 5%DW, Sterile water to <= 2 mg/ml",,,,,,,,
+,,,,,,,,,,,,,,
+,Manula Calculator,,,,,,,,,,,,,
+,Weight,,kg,,,,,,,,,,,
+,Drug ,,mg,,,,,,,,,,,
+,Solution,,ml,,,,,,,,,,,
+,Concentration,,mg/ml (mcg/ml),,,,,,,,,,,
+,Dose (rate),,mcg/kg/min,,,,,,,,,,,
+,Calculated drip rate,,ml/hr,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,

@@ -1,0 +1,558 @@
+[
+    {
+        "title":  "Supportive",
+        "items":  [
+                      {
+                          "prep":  "60 mg / 0.6 ml",
+                          "doseStr":  "10 - 15",
+                          "unit":  "MKDose",
+                          "name":  "Paracetamol Drop",
+                          "freq":  "po prn q 4-6 hr",
+                          "ref":  "-",
+                          "maxDose":  "500 mg/dose",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "120 mg / 5 ml",
+                          "doseStr":  "10 - 15",
+                          "unit":  "MKDose",
+                          "name":  "Paracetamol Syrup",
+                          "freq":  "po prn q 4-6 hr",
+                          "ref":  "-",
+                          "maxDose":  "500 mg/dose",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "100 mg / 5 ml",
+                          "doseStr":  "5 - 10",
+                          "unit":  "MKDose",
+                          "name":  "Ibuprofen Syrup",
+                          "freq":  "po prn q 8 hr",
+                          "ref":  "-",
+                          "maxDose":  "Adult Dose",
+                          "route":  "PO"
+                      }
+                  ]
+    },
+    {
+        "title":  "Skin",
+        "items":  [
+                      {
+                          "prep":  "2 mg / 5 ml",
+                          "doseStr":  "0.35",
+                          "unit":  "MKDay",
+                          "name":  "Chlorpheniramine Syrup",
+                          "freq":  "po tid",
+                          "ref":  "-",
+                          "maxDose":  "Adult Dose",
+                          "route":  "PO"
+                      }
+                  ]
+    },
+    {
+        "title":  "Steroid",
+        "items":  [
+                      {
+                          "prep":  "-",
+                          "doseStr":  "1 - 2",
+                          "unit":  "MKDay",
+                          "name":  "Prednisolone (oral)",
+                          "freq":  "-",
+                          "ref":  "Thai CPG Ped Asthma 2020-2021",
+                          "maxDose":  "- age \u003c 2 year: 20 mg/day\n- age 2-5 year: 30 mg/day\n- age \u003e 5 year: 40 mg/day",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "",
+                          "doseStr":  "0.15 - 0.6",
+                          "unit":  "MKDose",
+                          "name":  "Dexamethasone",
+                          "freq":  "po OD ??????? 2 ???",
+                          "ref":  "Thai CPG Ped Asthma 2020-2021",
+                          "maxDose":  "Adult Dose",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "-",
+                          "doseStr":  "1",
+                          "unit":  "MKDose",
+                          "name":  "Methylprednisolone",
+                          "freq":  "IV q 6 hr",
+                          "ref":  "Thai CPG Ped Asthma 2020-2021",
+                          "maxDose":  "60 mg/dose",
+                          "route":  "IV"
+                      },
+                      {
+                          "prep":  "-",
+                          "doseStr":  "5",
+                          "unit":  "MKDose",
+                          "name":  "Hydrocortisone (IV)",
+                          "freq":  "IV q 6 hr",
+                          "ref":  "Thai CPG Ped Asthma 2020-2021",
+                          "maxDose":  "250 mg/dose",
+                          "route":  "IV"
+                      }
+                  ]
+    },
+    {
+        "title":  "Respiratory",
+        "items":  [
+                      {
+                          "prep":  "-",
+                          "doseStr":  "BW \u003c 20 kg = 250 mcg/dose of Ipratropium (= 1/2 Nebule)",
+                          "unit":  "",
+                          "name":  "Berodual\n(Fenoterol 1.25 mg + Ipratropium 0.5 mg)",
+                          "freq":  "Berodual 1/2 NB (1 ml) + NSS or other drug upto 4 ml NB",
+                          "ref":  "Thai CPG Ped Asthma 2020-2021",
+                          "maxDose":  "Adult Dose",
+                          "route":  "NB"
+                      },
+                      {
+                          "prep":  "50 mcg/1 dose",
+                          "doseStr":  "1",
+                          "unit":  "mg/dose",
+                          "name":  "Fluticasone (nebulized)",
+                          "freq":  "NB q 20 min (Max 3 time in first 1 hr)",
+                          "ref":  "Thai CPG Ped Asthma 2020-2021",
+                          "maxDose":  "Adult Dose",
+                          "route":  "NB"
+                      },
+                      {
+                          "prep":  "0.5% solution\n(5 mg/ 1 ml)",
+                          "doseStr":  "0.03",
+                          "unit":  "mg/dose",
+                          "name":  "Ventolin (intermittent)",
+                          "freq":  "ml + NSS up to 4 ml NB q 20 min in 1 hr with O2 flow : 6-8 LPM",
+                          "ref":  "Thai CPG Ped Asthma 2020-2021",
+                          "maxDose":  "???? \u003c 5 ?? ??? 2.5 mg/dose",
+                          "route":  "NB"
+                      },
+                      {
+                          "prep":  "1 mg / 2 ml",
+                          "doseStr":  "0.5 - 1",
+                          "unit":  "mg/dose",
+                          "name":  "Pulmicort (Budesonide) (nebulized)",
+                          "freq":  "ml +  NSS or other drug upto 4 ml NB q 20 min (Max 3 time in first 1 hr) and Max 2 mg/day",
+                          "ref":  "Thai CPG Ped Asthma 2020-2021",
+                          "maxDose":  "2 mg/day",
+                          "route":  "NB"
+                      },
+                      {
+                          "prep":  "4 mg / 5 ml",
+                          "doseStr":  "0.6 - 0.8",
+                          "unit":  "MKDay",
+                          "name":  "Bromhexine Syrup",
+                          "freq":  "po tid",
+                          "ref":  "",
+                          "maxDose":  "Adult Dose",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "-",
+                          "doseStr":  "",
+                          "unit":  "",
+                          "name":  "Glyceryl Guaicolate Syrup",
+                          "freq":  "po tid",
+                          "ref":  "",
+                          "maxDose":  "Adult Dose",
+                          "route":  "PO"
+                      }
+                  ]
+    },
+    {
+        "title":  "GI",
+        "items":  [
+                      {
+                          "prep":  "-",
+                          "doseStr":  "0.15",
+                          "unit":  "MKDose",
+                          "name":  "Ondansetron",
+                          "freq":  "IV/PO q 6-8 hr",
+                          "ref":  "Thai Acute diarrhea PED 2019",
+                          "maxDose":  "Adult Dose",
+                          "route":  "PO/IV"
+                      },
+                      {
+                          "prep":  "1 mg / 1 ml",
+                          "doseStr":  "0.1 - 0.2",
+                          "unit":  "MKDose",
+                          "name":  "Domperidone Syrup",
+                          "freq":  "PO tid",
+                          "ref":  "",
+                          "maxDose":  "Adult Dose",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "-",
+                          "doseStr":  "1",
+                          "unit":  "MKDay",
+                          "name":  "omeprazole",
+                          "freq":  "PO/IV OD",
+                          "ref":  "",
+                          "maxDose":  "Adult Dose",
+                          "route":  "PO/IV"
+                      },
+                      {
+                          "prep":  "-",
+                          "doseStr":  "6",
+                          "unit":  "g/day",
+                          "name":  "Diosmectite",
+                          "freq":  "PO div 2-3 doses for 3-5 days",
+                          "ref":  "Thai Acute diarrhea PED 2019",
+                          "maxDose":  "Adult Dose",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "-",
+                          "doseStr":  "Deficit\nReplacement",
+                          "unit":  "ml/kg (mild)",
+                          "name":  "ORS",
+                          "freq":  "1 ??? ?????? 250 ml ????????",
+                          "ref":  "Thai Acute diarrhea PED 2019",
+                          "maxDose":  "Adult Dose",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "-",
+                          "doseStr":  "Use with caution\n- \u003c 1 ?? 2.5 ml\n- 1-3 ?? 5 ml\n- 3-6 ?? 5-10 ml\n\u003e 6 ?? 10-20 ml",
+                          "unit":  "-",
+                          "name":  "Metoclopramide",
+                          "freq":  "PO",
+                          "ref":  "Thai Acute diarrhea PED 2019",
+                          "maxDose":  "Adult Dose",
+                          "route":  "PO"
+                      }
+                  ]
+    },
+    {
+        "title":  "Oral Antibiotics",
+        "items":  [
+                      {
+                          "prep":  "125 mg / 5 ml",
+                          "doseStr":  "40 - 50",
+                          "unit":  "MKDay",
+                          "name":  "Amoxicillin (Standard Dose)",
+                          "freq":  "PO bid po pc (Sinusitis/AOM) ( use 50 mg/kg/day for Pharyngitis)",
+                          "ref":  "Thai URI PED 2019",
+                          "maxDose":  "1000 mg/dose",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "250 mg / 5 ml",
+                          "doseStr":  "80 - 90",
+                          "unit":  "MKDay",
+                          "name":  "Amoxicillin (High Dose)",
+                          "freq":  "PO bid po pc (Severe Sinusitis/AOM/Pneumonia)",
+                          "ref":  "Thai URI PED 2019",
+                          "maxDose":  "1000 mg/dose",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "457 mg / 5 ml",
+                          "doseStr":  "40 - 90",
+                          "unit":  "MKDay",
+                          "name":  "Augmentin",
+                          "freq":  "PO bid po pc",
+                          "ref":  "Thai URI PED 2019",
+                          "maxDose":  "1000 mg/dose",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "100 mg / 5 ml",
+                          "doseStr":  "20 - 40",
+                          "unit":  "MKDay",
+                          "name":  "Ciprofloxacin",
+                          "freq":  "PO bid",
+                          "ref":  "Thai Acute diarrhea PED 2019",
+                          "maxDose":  "750 mg/dose",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "250 mg / 5 ml",
+                          "doseStr":  "15 - 20",
+                          "unit":  "MKDay",
+                          "name":  "Norfloxacin",
+                          "freq":  "PO bid",
+                          "ref":  "Thai Acute diarrhea PED 2019",
+                          "maxDose":  "Adult Dose",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "100 mg / 5 ml",
+                          "doseStr":  "10 - 20",
+                          "unit":  "MKDay",
+                          "name":  "Azithromycin",
+                          "freq":  "PO OD",
+                          "ref":  "Thai Acute diarrhea PED 2019",
+                          "maxDose":  "500 mg/dose",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "200 mg / 5 ml",
+                          "doseStr":  "4.4",
+                          "unit":  "MKDose",
+                          "name":  "Doxycycline",
+                          "freq":  "PO once (Max 300 mg)",
+                          "ref":  "Thai Acute diarrhea PED 2019",
+                          "maxDose":  "100 mg/dose",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "50 mg / 5 ml",
+                          "doseStr":  "15 - 50",
+                          "unit":  "MKDay",
+                          "name":  "Metronidazole",
+                          "freq":  "PO tid-qid",
+                          "ref":  "Thai Acute diarrhea PED 2019",
+                          "maxDose":  "500 mg/dose",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "200 mg / 5 ml",
+                          "doseStr":  "40",
+                          "unit":  "MKDay",
+                          "name":  "Vancomycin (oral)",
+                          "freq":  "PO qid for 10 days",
+                          "ref":  "Thai Acute diarrhea PED 2019",
+                          "maxDose":  "500 mg/dose",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "250 mg / 5 ml",
+                          "doseStr":  "15",
+                          "unit":  "MKDay",
+                          "name":  "Albendazole",
+                          "freq":  "PO OD for 5-7 days (Max 400 mg)",
+                          "ref":  "Thai Acute diarrhea PED 2019",
+                          "maxDose":  "400 mg",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "200 mg / 5 ml",
+                          "doseStr":  "50",
+                          "unit":  "MKDay",
+                          "name":  "Tinidazole",
+                          "freq":  "PO once or OD for 5 days (Max 2 g)",
+                          "ref":  "Thai Acute diarrhea PED 2019",
+                          "maxDose":  "2 g",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "457 mg / 5 ml",
+                          "doseStr":  "8",
+                          "unit":  "MKDay",
+                          "name":  "Cefixime",
+                          "freq":  "PO bid",
+                          "ref":  "",
+                          "maxDose":  "Adult Dose",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "250 mg / 5 ml",
+                          "doseStr":  "???? 0-1 mo Pre-term",
+                          "unit":  "MKDose",
+                          "name":  "Oseltamivir ???????????????? 1 ??",
+                          "freq":  "PO bid for 5 days",
+                          "ref":  "Thai URI PED 2019",
+                          "maxDose":  "75 mg/dose",
+                          "route":  "PO"
+                      },
+                      {
+                          "prep":  "",
+                          "doseStr":  "30",
+                          "unit":  "",
+                          "name":  "Oseltamivir ??????????? 1 ??",
+                          "freq":  "",
+                          "ref":  "",
+                          "maxDose":  "",
+                          "route":  "PO"
+                      }
+                  ]
+    },
+    {
+        "title":  "IV Antibiotics",
+        "items":  [
+                      {
+                          "prep":  "-",
+                          "doseStr":  "50 - 100",
+                          "unit":  "MKDay",
+                          "name":  "Ceftriaxone",
+                          "freq":  "IV OD",
+                          "ref":  "Thai AFI PED 2019",
+                          "maxDose":  "2000 mg/dose",
+                          "route":  "IV"
+                      },
+                      {
+                          "prep":  "-",
+                          "doseStr":  "100 - 200",
+                          "unit":  "MKDay",
+                          "name":  "Cefotaxime",
+                          "freq":  "IV q 8 hr",
+                          "ref":  "Thai URI PED 2019",
+                          "maxDose":  "Adult Dose",
+                          "route":  "IV"
+                      },
+                      {
+                          "prep":  "-",
+                          "doseStr":  "150 - 200",
+                          "unit":  "MKDay",
+                          "name":  "Ampicillin",
+                          "freq":  "IV q 6 hr",
+                          "ref":  "Thai URI PED 2019",
+                          "maxDose":  "2000 mg/dose",
+                          "route":  "IV"
+                      },
+                      {
+                          "prep":  "-",
+                          "doseStr":  "5",
+                          "unit":  "MKDay",
+                          "name":  "Gentamicin",
+                          "freq":  "IV OD",
+                          "ref":  "",
+                          "maxDose":  "Adult Dose",
+                          "route":  "IV"
+                      }
+                  ]
+    },
+    {
+        "title":  "Neuro",
+        "items":  [
+
+                  ]
+    },
+    {
+        "title":  "For controle Seizure in in First 5-10 min",
+        "items":  [
+                      {
+                          "prep":  "-",
+                          "doseStr":  "",
+                          "unit":  "MKDose",
+                          "name":  "Lorazepam",
+                          "freq":  "IV stat",
+                          "ref":  "Titin ed 9th",
+                          "maxDose":  "4 mg/dose",
+                          "route":  "IV"
+                      },
+                      {
+                          "prep":  "10 mg / 2 ml / vial",
+                          "doseStr":  "0.3",
+                          "unit":  "MKDose",
+                          "name":  "Diazepam",
+                          "freq":  "IV, Do not dilute, rate \u003c 2 mg/min, repeat q 5-10 min",
+                          "ref":  "Thai Epilepsy Guidelines 2021",
+                          "maxDose":  "10 mg/dose",
+                          "route":  "IV"
+                      },
+                      {
+                          "prep":  "5 mg / 1 mL / vial",
+                          "doseStr":  "BW 13 - 40 kg",
+                          "unit":  "MKDose",
+                          "name":  "Midazolam",
+                          "freq":  "IM, Do not dilute",
+                          "ref":  "Thai Epilepsy Guidelines 2021\nTitin ed 9th",
+                          "maxDose":  "10 mg/dose",
+                          "route":  "IM"
+                      }
+                  ]
+    },
+    {
+        "title":  "For controle Seizure in First 10-30 min",
+        "items":  [
+                      {
+                          "prep":  "250 mg / 5 ml / vial",
+                          "doseStr":  "loading",
+                          "unit":  "MKDose",
+                          "name":  "Phenytoin",
+                          "freq":  "250 mg + in NSS (only) Max Con 10 mg/ml, IV drip in 10 min (rate \u003c 1 mg/kg/min)",
+                          "ref":  "Thai Epilepsy Guidelines 2021",
+                          "maxDose":  "1500  mg/dose",
+                          "route":  "IV"
+                      },
+                      {
+                          "prep":  "200 mg / 1 ml / vial",
+                          "doseStr":  "loading",
+                          "unit":  "MKDose",
+                          "name":  "Phenobarbital",
+                          "freq":  "200 mg + Sterile water 10 ml then NSS, RL, 5%DWIV (rate \u003c 2 mg/kg/min)",
+                          "ref":  "Thai Epilepsy Guidelines 2021",
+                          "maxDose":  "1000  mg/dose",
+                          "route":  "IV"
+                      },
+                      {
+                          "prep":  "400 mg / 4 ml / vial",
+                          "doseStr":  "loading",
+                          "unit":  "MKDose",
+                          "name":  "Sodium Valproate",
+                          "freq":  "400 mg + in NSS or 5%D/W IV (rate \u003c 1-3 mg/kg/min)",
+                          "ref":  "Thai Epilepsy Guidelines 2021",
+                          "maxDose":  "NA",
+                          "route":  "IV"
+                      },
+                      {
+                          "prep":  "500 mg / 5 ml / vial",
+                          "doseStr":  "loading",
+                          "unit":  "MKDose",
+                          "name":  "Levetiracetam",
+                          "freq":  "500 mg + in NSS, RL, 5%D/W IV (infusion \u003e 15 min)",
+                          "ref":  "Thai Epilepsy Guidelines 2021",
+                          "maxDose":  "4000 mg/dose",
+                          "route":  "IV"
+                      },
+                      {
+                          "prep":  "200 mg / 20 ml / vial",
+                          "doseStr":  "10",
+                          "unit":  "MKDose",
+                          "name":  "Lacosamide",
+                          "freq":  "200 mg + in NSS, RL, 5%D/W IV",
+                          "ref":  "Thai Epilepsy Guidelines 2021",
+                          "maxDose":  "20 mg/kg (Max 400 mg)",
+                          "route":  "IV"
+                      }
+                  ]
+    },
+    {
+        "title":  "For controle Refractory Seizure",
+        "items":  [
+                      {
+                          "prep":  "5 mg / 1 mL / vial",
+                          "doseStr":  "loading",
+                          "unit":  "MKDose",
+                          "name":  "Midazolam (Maintenance)",
+                          "freq":  "5 mg + in NSS, 5%D/W IV",
+                          "ref":  "Thai Epilepsy Guidelines 2021",
+                          "maxDose":  "Max 0 mg (2 mg/kg)",
+                          "route":  "IV"
+                      },
+                      {
+                          "prep":  "200 mg / 20 ml / vial",
+                          "doseStr":  "loading",
+                          "unit":  "MKDose",
+                          "name":  "Propofol",
+                          "freq":  "200 mg no dilution IV (rate \u003c 0.05 mg/kg/min)",
+                          "ref":  "Thai Epilepsy Guidelines 2021",
+                          "maxDose":  "NA",
+                          "route":  "IV"
+                      },
+                      {
+                          "prep":  "1 g / vial",
+                          "doseStr":  "loading",
+                          "unit":  "MKDose",
+                          "name":  "Thiopental",
+                          "freq":  "1 g mix in NSS, 5%DW, Sterile water to 2.5% solution IV (rate \u003c 0.05 mg/kg/min)",
+                          "ref":  "Thai Epilepsy Guidelines 2021",
+                          "maxDose":  "NA",
+                          "route":  "IV"
+                      },
+                      {
+                          "prep":  "500 mg / 10 ml / vial",
+                          "doseStr":  "loading",
+                          "unit":  "MKDose",
+                          "name":  "Ketamine",
+                          "freq":  "500 mg mix in NSS, 5%DW, Sterile water to \u003c= 2 mg/ml IV",
+                          "ref":  "Thai Epilepsy Guidelines 2021",
+                          "maxDose":  "NA",
+                          "route":  "IV"
+                      }
+                  ]
+    }
+]

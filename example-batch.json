@@ -1,0 +1,28 @@
+{
+  "_comment": "เทมเพลตตัวอย่าง batch operation แก้ก่อนรันด้วยคำสั่ง: node sheet-sync.js batch example-batch.json --dry-run",
+  "values": {
+    "'RSI'!H1": [["Drug", "Reference", "Source tab", "Last reviewed", "Verified by"]],
+    "'RSI'!H2": [["Propofol", "Miller's Anesthesia, 10th Edition", "RSI", "", ""]]
+  },
+  "requests": [
+    {
+      "repeatCell": {
+        "range": { "sheetId": 0, "startRowIndex": 0, "endRowIndex": 1, "startColumnIndex": 7, "endColumnIndex": 12 },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": { "red": 0.9, "green": 0.92, "blue": 0.95 },
+            "textFormat": { "bold": true }
+          }
+        },
+        "fields": "userEnteredFormat.backgroundColor,userEnteredFormat.textFormat.bold"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": { "sheetId": 0, "dimension": "COLUMNS", "startIndex": 7, "endIndex": 12 },
+        "properties": { "pixelSize": 140 },
+        "fields": "pixelSize"
+      }
+    }
+  ]
+}

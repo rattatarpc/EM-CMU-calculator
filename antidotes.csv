@@ -1,0 +1,70 @@
+,,,,,
+Age :,25,year,Formular,,
+Calculated weight (For age 1-11 month):,,kg,(Age in months + 9) / 2,,
+Calculated weight (For age >= 1 year):,58,kg,(Age x 2) + 8,,
+,,,,,
+Gender,Male,,,,
+total body weight (TBW),,kg,,,
+Height,,cm,,,
+IBW,,kg,,,
+LBW,,kg,,,
+,,,,,
+,,,,,
+weight,10,Kg,,,
+,,,,,
+Reference: Gold frank ed11th and CMU caremap protocol,,,,,
+,,,,,
+IV NAC Protocol (Three-Bag Method),,,,,
+Dose,Target Dose (mg/kg),Total Dose (g),20% NAC Volume (mL),D5W Diluent Volume (mL),Duration
+Loading Dose,150,1.50,7.5,30.0,60 minutes
+Second Dose,50,0.50,2.5,70.0,4 hours
+Third Dose,100,1.00,5.0,140.0,16 hours
+Note: Max Body Weight = 110 kg,,,,,
+Oral NAC Protocol (72-hour),,,,,
+Dose,Target Dose (mg/kg),Total Dose (g),20% NAC Volume (mL),5% Diluent Volume (mL),Total Volume (mL)
+Loading Dose,140,1.40,7.0,21.0,28.0
+Maintenance Dose (x17),70,0.70,3.5,10.5,14.0
+,,,,,
+Simplified 2-Bag Protocol (20-hour),,,,,
+Dose,Target Dose (mg/kg),Total Dose (g),20% NAC Volume (mL),D5W Diluent Volume (mL),Duration
+Bag 1,200,2.00,10.0,70.0,4 hours
+Bag 2,100,1.00,5.0,140.0,16 hours
+"Note: Max Body Weight = 110 kg (Bag 1 Max Dose = 22 g, Bag 2 Max Dose = 11 g)",,,,,
+SNAP 2-Bag Protocol (12-hour),,,,,
+Dose,Target Dose (mg/kg),Total Dose (g),20% NAC Volume (mL),D5W Diluent Volume (mL),Duration
+Bag 1,100,1.00,5.0,30.0,2 hours
+Bag 2,200,2.00,10.0,140.0,10 hours
+Note: Max Body Weight = 110 kg,,,,,
+,,,,,
+Activated Charcoal (AC) Protocol,,,,,
+Dose Type,Target Dose (g/kg),Max Dose (g),Total Dose (g),Slurry Liquid Volume (mL),Frequency
+SDAC / Loading Dose,1,100,10,80,Single dose
+MDAC (Subsequent Doses),0.5,50,5,40,Every 4-6 hours
+Note: Slurry ratio is 1:8 (AC to liquid).,,,,,
+Reference: Antidotes in Depth: ACTIVATED CHARCOAL by Silas W. Smith and Mary Ann Howland,,,,,
+,,,,,
+,,,,,
+Whole Bowel Irrigation (WBI) Protocol,,,,,
+"Maharaj Formula Preparation: 1 set = PEG 4000 (90g) + Electrolytes (14.3g) = Total 104.3g. Mix with clean water 1,500 mL.",,,,,
+Administration rate by age,,,,,
+Age,Rate (mL/hr),Calculated Rate (mL/hr),Duration,,
+Small Children (9 months - 6 years),500 m/hr or 25 ml/kg/hr,250,Max 500 ml/hr,4-6 hours or until clear effluent,
+Children (6 - 12 years),1000 mlhr,-,-,,
+Adolescents & Adults,"1,500 - 2,000 ml/hr",-,-,,
+"Colon prep (สูตร รพ.มหาราชนครเชียงใหม่) (1 ชุด ประกอบด้วย Polyethylene glycol4000 จำนวน 90 gm + Electrolyte จำนวน 14.3 gm รวม 104.3 gm) 1 ชุด + น้ำสะอาด 1,500 mL oral / feed via gastric tube rate 250 mL/hour จนกว่าอุจจาระสีใส (clear rectal effluent)",,,,,
+CMU Safety Stop Criteria & Notes,,,,,
+"Observe abdominal sign, vomiting every 1 hr. If mild nausea/vomiting, give antiemetics and reduce rate.",,,,,
+STOP WBI and notify Toxicologist if >= 1 of the following:,,,,,
+"1) significant abdominal distension, 2) severe vomiting, 3) bowel ileus, 4) signs of GI tract perforation, 5) WBI >= 9 L/day without stool",,,,,
+"Special Consideration: Pregnancy (FDA Category C), Breastfeeding (Infant risk cannot be ruled out)",,,,,
+Reference: Antidotes in Depth: WHOLE-BOWEL IRRIGATION AND OTHER INTESTINAL EVACUANTS; Whole Bowel irrigation Protocol_ToxicoCMU_Version29Jan2026,,,,,
+other PEG preperation,,,,,
+แบบผสมก่อนใช้:,,,,,
+"- Polyethylene glycol-electrolyte solution (PEG-ELS) (55 gm/sachet)4: ส่วนที่ 1: ผง Polyethylene glycol 4000 (PEG 4000) + น้ำร้อน 300 mL, ส่วนที่ 2: ผง electrolyte + น้ำต้มสุก 500 mL. ผสมส่วนที่ 1 และ 2 (total 800mL) แล้วเติมน้ำสะอาด 200 mL => ได้สารละลาย ปริมาตร 1 L",,,,,
+"- Colon prep® (สูตรศูนย์พิษวิทยารามาธิบดี): ส่วนที่ 1: Macrogol (Polyethylene glycol 4000 [PEG 4000]) = 44.81 gm/sachet, ส่วนที่ 2: electrolyte. ผสมส่วนที่ 1 และ 2 (total 52 gm/sachet) + น้ำ 750 mL",,,,,
+"- Niflec® (137.55 gm/sachet): ส่วนที่ 1: Macrogol (Polyethylene glycol 4000 [PEG 4000]), ส่วนที่ 2: electrolyte. Niflec® 1 sachet + น้ำ 2 L",,,,,
+"- Forlax® (Polyethylene glycol 4000 [PEG 4000] = 10 gm/sachet) + electrolyte: นำส่วนที่ 1 Forlax® 5.5 sachet (55 gm) + น้ำสะอาด 300 mL, ส่วนที่ 2 ผง electrolyte + น้ำต้มสุก 500 mL. ผสม 1 และ 2 แล้วเติมน้ำสะอาด 200 mL => ได้สารละลาย 1 L",,,,,
+"- Forlax® (Polyethylene glycol 4000 [PEG 4000] = 10 gm/sachet) + Swiff® solution: นำส่วนที่ 1 Forlax® 5.5 sachet (55 gm) + น้ำสะอาด 300 mL, ส่วนที่ 2 Swiff® solution (Sodium phosphate 2.4 gm/mL + Disodium hydrogen phosphate 0.9 gm/mL) = 21 mL. ผสม 1 และ 2 แล้วเติมน้ำสะอาดจนได้สารละลาย 1 L",,,,,
+แบบพร้อมใช้ (Solution ready to use):,,,,,
+- Colyte® = ประกอบด้วย Polyethylene glycol 3350 (PEG 3350) และ Electrolyte,,,,,
+หมายเหตุ: โปรดระวังในการผสมสารละลาย WBI โดยจำเป็นต้องมีการผสม Electrolyte ร่วมด้วยตามแต่ละสูตร,,,,,
