@@ -894,8 +894,8 @@ function startCalculation() {
                     <div class="p-4 bg-slate-50 border-b border-slate-200">
                         <input type="text" id="antidoteSearch" class="inp w-full" placeholder="ค้นหาชื่อ Antidote..." oninput="filterAntidotes()">
                     </div>
-                    <div class="p-4 bg-slate-50" id="antidoteSearchBody">
-                        <div id="antidoteListContainer" class="grid grid-cols-2 md:grid-cols-4 gap-2 items-start">
+                    <div class="p-3 bg-slate-50" id="antidoteSearchBody">
+                        <div id="antidoteListContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 items-start">
                             <!-- List populated by JS -->
                         </div>
                     </div>
@@ -3398,6 +3398,12 @@ function selectAntidote(name) {
     
     const title = document.getElementById('adTitle');
     if (title) title.innerHTML = `<i class="fas fa-prescription-bottle-medical mr-2"></i>${name}`;
+    const references = {
+        'DEFEROXAMINE': 'Antidotes in Depth, A7 Deferoxamine; Deferoxamine package insert (Hospira, 2018)',
+        'DIGOXIN-SPECIFIC ANTIBODY FRAGMENTS': 'Antidotes in Depth, A22 Digoxin-Specific Antibody Fragments; DigiFab package insert (BTG, 2014)'
+    };
+    const reference = document.getElementById('adRef');
+    if (reference) reference.innerHTML = `<i class="fas fa-book-medical text-indigo-500"></i> ${references[name] || "Goldfrank's Toxicologic Emergencies, Eleventh Edition (11th ed.)"}`;
     
     if (name === 'N-ACETYLCYSTEINE') {
         renderNacCalculator(content);
@@ -3423,12 +3429,335 @@ function selectAntidote(name) {
     } else if (name === 'DANTROLENE SODIUM') {
         renderDantroleneCalculator(content);
         calcDantrolene();
+    } else if (name === 'DEFEROXAMINE') {
+        renderDeferoxamineCalculator(content);
+        calcDeferoxamine();
+    } else if (name === 'DIGOXIN-SPECIFIC ANTIBODY FRAGMENTS') {
+        renderDigoxinFabCalculator(content);
+        calcDigoxinFab();
     } else {
         content.innerHTML = `<div class="p-8 text-center text-slate-400">
             <i class="fas fa-hammer text-4xl mb-3"></i>
             <div>Calculator or Information for <b>${name}</b> is under construction.</div>
         </div>`;
     }
+}
+
+function renderDeferoxamineCalculator(container) {
+    container.innerHTML = `
+        <div class="p-4 bg-white">
+            <div class="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 shadow-inner">
+                <div class="font-bold text-amber-700 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>Preparation (Desferal Inj 0.5 g)</div>
+                Reconstitute powder with SWFI &asymp;100 mg/ml (500 mg + 5 ml SWFI; verify product label). Do <b>not</b> use NSS for reconstitution. For IV: dilute with NSS or Ringer to a final volume of 150 ml. Not compatible with heparin-containing solutions. Store &lt;25&deg;C; do not freeze.
+            </div>
+            <div id="deferoxamine-content"></div>
+        </div>
+    `;
+}
+
+function calcDeferoxamine() {
+    const content = document.getElementById('deferoxamine-content');
+    if (!content) return;
+    const hasW = (P.calcWt && P.calcWt > 0);
+    const wt = hasW ? P.calcWt : 0;
+    const conc = 1000 / 150;
+
+    let html = '';
+    if (!hasW) {
+        html += '<div class="mb-4 text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight first.</div>';
+    }
+
+    const wtText = hasW ? rnd(wt) : '-';
+    const concText = (1000 / 150).toFixed(2);
+    const sDose = hasW ? rnd(wt * 5) : '-';
+    const sRate = hasW ? rnd((wt * 5) / conc) : '-';
+    const mDose = hasW ? rnd(wt * 15) : '-';
+    const mRate = hasW ? rnd((wt * 15) / conc) : '-';
+    const imload = hasW ? rnd(wt * 90) : '-';
+    const imMaint = hasW ? rnd(wt * 45) : '-';
+
+    html += `
+        <div class="space-y-4">
+            <div class="border border-indigo-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-indigo-600 text-white font-bold p-2 text-sm">IV Infusion Rate Calculator</div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs sm:text-sm">
+                        <thead>
+                            <tr class="bg-indigo-50 text-slate-600">
+                                <th class="px-2 py-1.5 text-left font-bold">Weight (kg)</th>
+                                <th class="px-2 py-1.5 text-left font-bold">Dose (mg/kg/hr)</th>
+                                <th class="px-2 py-1.5 text-left font-bold">Final conc. (mg/ml)</th>
+                                <th class="px-2 py-1.5 text-left font-bold">Calculated dose (mg/hr)</th>
+                                <th class="px-2 py-1.5 text-left font-bold">Calculated rate (ml/hr)</th>
+                                <th class="px-2 py-1.5 text-left font-bold">Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t border-indigo-100">
+                                <td class="px-2 py-1.5 font-bold">${wtText}</td>
+                                <td class="px-2 py-1.5">5</td>
+                                <td class="px-2 py-1.5">${concText}</td>
+                                <td class="px-2 py-1.5 font-bold text-indigo-700">${sDose}</td>
+                                <td class="px-2 py-1.5 font-bold text-indigo-700">${sRate}</td>
+                                <td class="px-2 py-1.5 text-slate-500">Start rate; increase after 15 min if tolerated</td>
+                            </tr>
+                            <tr class="border-t border-red-100 bg-red-50/40">
+                                <td class="px-2 py-1.5 font-bold">${wtText}</td>
+                                <td class="px-2 py-1.5">15</td>
+                                <td class="px-2 py-1.5">${concText}</td>
+                                <td class="px-2 py-1.5 font-bold text-red-700">${mDose}</td>
+                                <td class="px-2 py-1.5 font-bold text-red-700">${mRate}</td>
+                                <td class="px-2 py-1.5 text-slate-500">Maximum rate</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="p-2 bg-slate-50 border-t border-slate-200 text-xs text-slate-700">
+                    <span class="font-bold text-slate-800">How to order:</span> deferoxamine ${mDose} mg in NSS or Ringer total 150 ml IV infusion, start ${sRate} ml/hr, increase after 15 min if tolerated up to ${mRate} ml/hr (max 15 mg/kg/hr)
+                </div>
+            </div>
+
+            <div class="border border-blue-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-blue-600 text-white font-bold p-2 text-sm">IV Infusion &mdash; Acute Iron Toxicity</div>
+                <div class="p-3 bg-white text-sm">
+                    <div class="flex items-baseline justify-between mb-2 border-b border-dashed border-slate-200 pb-2">
+                        <span class="text-slate-500">Initial Dose</span>
+                        <span class="font-bold text-slate-800">1,000 mg IV (do not exceed 15 mg/kg/hr)</span>
+                    </div>
+                    <div class="flex items-baseline justify-between mb-2">
+                        <span class="text-slate-500">Subsequent</span>
+                        <span class="font-bold text-slate-800">Infuse over 4&ndash;12 hr at &le;125 mg/hr</span>
+                    </div>
+                    <div class="bg-slate-50 p-2 mt-2 rounded border border-slate-200 text-xs text-slate-700">
+                        <div><span class="font-bold text-slate-800">How to order:</span> deferoxamine 1,000 mg in NSS or Ringer 150 ml IV infusion; start ${sRate} ml/hr, increase after 15 min if tolerated up to ${mRate} ml/hr</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border border-purple-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-purple-600 text-white font-bold p-2 text-sm">IV Infusion &mdash; Chronic Iron Overload</div>
+                <div class="p-3 bg-white text-sm">
+                    <div class="flex items-baseline justify-between mb-2 border-b border-dashed border-slate-200 pb-2">
+                        <span class="text-slate-500">Dose</span>
+                        <span class="font-bold text-slate-800">${mDose} mg/hr (max 15 mg/kg/hr)</span>
+                    </div>
+                    <div class="flex items-baseline justify-between mb-2">
+                        <span class="text-slate-500">Duration</span>
+                        <span class="font-bold text-slate-800">Infuse over 8&ndash;12 hr</span>
+                    </div>
+                    <div class="bg-slate-50 p-2 mt-2 rounded border border-slate-200 text-xs text-slate-700">
+                        <div><span class="font-bold text-slate-800">How to order:</span> deferoxamine ${mDose} mg in NSS or Ringer 150 ml IV infusion at ${mRate} ml/hr over 8&ndash;12 hr</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border border-amber-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-amber-500 text-white font-bold p-2 text-sm">IM (only when SubQ cannot be used)</div>
+                <div class="p-3 bg-white text-sm">
+                    <div class="flex items-baseline justify-between mb-2 border-b border-dashed border-slate-200 pb-2">
+                        <span class="text-slate-500">Loading Dose</span>
+                        <span class="font-bold text-slate-800">${imload} mg (90 mg/kg/dose)</span>
+                    </div>
+                    <div class="flex items-baseline justify-between mb-2">
+                        <span class="text-slate-500">Maintenance</span>
+                        <span class="font-bold text-slate-800">${imMaint} mg every 4&ndash;6 hr (45 mg/kg/dose)</span>
+                    </div>
+                    <div class="bg-slate-50 p-2 mt-2 rounded border border-slate-200 text-xs text-slate-700">
+                        <div class="mb-1"><span class="font-bold text-slate-800">Preparation:</span> Reconstitute with SWFI 2 ml (&asymp;213 mg/ml).</div>
+                        <div><span class="font-bold text-slate-800">Note:</span> IM is painful and is not a substitute for urgent IV therapy in shock, coma, acidosis or hemodynamic instability.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border border-teal-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-teal-600 text-white font-bold p-2 text-sm">SubQ (chronic iron overload)</div>
+                <div class="p-3 bg-white text-sm">
+                    <div class="flex items-baseline justify-between mb-2 border-b border-dashed border-slate-200 pb-2">
+                        <span class="text-slate-500">Administration</span>
+                        <span class="font-bold text-slate-800">Over 8&ndash;12 hr via appropriate pump/device</span>
+                    </div>
+                    <div class="bg-slate-50 p-2 mt-2 rounded border border-slate-200 text-xs text-slate-700">
+                        <div><span class="font-bold text-slate-800">Preparation:</span> Reconstitute with SWFI 5 ml. Use an appropriate administration device/pump.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-slate-100 p-2 text-sm font-bold text-slate-700 border-b border-slate-200 flex items-center gap-2">
+                    <i class="fas fa-book-medical text-slate-500"></i> Reference &amp; Guidelines
+                </div>
+                <div class="p-3 bg-white text-xs text-slate-700">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="bg-green-50 p-2 rounded border border-green-200">
+                            <div class="font-bold text-green-800 mb-1 border-b border-green-200 pb-1">Indications</div>
+                            <ul class="list-disc pl-4 space-y-1 text-green-900">
+                                <li>Acute iron toxicity</li>
+                                <li>Chronic iron overload (transfusional / hemochromatosis)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-red-50 p-2 rounded border border-red-200">
+                            <div class="font-bold text-red-800 mb-1 border-b border-red-200 pb-1">Contraindications &amp; Pregnancy</div>
+                            <ul class="list-disc pl-4 space-y-1 text-red-900">
+                                <li>Severe renal disease / anuria</li>
+                                <li>First trimester pregnancy (unless life-threatening iron toxicity)</li>
+                                <li>Primary hemochromatosis without iron overload</li>
+                            </ul>
+                        </div>
+                        <div class="bg-orange-50 p-2 rounded border border-orange-200 md:col-span-2">
+                            <div class="font-bold text-orange-800 mb-1 border-b border-orange-200 pb-1">Complications</div>
+                            <ul class="list-disc pl-4 space-y-1 text-orange-900">
+                                <li>Rapid infusion: hypotension, urticaria, shock, hypersensitivity</li>
+                                <li>Pain at injection site (IM)</li>
+                                <li>Not compatible with heparin-containing solutions</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    content.innerHTML = html;
+}
+
+function renderDigoxinFabCalculator(container) {
+    container.innerHTML = `
+        <div class="p-4 bg-white">
+            <div class="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 shadow-inner">
+                <div class="font-bold text-amber-700 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>Preparation</div>
+                DigiFab 40 mg/vial. Reconstitute each vial with 4 ml SWFI &rarr; 10 mg/ml. Each vial binds &asymp;0.5 mg digoxin. Give IV slowly over &ge;30 min (bolus if critically ill). Pediatric: may further dilute to 1 mg/ml with 36 ml NS.
+            </div>
+            <div class="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label class="block"><span class="font-semibold text-slate-600">Serum digoxin concentration SDC (ng/ml)</span><input id="digoxinFabSdc" type="number" min="0" step="0.1" class="inp mt-1" oninput="calcDigoxinFab()" placeholder="e.g. 5"></label>
+                <label class="block"><span class="font-semibold text-slate-600">Amount ingested (mg)</span><input id="digoxinFabIngested" type="number" min="0" step="0.1" class="inp mt-1" oninput="calcDigoxinFab()" placeholder="e.g. 12.5"></label>
+            </div>
+            <div id="digoxinFab-content"></div>
+        </div>
+    `;
+}
+
+function calcDigoxinFab() {
+    const content = document.getElementById('digoxinFab-content');
+    if (!content) return;
+    const sdcEl = document.getElementById('digoxinFabSdc');
+    const ingestedEl = document.getElementById('digoxinFabIngested');
+    const hasW = (P.calcWt && P.calcWt > 0);
+    const wt = hasW ? P.calcWt : 0;
+    const sdc = sdcEl ? (parseFloat(sdcEl.value) || 0) : 0;
+    const ingested = ingestedEl ? (parseFloat(ingestedEl.value) || 0) : 0;
+
+    const sdcVials = (hasW && sdc > 0) ? Math.ceil((sdc * wt) / 100) : '-';
+    const tbl = ingested > 0 ? rnd(ingested * 0.8) : '-';
+    const ingVials = ingested > 0 ? Math.ceil((ingested * 0.8) / 0.5) : '-';
+    const orderVials = sdcVials !== '-' ? sdcVials : ingVials;
+
+    let html = '';
+    if (!hasW) {
+        html += '<div class="mb-4 text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight first.</div>';
+    }
+
+    html += `
+        <div class="space-y-4">
+            <div class="border border-blue-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-blue-600 text-white font-bold p-2 text-sm flex items-center justify-between">
+                    <div><i class="fas fa-flask mr-2"></i>Serum-Based Dose</div>
+                    <div class="text-xs font-normal opacity-90 text-blue-100">Vd = 5 L/kg</div>
+                </div>
+                <div class="p-3 bg-white">
+                    <div class="flex items-baseline justify-between mb-2 border-b border-dashed border-slate-200 pb-2">
+                        <span class="text-slate-500 text-sm">Formula</span>
+                        <span class="font-bold text-slate-800">Vials = (SDC &times; weight) &divide; 100</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-blue-700">Vials</span>
+                        <span class="font-black text-2xl text-blue-700">${sdcVials}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border border-purple-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-purple-600 text-white font-bold p-2 text-sm flex items-center justify-between">
+                    <div><i class="fas fa-pills mr-2"></i>Ingestion-Based Dose</div>
+                    <div class="text-xs font-normal opacity-90 text-purple-100">80% bioavailability</div>
+                </div>
+                <div class="p-3 bg-white">
+                    <div class="flex items-baseline justify-between mb-2 border-b border-dashed border-slate-200 pb-2">
+                        <span class="text-slate-500 text-sm">Total body load</span>
+                        <span class="font-bold text-slate-800">${tbl} mg</span>
+                    </div>
+                    <div class="flex items-baseline justify-between mb-2">
+                        <span class="text-slate-500 text-sm">Formula</span>
+                        <span class="font-bold text-slate-800">Vials = TBL &divide; 0.5 mg/vial</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-purple-700">Vials</span>
+                        <span class="font-black text-2xl text-purple-700">${ingVials}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border border-amber-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-amber-500 text-white font-bold p-2 text-sm">Empiric Therapy</div>
+                <div class="p-3 bg-white text-sm">
+                    <div class="flex items-baseline justify-between mb-1 border-b border-dashed border-slate-200 pb-1">
+                        <span class="text-slate-500">Acute poisoning</span>
+                        <span class="font-bold text-amber-800">10&ndash;20 vials (adult or pediatric; monitor volume overload)</span>
+                    </div>
+                    <div class="flex items-baseline justify-between mb-1 border-b border-dashed border-slate-200 pb-1">
+                        <span class="text-slate-500">Chronic toxicity</span>
+                        <span class="font-bold text-amber-800">Adult 3&ndash;6 vials; child 1&ndash;2 vials</span>
+                    </div>
+                    <div class="flex items-baseline justify-between">
+                        <span class="text-slate-500">Nonpharmaceutical CAS (oleander, etc.)</span>
+                        <span class="font-bold text-amber-800">10&ndash;20 vials (&ge;20 for oleander)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs text-slate-700">
+                <div class="font-bold text-slate-800 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>How to order:</div>
+                DigiFab ${orderVials === '-' ? '(per calculated dose above)' : orderVials} vials &mdash; reconstitute each with 4 ml SWFI (10 mg/ml), IV infusion over &ge;30 min
+            </div>
+
+            <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-slate-100 p-2 text-sm font-bold text-slate-700 border-b border-slate-200 flex items-center gap-2">
+                    <i class="fas fa-book-medical text-slate-500"></i> Reference &amp; Guidelines
+                </div>
+                <div class="p-3 bg-white text-xs text-slate-700">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="bg-green-50 p-2 rounded border border-green-200">
+                            <div class="font-bold text-green-800 mb-1 border-b border-green-200 pb-1">Indications</div>
+                            <ul class="list-disc pl-4 space-y-1 text-green-900">
+                                <li>Life-threatening digoxin dysrhythmias (VT/VF, atropine-resistant bradycardia, 2nd/3rd degree block)</li>
+                                <li>Potassium &gt;5 mEq/L in acute digoxin poisoning</li>
+                                <li>Chronic SDC elevation with dysrhythmias, significant GI symptoms, or altered mental status</li>
+                                <li>SDC &ge;15 ng/ml at any time or &ge;10 ng/ml 6 hr post-ingestion</li>
+                                <li>Acute ingestion of 10 mg digoxin (adult) or 4 mg (child)</li>
+                                <li>Poisoning with a nondigoxin cardioactive steroid</li>
+                            </ul>
+                        </div>
+                        <div class="bg-red-50 p-2 rounded border border-red-200">
+                            <div class="font-bold text-red-800 mb-1 border-b border-red-200 pb-1">Monitoring / Safety</div>
+                            <ul class="list-disc pl-4 space-y-1 text-red-900">
+                                <li>Free digoxin should be &asymp;0 after DSFab; total digoxin level becomes meaningless (may rise 10&ndash;20&times;)</li>
+                                <li>Monitor K+ &mdash; hypokalemia risk</li>
+                                <li>Anaphylactoid reactions possible</li>
+                                <li>Repeat dose if toxicity recurs</li>
+                            </ul>
+                        </div>
+                        <div class="bg-orange-50 p-2 rounded border border-orange-200 md:col-span-2">
+                            <div class="font-bold text-orange-800 mb-1 border-b border-orange-200 pb-1">Complications</div>
+                            <ul class="list-disc pl-4 space-y-1 text-orange-900">
+                                <li>Hypokalemia</li>
+                                <li>Worsening heart failure in chronically digoxin-treated patients after removal of inotropic effect</li>
+                                <li>Allergic reactions (prior Fab exposure / allergy to papain-derived products)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    content.innerHTML = html;
 }
 
 function renderAntidotes() {
@@ -3447,7 +3776,9 @@ function renderAntidotes() {
         else if (window.currentAntidote === 'BOTULINUM ANTITOXIN' && typeof calcBotulism === 'function') calcBotulism();
         else if (window.currentAntidote === 'CALCIUM' && typeof calcCalcium === 'function') calcCalcium();
         else if (window.currentAntidote === 'L-CARNITINE' && typeof calcCarnitine === 'function') calcCarnitine();
-        else if (window.currentAntidote === 'DANTROLENE SODIUM' && typeof calcDantrolene === 'function') calcDantrolene();
+         else if (window.currentAntidote === 'DANTROLENE SODIUM' && typeof calcDantrolene === 'function') calcDantrolene();
+         else if (window.currentAntidote === 'DEFEROXAMINE' && typeof calcDeferoxamine === 'function') calcDeferoxamine();
+         else if (window.currentAntidote === 'DIGOXIN-SPECIFIC ANTIBODY FRAGMENTS' && typeof calcDigoxinFab === 'function') calcDigoxinFab();
     }
 }
 
@@ -3646,6 +3977,7 @@ function renderAtropineCalculator(container) {
     `;
 }
 
+let activeAtropineTab = 'op';
 function switchAtropineTab(tab) {
     activeAtropineTab = tab;
     document.querySelectorAll('.atro-tab').forEach(b => {
