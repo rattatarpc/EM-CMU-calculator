@@ -1,0 +1,13 @@
+{
+  "requests": [
+    {
+      "addConditionalFormatRule": {
+        "index": 0,
+        "rule": {
+          "ranges": [{ "sheetId": 806262178, "startRowIndex": 190, "endRowIndex": 191, "startColumnIndex": 6, "endColumnIndex": 7 }],
+          "booleanRule": { "condition": { "type": "CUSTOM_FORMULA", "values": [{ "userEnteredValue": "=VALUE(REGEXEXTRACT(G191,\"[0-9.]+\"))>6000" }] }, "format": { "backgroundColor": { "red": 0.92, "green": 0.26, "blue": 0.21 }, "textFormat": { "foregroundColor": { "red": 1, "green": 1, "blue": 1 }, "bold": true } } }
+        }
+      }
+    }
+  ]
+}

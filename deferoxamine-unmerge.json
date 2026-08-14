@@ -1,0 +1,9 @@
+{
+  "requests": [
+    {
+      "unmergeCells": {
+        "range": { "sheetId": 806262178, "startRowIndex": 177, "endRowIndex": 188, "startColumnIndex": 0, "endColumnIndex": 8 }
+      }
+    }
+  ]
+}

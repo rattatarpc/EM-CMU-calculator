@@ -1,0 +1,21 @@
+{
+  "requests": [
+    {
+      "addConditionalFormatRule": {
+        "index": 0,
+        "rule": {
+          "ranges": [
+            { "sheetId": 806262178, "startRowIndex": 187, "endRowIndex": 188, "startColumnIndex": 4, "endColumnIndex": 5 }
+          ],
+          "booleanRule": {
+            "condition": { "type": "CUSTOM_FORMULA", "values": [{ "userEnteredValue": "=C188>1000" }] },
+            "format": {
+              "backgroundColor": { "red": 0.92, "green": 0.26, "blue": 0.21 },
+              "textFormat": { "foregroundColor": { "red": 1, "green": 1, "blue": 1 }, "bold": true }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

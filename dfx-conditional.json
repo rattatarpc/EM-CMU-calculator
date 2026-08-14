@@ -1,0 +1,67 @@
+{
+  "requests": [
+    {
+      "addConditionalFormatRule": {
+        "index": 0,
+        "rule": {
+          "ranges": [{ "sheetId": 806262178, "startRowIndex": 185, "endRowIndex": 187, "startColumnIndex": 2, "endColumnIndex": 3 }],
+          "booleanRule": { "condition": { "type": "CUSTOM_FORMULA", "values": [{ "userEnteredValue": "=C186>1000" }] }, "format": { "backgroundColor": { "red": 0.92, "green": 0.26, "blue": 0.21 }, "textFormat": { "foregroundColor": { "red": 1, "green": 1, "blue": 1 }, "bold": true } } }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 0,
+        "rule": {
+          "ranges": [{ "sheetId": 806262178, "startRowIndex": 187, "endRowIndex": 189, "startColumnIndex": 2, "endColumnIndex": 3 }],
+          "booleanRule": { "condition": { "type": "CUSTOM_FORMULA", "values": [{ "userEnteredValue": "=15*$B$13>1000" }] }, "format": { "backgroundColor": { "red": 0.92, "green": 0.26, "blue": 0.21 }, "textFormat": { "foregroundColor": { "red": 1, "green": 1, "blue": 1 }, "bold": true } } }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 0,
+        "rule": {
+          "ranges": [{ "sheetId": 806262178, "startRowIndex": 187, "endRowIndex": 189, "startColumnIndex": 4, "endColumnIndex": 5 }],
+          "booleanRule": { "condition": { "type": "CUSTOM_FORMULA", "values": [{ "userEnteredValue": "=15*$B$13>1000" }] }, "format": { "backgroundColor": { "red": 0.92, "green": 0.26, "blue": 0.21 }, "textFormat": { "foregroundColor": { "red": 1, "green": 1, "blue": 1 }, "bold": true } } }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 0,
+        "rule": {
+          "ranges": [{ "sheetId": 806262178, "startRowIndex": 187, "endRowIndex": 189, "startColumnIndex": 6, "endColumnIndex": 7 }],
+          "booleanRule": { "condition": { "type": "CUSTOM_FORMULA", "values": [{ "userEnteredValue": "=15*$B$13>1000" }] }, "format": { "backgroundColor": { "red": 0.92, "green": 0.26, "blue": 0.21 }, "textFormat": { "foregroundColor": { "red": 1, "green": 1, "blue": 1 }, "bold": true } } }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 0,
+        "rule": {
+          "ranges": [{ "sheetId": 806262178, "startRowIndex": 185, "endRowIndex": 187, "startColumnIndex": 6, "endColumnIndex": 7 }],
+          "booleanRule": { "condition": { "type": "CUSTOM_FORMULA", "values": [{ "userEnteredValue": "=VALUE(REGEXEXTRACT(G186,\"[0-9.]+\"))>1000" }] }, "format": { "backgroundColor": { "red": 0.92, "green": 0.26, "blue": 0.21 }, "textFormat": { "foregroundColor": { "red": 1, "green": 1, "blue": 1 }, "bold": true } } }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 0,
+        "rule": {
+          "ranges": [{ "sheetId": 806262178, "startRowIndex": 189, "endRowIndex": 190, "startColumnIndex": 6, "endColumnIndex": 7 }],
+          "booleanRule": { "condition": { "type": "CUSTOM_FORMULA", "values": [{ "userEnteredValue": "=VALUE(REGEXEXTRACT(G190,\"[0-9.]+\"))>6000" }] }, "format": { "backgroundColor": { "red": 0.92, "green": 0.26, "blue": 0.21 }, "textFormat": { "foregroundColor": { "red": 1, "green": 1, "blue": 1 }, "bold": true } } }
+        }
+      }
+    },
+    {
+      "addConditionalFormatRule": {
+        "index": 0,
+        "rule": {
+          "ranges": [{ "sheetId": 806262178, "startRowIndex": 190, "endRowIndex": 191, "startColumnIndex": 6, "endColumnIndex": 7 }],
+          "booleanRule": { "condition": { "type": "CUSTOM_FORMULA", "values": [{ "userEnteredValue": "=VALUE(REGEXEXTRACT(G191,\"[0-9.]+\"))>6000" }] }, "format": { "backgroundColor": { "red": 0.92, "green": 0.26, "blue": 0.21 }, "textFormat": { "foregroundColor": { "red": 1, "green": 1, "blue": 1 }, "bold": true } } }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "requests": [
+    {
+      "mergeCells": {
+        "range": { "sheetId": 806262178, "startRowIndex": 185, "endRowIndex": 189, "startColumnIndex": 0, "endColumnIndex": 1 },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": { "sheetId": 806262178, "startRowIndex": 185, "endRowIndex": 189, "startColumnIndex": 3, "endColumnIndex": 4 },
+        "mergeType": "MERGE_ALL"
+      }
+    }
+  ]
+}

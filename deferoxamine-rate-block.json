@@ -1,0 +1,10 @@
+[
+  ["Rate calculator \u2014 hour 1 and remaining 23 h (uses patient weight in B13)"],
+  ["Phase", "Dose", "Rate (mg/hr)", "Rate (mL/hr)", "How to prepare / dilution", "Note \u2013 total dose from calculated rate"],
+  ["Hour 1 (initial)", "Start 5 mg/kg/hr; increase after 15 min if tolerated to 15 mg/kg/hr", "=IF($B$13=\"\",\"\",ROUND(5*$B$13,0)&\"\u2013\"&ROUND(15*$B$13,0))", "=IF($B$13=\"\",\"\",ROUND(5*$B$13/(1000/150),1)&\"\u2013\"&ROUND(15*$B$13/(1000/150),1))", "Reconstitute with SWFI; dilute to final volume 150 mL (\u22486.67 mg/mL). IV fluid: D5W, NSS, LRS or Ringer.", "=IF($B$13=\"\",\"\",\"Hour-1 total = \"&ROUND(5*$B$13,0)&\"\u2013\"&ROUND(15*$B$13,0)&\" mg (\u22481,000 mg target); monitor BP\")"],
+  ["Hour 2\u201324 (remainder of 6 g)", "Remainder = 6,000 \u2212 1,000 = 5,000 mg over 23 hr (theoretical \u2248217 mg/hr)", "125 (capped per local protocol)", "=ROUND(125/(1000/150),1)", "Use the same reconstituted solution; dilute as prescribed.", "=IF($B$13=\"\",\"\",\"Total in 23 h = 125 \u00d7 23 = 2,875 mg (\u22483.9 g/day total with hour 1)\")"],
+  ["Hour 2\u201324 (remainder of 8 g)", "Remainder = 8,000 \u2212 1,000 = 7,000 mg over 23 hr (theoretical \u2248304 mg/hr)", "125 (capped per local protocol)", "=ROUND(125/(1000/150),1)", "Use the same reconstituted solution; dilute as prescribed.", "=IF($B$13=\"\",\"\",\"Total in 23 h = 125 \u00d7 23 = 2,875 mg (\u22483.9 g/day total with hour 1)\")"],
+  ["Max dose / day", "6\u20138 g/day (reference)", "\u2013", "\u2013", "\u2013", "=IF($B$13=\"\",\"\",\"Max delivered with cap = 1,000 + 125\u00d723 = \"&(1000+125*23)&\" mg/day; below 6\u20138 g/day reference\")"],
+  ["Clinical note", "", "", "", "", "Use toxicology consultation and current local protocol. This table is a reference aid, not a replacement for clinical judgment."],
+  ["Reference", "", "", "", "", "Antidotes in Depth, A7 Deferoxamine, Mary Ann Howland; Deferoxamine package insert (Hospira, 2018); supplied Desferal reference image/PDF."]
+]

@@ -207,6 +207,22 @@ async function cmdBatch(file, dryRun) {
     if (!dryRun) console.log('Done.');
 }
 
+async function cmdClearRules(sheetName) {
+    const config = readConfig();
+    const key = readKey();
+    const token = await getAccessToken(key);
+    const data = await api(config.spreadsheetId, token, 'GET', '', null, 'fields=sheets(properties(sheetId,title),conditionalFormats)');
+    const sheet = data.sheets.find(s => s.properties.title === sheetName);
+    if (!sheet) { console.error('Sheet not found:', sheetName); process.exit(1); }
+    const count = (sheet.conditionalFormats || []).length;
+    if (!count) { console.log('No conditional format rules to clear.'); return; }
+    const requests = (sheet.conditionalFormats || []).map((_, i) => ({
+        deleteConditionalFormatRule: { sheetId: sheet.properties.sheetId, index: i }
+    })).reverse();
+    await api(config.spreadsheetId, token, 'POST', ':batchUpdate', { requests });
+    console.log(`Cleared ${count} conditional format rule(s) in "${sheetName}".`);
+}
+
 async function cmdMerges(sheetName) {
     const config = readConfig();
     const key = readKey();
@@ -265,6 +281,7 @@ async function main() {
         case 'batch': return cmdBatch(a, process.argv.includes('--dry-run'));
         case 'diff': return cmdDiff(a);
         case 'merges': return cmdMerges(a);
+        case 'clearrules': return cmdClearRules(a);
         default:
             console.log(`Usage:
   node sheet-sync.js meta

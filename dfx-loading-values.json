@@ -1,0 +1,8 @@
+[
+  ["Loading dose", "5 mg/kg/hr (min 0\u201315)", "=IF($B$13=\"\",\"\",ROUND(5*$B$13,0))", "Deferoxamine 500 mg + sterile water 5 ml (100 mg/ml) then mixed with NSS, DW, LRS up to 150 ml", "=IF($B$13=\"\",\"\",ROUND(5*$B$13/60/(1000/150),2))", "5 mg/kg/hr \u00d7 15 min = 1.25\u00d7BW mg", "=IF($B$13=\"\",\"\",ROUND(5*$B$13*0.25,1))"],
+  ["", "10 mg/kg/hr (min 16\u201330)", "=IF($B$13=\"\",\"\",ROUND(10*$B$13,0))", "", "=IF($B$13=\"\",\"\",ROUND(10*$B$13/60/(1000/150),2))", "10 mg/kg/hr \u00d7 15 min = 2.5\u00d7BW mg", "=IF($B$13=\"\",\"\",ROUND(10*$B$13*0.25,1))"],
+  ["", "15 mg/kg/hr (min 31\u201360)", "=IF($B$13=\"\",\"\",ROUND(15*$B$13,0))", "", "=IF($B$13=\"\",\"\",ROUND(15*$B$13/60/(1000/150),2))", "15 mg/kg/hr \u00d7 30 min = 7.5\u00d7BW mg (first-hour portion)", "=IF($B$13=\"\",\"\",ROUND(15*$B$13*0.5,1))"],
+  ["", "15 mg/kg/hr (min 61\u201390)", "=IF($B$13=\"\",\"\",ROUND(15*$B$13,0))", "", "=IF($B$13=\"\",\"\",ROUND(15*$B$13/60/(1000/150),2))", "15 mg/kg/hr \u00d7 30 min = 7.5\u00d7BW mg (completes 1 hr at 15 rate)", "=IF($B$13=\"\",\"\",ROUND(15*$B$13*0.5,1))"],
+  ["Maintenance dose", "125 mg/hr (after 15-rate hour)", "125", "", "=ROUND(125/60/(1000/150),2)", "Continues drip not exceed 23 hr (ARDS, Yersinia infection risk); extend 15 rate 2\u20133 hr if severe", "=125*23"],
+  ["Total daily dose", "Loading (0\u201390 min) + 125 mg/hr \u00d7 23 hr", "", "", "", "Total daily dose (Max 6 g/day)", "=IF($B$13=\"\",\"\",SUM(G186:G190)&\" mg/day\")"]
+]

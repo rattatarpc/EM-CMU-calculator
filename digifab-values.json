@@ -1,0 +1,18 @@
+[
+  ["Digoxin Immune Fab (DigiFab) \u2014 DSFab Calculator"],
+  ["Method", "Input", "Calculation", "Result (vials)", "Note"],
+  ["Weight (kg)", "=IF($B$13=\"\",\"\",$B$13)", "", "", "Linked to patient weight B13"],
+  ["Serum digoxin concentration (ng/mL)", "", "", "", "Enter serum level (nmol/L \u00d7 0.78 to convert to ng/mL)"],
+  ["Volume of distribution (L/kg)", "5", "", "", "5 L/kg; 5.6 L/kg used in some studies"],
+  ["Serum-based dose", "", "=IF(OR($B$13=\"\",B195=\"\"),\"\",ROUNDUP(B195*5*$B$13/(1000*0.5),0))", "=IF(OR($B$13=\"\",B195=\"\"),\"\",ROUNDUP(B195*5*$B$13/(1000*0.5),0))", "Vials = SDC \u00d7 Vd \u00d7 wt \u00f7 (1000 \u00d7 0.5); round up"],
+  ["Quick estimate (Vd = 5)", "", "", "=IF(OR($B$13=\"\",B195=\"\"),\"\",ROUNDUP(B195*$B$13/100,0))", "Vials = SDC \u00d7 wt \u00f7 100"],
+  ["Acute ingestion \u2014 amount ingested (mg)", "", "", "", "Enter total mg ingested (e.g. 0.25 mg \u00d7 50 tablets = 12.5 mg)"],
+  ["Total body load = ingested \u00d7 0.8 (80% bioavailability)", "", "=IF(B199=\"\",\"\",ROUND(B199*0.8,1))", "", "Absorbed dose estimate"],
+  ["Ingestion-based dose", "", "=IF(B199=\"\",\"\",ROUNDUP(B199*0.8/0.5,0))", "=IF(B199=\"\",\"\",ROUNDUP(B199*0.8/0.5,0))", "Vials = TBL \u00f7 0.5 mg/vial; round up"],
+  ["Empiric \u2014 acute ingestion", "", "", "", "Adult 10\u201320 vials; Child 10\u201320 vials"],
+  ["Empiric \u2014 chronic toxicity", "", "", "", "Adult 3\u20136 vials; Child 1\u20132 vials"],
+  ["Empiric \u2014 nonpharmaceutical CAS (oleander, etc.)", "", "", "", "10\u201320 vials; \u226520 vials recommended for oleander"],
+  ["Preparation", "Reconstitute 40 mg vial with 4 mL SWFI \u2192 10 mg/mL (binds \u22480.5 mg digoxin/vial)", "", "", "Infuse IV slowly \u226530 min (bolus if critically ill); pediatric: may further dilute to 1 mg/mL with 36 mL NS"],
+  ["Monitoring / safety", "", "", "", "Free digoxin should be \u22480 after DSFab; total digoxin level becomes meaningless (may rise 10\u201320\u00d7); monitor K+ (hypokalemia risk); anaphylactoid reactions possible; repeat dose if toxicity recurs"],
+  ["Reference", "", "", "", "Antidotes in Depth, A22 Digoxin-Specific Antibody Fragments (Smith & Howland); DigiFab package insert (BTG, 2014)"]
+]

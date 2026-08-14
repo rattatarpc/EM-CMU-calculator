@@ -1,0 +1,57 @@
+{
+  "requests": [
+    {
+      "updateDimensionProperties": {
+        "range": { "sheetId": 806262178, "dimension": "ROWS", "startIndex": 177, "endIndex": 178 },
+        "properties": { "pixelSize": 30 },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": { "sheetId": 806262178, "startRowIndex": 177, "endRowIndex": 178, "startColumnIndex": 0, "endColumnIndex": 7 },
+        "cell": { "userEnteredFormat": { "backgroundColor": { "red": 0.486, "green": 0.227, "blue": 0.929 }, "horizontalAlignment": "LEFT", "verticalAlignment": "MIDDLE", "wrapStrategy": "WRAP", "textFormat": { "foregroundColor": { "red": 1, "green": 1, "blue": 1 }, "bold": true, "fontSize": 12 } } },
+        "fields": "userEnteredFormat.backgroundColor,userEnteredFormat.horizontalAlignment,userEnteredFormat.verticalAlignment,userEnteredFormat.wrapStrategy,userEnteredFormat.textFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": { "sheetId": 806262178, "startRowIndex": 178, "endRowIndex": 179, "startColumnIndex": 0, "endColumnIndex": 7 },
+        "cell": { "userEnteredFormat": { "backgroundColor": { "red": 0.929, "green": 0.914, "blue": 0.996 }, "horizontalAlignment": "CENTER", "verticalAlignment": "MIDDLE", "wrapStrategy": "WRAP", "textFormat": { "foregroundColor": { "red": 0.357, "green": 0.129, "blue": 0.714 }, "bold": true, "fontSize": 10 } } },
+        "fields": "userEnteredFormat.backgroundColor,userEnteredFormat.horizontalAlignment,userEnteredFormat.verticalAlignment,userEnteredFormat.wrapStrategy,userEnteredFormat.textFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": { "sheetId": 806262178, "startRowIndex": 179, "endRowIndex": 186, "startColumnIndex": 0, "endColumnIndex": 7 },
+        "cell": { "userEnteredFormat": { "horizontalAlignment": "LEFT", "verticalAlignment": "TOP", "wrapStrategy": "WRAP", "textFormat": { "fontSize": 10 } } },
+        "fields": "userEnteredFormat.horizontalAlignment,userEnteredFormat.verticalAlignment,userEnteredFormat.wrapStrategy,userEnteredFormat.textFormat.fontSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": { "sheetId": 806262178, "dimension": "ROWS", "startIndex": 178, "endIndex": 179 },
+        "properties": { "pixelSize": 48 },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": { "sheetId": 806262178, "dimension": "ROWS", "startIndex": 179, "endIndex": 186 },
+        "properties": { "pixelSize": 105 },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateBorders": {
+        "range": { "sheetId": 806262178, "startRowIndex": 177, "endRowIndex": 186, "startColumnIndex": 0, "endColumnIndex": 7 },
+        "top": { "style": "SOLID", "width": 2, "color": { "red": 0.75, "green": 0.72, "blue": 0.95 } },
+        "bottom": { "style": "SOLID", "width": 2, "color": { "red": 0.75, "green": 0.72, "blue": 0.95 } },
+        "left": { "style": "SOLID", "width": 2, "color": { "red": 0.75, "green": 0.72, "blue": 0.95 } },
+        "right": { "style": "SOLID", "width": 2, "color": { "red": 0.75, "green": 0.72, "blue": 0.95 } },
+        "innerHorizontal": { "style": "SOLID", "width": 1, "color": { "red": 0.88, "green": 0.86, "blue": 0.98 } },
+        "innerVertical": { "style": "SOLID", "width": 1, "color": { "red": 0.88, "green": 0.86, "blue": 0.98 } }
+      }
+    }
+  ]
+}

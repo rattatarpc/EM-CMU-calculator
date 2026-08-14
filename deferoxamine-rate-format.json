@@ -1,0 +1,64 @@
+{
+  "requests": [
+    {
+      "repeatCell": {
+        "range": { "sheetId": 806262178, "startRowIndex": 183, "endRowIndex": 184, "startColumnIndex": 0, "endColumnIndex": 6 },
+        "cell": { "userEnteredFormat": { "backgroundColor": { "red": 0.929, "green": 0.914, "blue": 0.996 }, "horizontalAlignment": "LEFT", "verticalAlignment": "MIDDLE", "wrapStrategy": "WRAP", "textFormat": { "foregroundColor": { "red": 0.357, "green": 0.129, "blue": 0.714 }, "bold": true, "fontSize": 11 } } },
+        "fields": "userEnteredFormat.backgroundColor,userEnteredFormat.horizontalAlignment,userEnteredFormat.verticalAlignment,userEnteredFormat.wrapStrategy,userEnteredFormat.textFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": { "sheetId": 806262178, "startRowIndex": 184, "endRowIndex": 185, "startColumnIndex": 0, "endColumnIndex": 6 },
+        "cell": { "userEnteredFormat": { "backgroundColor": { "red": 0.929, "green": 0.914, "blue": 0.996 }, "horizontalAlignment": "CENTER", "verticalAlignment": "MIDDLE", "wrapStrategy": "WRAP", "textFormat": { "foregroundColor": { "red": 0.357, "green": 0.129, "blue": 0.714 }, "bold": true, "fontSize": 10 } } },
+        "fields": "userEnteredFormat.backgroundColor,userEnteredFormat.horizontalAlignment,userEnteredFormat.verticalAlignment,userEnteredFormat.wrapStrategy,userEnteredFormat.textFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": { "sheetId": 806262178, "startRowIndex": 185, "endRowIndex": 189, "startColumnIndex": 0, "endColumnIndex": 6 },
+        "cell": { "userEnteredFormat": { "horizontalAlignment": "LEFT", "verticalAlignment": "TOP", "wrapStrategy": "WRAP", "textFormat": { "fontSize": 10 } } },
+        "fields": "userEnteredFormat.horizontalAlignment,userEnteredFormat.verticalAlignment,userEnteredFormat.wrapStrategy,userEnteredFormat.textFormat.fontSize"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": { "sheetId": 806262178, "startRowIndex": 185, "endRowIndex": 189, "startColumnIndex": 2, "endColumnIndex": 4 },
+        "cell": { "userEnteredFormat": { "horizontalAlignment": "CENTER", "verticalAlignment": "MIDDLE", "wrapStrategy": "WRAP", "textFormat": { "bold": true, "fontSize": 10 } } },
+        "fields": "userEnteredFormat.horizontalAlignment,userEnteredFormat.verticalAlignment,userEnteredFormat.wrapStrategy,userEnteredFormat.textFormat"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": { "sheetId": 806262178, "dimension": "ROWS", "startIndex": 183, "endIndex": 184 },
+        "properties": { "pixelSize": 30 },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": { "sheetId": 806262178, "dimension": "ROWS", "startIndex": 184, "endIndex": 189 },
+        "properties": { "pixelSize": 62 },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": { "sheetId": 806262178, "dimension": "ROWS", "startIndex": 189, "endIndex": 191 },
+        "properties": { "pixelSize": 34 },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateBorders": {
+        "range": { "sheetId": 806262178, "startRowIndex": 183, "endRowIndex": 191, "startColumnIndex": 0, "endColumnIndex": 6 },
+        "top": { "style": "SOLID", "width": 2, "color": { "red": 0.75, "green": 0.72, "blue": 0.95 } },
+        "bottom": { "style": "SOLID", "width": 2, "color": { "red": 0.75, "green": 0.72, "blue": 0.95 } },
+        "left": { "style": "SOLID", "width": 2, "color": { "red": 0.75, "green": 0.72, "blue": 0.95 } },
+        "right": { "style": "SOLID", "width": 2, "color": { "red": 0.75, "green": 0.72, "blue": 0.95 } },
+        "innerHorizontal": { "style": "SOLID", "width": 1, "color": { "red": 0.88, "green": 0.86, "blue": 0.98 } },
+        "innerVertical": { "style": "SOLID", "width": 1, "color": { "red": 0.88, "green": 0.86, "blue": 0.98 } }
+      }
+    }
+  ]
+}
