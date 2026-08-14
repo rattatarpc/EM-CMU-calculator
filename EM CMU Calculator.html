@@ -656,10 +656,10 @@ function startCalculation() {
                         <div class="flex gap-2 max-w-sm">
                             <input type="number" id="mcConc" class="inp flex-1" placeholder="0" oninput="calcRate()">
                             <select id="mcConcUnit" class="inp flex-1" onchange="calcRate()">
-                                <option value="mcg_mL">mcg/ml</option>
-                                <option value="mg_mL">mg/ml</option>
-                                <option value="unit_mL">unit/ml</option>
-                                <option value="mEq_mL">mEq/ml</option>
+                                <option value="mcg_ml">mcg/ml</option>
+                                <option value="mg_ml">mg/ml</option>
+                                <option value="unit_ml">unit/ml</option>
+                                <option value="mEq_ml">mEq/ml</option>
                             </select>
                         </div>
                     </div>
@@ -904,6 +904,9 @@ function startCalculation() {
             
             <div id="antidoteDetailCard" class="card hidden border-purple-200 shadow-lg">
                 <div class="card-header bg-purple-600 text-lg font-bold" id="adTitle"><i class="fas fa-prescription-bottle-medical mr-2"></i>Antidote Details</div>
+                <div id="adRef" class="px-4 py-2 bg-indigo-50 border-b border-indigo-200 text-xs text-indigo-800 font-medium flex items-center gap-1.5">
+                    <i class="fas fa-book-medical text-indigo-500"></i> Reference: Goldfrank's Toxicologic Emergencies, Eleventh Edition (11th ed.)
+                </div>
                 <div class="p-0 bg-white" id="adContent">
                     <!-- Dynamic content depending on drug selected -->
                 </div>
@@ -943,6 +946,7 @@ function startCalculation() {
                         <li>Miller's Anesthesia, 10th Edition: RSI and neuromuscular blockade data</li>
                         <li>Pediatrics, Vol. 140, e20171904: pediatric vital-sign reference</li>
                         <li>AHA/ERC 2025: neonatal emergency section label in the application</li>
+                        <li>Goldfrank's Toxicologic Emergencies, Eleventh Edition (11th ed.): antidote reference</li>
                     </ul>
                 </div>
                 <div class="p-3 bg-amber-50 rounded-lg border border-amber-100">
@@ -2604,7 +2608,7 @@ const manualDrugDB = [
         initDose:'0.05 mcg/kg/min',
         maxDose:'1 mcg/kg/min (สูงกว่านี้ได้ในบางกรณี)',
         conc:'10–40 mcg/ml',
-        concVal: 10, concUnit: 'mcg_mL',
+        concVal: 10, concUnit: 'mcg_ml',
         stdMg: 1, stdVol: 100, initDoseVal: 0.05,
         mix:'1 mg (1 ml) + สารน้ำ up to 100 ml (10 mcg/ml)  หรือ 4 mg + 100 ml (40 mcg/ml)',
         fluid:'NSS, D5W, LR, D5NSS, D5S/2',
@@ -2615,7 +2619,7 @@ const manualDrugDB = [
         initDose:'0.05 mcg/kg/min',
         maxDose:'3.3 mcg/kg/min',
         conc:'16 mcg/ml',
-        concVal: 16, concUnit: 'mcg_mL',
+        concVal: 16, concUnit: 'mcg_ml',
         stdMg: 4, stdVol: 250, initDoseVal: 0.05,
         mix:'4 mg (1 amp) + D5W 250 ml (16 mcg/ml)',
         fluid:'D5W, D5NSS (ห้ามผสม NSS เดี่ยวเนื่องจาก oxidation)',
@@ -2626,7 +2630,7 @@ const manualDrugDB = [
         initDose:'2–5 mcg/kg/min',
         maxDose:'20 mcg/kg/min (Max 50)',
         conc:'1-2 mg/ml',
-        concVal: 2000, concUnit: 'mcg_mL',
+        concVal: 2000, concUnit: 'mcg_ml',
         stdMg: 200, stdVol: 100, initDoseVal: 5,
         mix:'(1:1) 1 vial (250mg) + D5W upto 250 ml หรือ\n(2:1) 1 vial (250mg) + D5W upto 125 ml',
         fluid:'NSS, D5W, LR',
@@ -2637,7 +2641,7 @@ const manualDrugDB = [
         initDose:'2–5 mcg/kg/min',
         maxDose:'20 mcg/kg/min (Max 40)',
         conc:'1 mg/ml (1000 mcg/ml)',
-        concVal: 1000, concUnit: 'mcg_mL',
+        concVal: 1000, concUnit: 'mcg_ml',
         stdMg: 250, stdVol: 250, initDoseVal: 5,
         mix:'250 mg (1 vial) + D5W/NSS up to 250 ml (1 mg/ml)',
         fluid:'NSS, D5W, LR',
@@ -2648,7 +2652,7 @@ const manualDrugDB = [
         initDose:'0.375 mcg/kg/min',
         maxDose:'0.75 mcg/kg/min',
         conc:'100 mcg/ml',
-        concVal: 100, concUnit: 'mcg_mL',
+        concVal: 100, concUnit: 'mcg_ml',
         stdMg: 10, stdVol: 100, initDoseVal: 0.375,
         mix:'10 mg (10 ml) + สารน้ำ up to 100 ml (100 mcg/ml)',
         fluid:'NSS, D5W, LR',
@@ -2659,7 +2663,7 @@ const manualDrugDB = [
         initDose:'2 mcg/min',
         maxDose:'10 mcg/min (Max 30)',
         conc:'4 mcg/ml',
-        concVal: 4, concUnit: 'mcg_mL',
+        concVal: 4, concUnit: 'mcg_ml',
         stdMg: 2, stdVol: 500, initDoseVal: 2,
         mix:'2 mg (10 ml) + D5W/NSS 490 ml up to 500 ml (4 mcg/ml)',
         fluid:'D5W, NSS, LR',
@@ -2670,7 +2674,7 @@ const manualDrugDB = [
         initDose:'5 mcg/min',
         maxDose:'200 mcg/min',
         conc:'200 mcg/ml',
-        concVal: 200, concUnit: 'mcg_mL',
+        concVal: 200, concUnit: 'mcg_ml',
         stdMg: 50, stdVol: 250, initDoseVal: 5,
         mix:'NTG 50 mg + NSS 250 ml (200 mcg/ml) (ใช้ขวดแก้ว/ถุง PVC-free)',
         fluid:'NSS, D5W (ใช้อุปกรณ์ PVC-free)',
@@ -2681,7 +2685,7 @@ const manualDrugDB = [
         initDose:'5 mg/hr',
         maxDose:'15 mg/hr',
         conc:'0.1 mg/ml',
-        concVal: 0.1, concUnit: 'mg_mL',
+        concVal: 0.1, concUnit: 'mg_ml',
         stdMg: 20, stdVol: 200, initDoseVal: 5,
         mix:'Nicardipine 20 mg + NSS 180 ml (0.1 mg/ml)',
         fluid:'NSS, D5W',
@@ -2692,7 +2696,7 @@ const manualDrugDB = [
         initDose:'0.5 mg/min',
         maxDose:'2 mg/min',
         conc:'1 mg/ml',
-        concVal: 1, concUnit: 'mg_mL',
+        concVal: 1, concUnit: 'mg_ml',
         stdMg: 200, stdVol: 200, initDoseVal: 0.5,
         mix:'200 mg (40 ml) + NSS 160 ml up to 200 ml (1 mg/ml)',
         fluid:'NSS, D5W, LR',
@@ -2703,7 +2707,7 @@ const manualDrugDB = [
         initDose:'1 mg/min',
         maxDose:'4 mg/min',
         conc:'4 mg/ml',
-        concVal: 4, concUnit: 'mg_mL',
+        concVal: 4, concUnit: 'mg_ml',
         stdMg: 1000, stdVol: 250, initDoseVal: 1,
         mix:'Lido 2% 50 ml (1000 mg) + D5W 200 ml up to 250 ml (4 mg/ml)',
         fluid:'D5W, NSS, LR',
@@ -2714,7 +2718,7 @@ const manualDrugDB = [
         initDose:'0.02 mg/kg/hr',
         maxDose:'0.1 mg/kg/hr',
         conc:'0.5–5 mg/ml',
-        concVal: 0.5, concUnit: 'mg_mL',
+        concVal: 0.5, concUnit: 'mg_ml',
         stdMg: 50, stdVol: 100, initDoseVal: 0.02,
         mix:'50 mg + NSS up to 100 ml (0.5 mg/ml)',
         fluid:'NSS, D5W',
@@ -2725,7 +2729,7 @@ const manualDrugDB = [
         initDose:'5 mcg/kg/min',
         maxDose:'50 mcg/kg/min',
         conc:'10 mg/ml',
-        concVal: 10, concUnit: 'mg_mL',
+        concVal: 10, concUnit: 'mg_ml',
         stdMg: null, stdVol: null, initDoseVal: 5,
         mix:'ไม่ต้องผสม ใช้ขวด Propofol 1% โดยตรง (10 mg/ml)',
         fluid:'ไม่ผสม (ใช้ straight)',
@@ -2736,7 +2740,7 @@ const manualDrugDB = [
         initDose:'0.2 mcg/kg/hr',
         maxDose:'0.7 mcg/kg/hr (Max 1.5)',
         conc:'4 mcg/ml',
-        concVal: 4, concUnit: 'mcg_mL',
+        concVal: 4, concUnit: 'mcg_ml',
         stdMg: 0.2, stdVol: 50, initDoseVal: 0.2,
         mix:'Dex 200 mcg (2 ml) + NSS 48 ml up to 50 ml (4 mcg/ml)',
         fluid:'NSS, D5W, LR',
@@ -2747,7 +2751,7 @@ const manualDrugDB = [
         initDose:'1 mg/min (6 hr แรก)',
         maxDose:'0.5 mg/min (18 hr หลัง)',
         conc:'1.8 mg/ml',
-        concVal: 1.8, concUnit: 'mg_mL',
+        concVal: 1.8, concUnit: 'mg_ml',
         stdMg: 450, stdVol: 250, initDoseVal: 1,
         mix:'Amiodarone 450 mg + D5W 250 ml (1.8 mg/ml)',
         fluid:'D5W เท่านั้น (ห้ามผสม NSS/LR เด็ดขาด)',
@@ -2758,7 +2762,7 @@ const manualDrugDB = [
         initDose:'0.05–0.1 unit/kg/hr (DKA)',
         maxDose:'ตาม DTX',
         conc:'1 unit/ml',
-        concVal: 1, concUnit: 'unit_mL',
+        concVal: 1, concUnit: 'unit_ml',
         stdMg: null, stdVol: null, initDoseVal: 0.1,
         mix:'Regular Insulin 100 units + NSS 100 ml (1 unit/ml)',
         fluid:'NSS (ล้างสายด้วย NSS ก่อนใช้ 50 ml เพื่อกันยาติดสาย)',
@@ -2769,7 +2773,7 @@ const manualDrugDB = [
         initDose:'12–18 unit/kg/hr',
         maxDose:'ตาม aPTT',
         conc:'100 unit/ml',
-        concVal: 100, concUnit: 'unit_mL',
+        concVal: 100, concUnit: 'unit_ml',
         stdMg: null, stdVol: null, initDoseVal: 18,
         mix:'Heparin 25,000 units + NSS 250 ml (100 units/ml)',
         fluid:'NSS, D5W, LR',
@@ -2780,7 +2784,7 @@ const manualDrugDB = [
         initDose:'10 mEq/hr',
         maxDose:'40 mEq/hr (Central line เท่านั้น)',
         conc:'0.1–0.4 mEq/ml',
-        concVal: 0.4, concUnit: 'mEq_mL',
+        concVal: 0.4, concUnit: 'mEq_ml',
         stdMg: null, stdVol: null, initDoseVal: 10,
         mix:'KCl 40 mEq + NSS 100 ml (0.4 mEq/ml)',
         fluid:'NSS, D5W, LR (ห้าม IV push เด็ดขาด)',
@@ -2911,7 +2915,7 @@ function calcConc() {
         document.getElementById('concMcgMl').innerText = concMcgMl < 10 ? concMcgMl.toFixed(2) : Math.round(concMcgMl);
         
         // Push to Step 2
-        document.getElementById('mcConcUnit').value = 'mcg_mL'; // default to mcg
+        document.getElementById('mcConcUnit').value = 'mcg_ml'; // default to mcg
         document.getElementById('mcConc').value = concMcgMl < 10 ? concMcgMl.toFixed(3) : Math.round(concMcgMl);
     } else {
         document.getElementById('concMgMl').innerText = '0';
@@ -3066,13 +3070,13 @@ function calcCharcoal() {
         let sdacVol = rnd(sdacDose * 8);
         sdacDoseStr = sdacDose;
         sdacVolStr = sdacVol;
-        sdacOrderStr = `Activated Charcoal ${sdacDose} g (mix with water ${sdacVol} mL) oral/NG tube`;
+        sdacOrderStr = `Activated Charcoal ${sdacDose} g (mix with water ${sdacVol} ml) oral/NG tube`;
         
         let mdacDose = rnd(Math.min(wt * 0.5, 50));
         let mdacVol = rnd(mdacDose * 8);
         mdacDoseStr = mdacDose;
         mdacVolStr = mdacVol;
-        mdacOrderStr = `Activated Charcoal ${mdacDose} g (mix with water ${mdacVol} mL) oral/NG tube every 4-6 h`;
+        mdacOrderStr = `Activated Charcoal ${mdacDose} g (mix with water ${mdacVol} ml) oral/NG tube every 4-6 h`;
     }
     
     let html = '';
@@ -3097,7 +3101,7 @@ function calcCharcoal() {
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="font-bold text-slate-600">Activated charcoal : liquid 1:8</span>
-                        <span class="font-bold text-slate-800">${sdacVolStr} ${hasW ? '<span class="text-sm font-normal">mL</span>' : ''}</span>
+                        <span class="font-bold text-slate-800">${sdacVolStr} ${hasW ? '<span class="text-sm font-normal">ml</span>' : ''}</span>
                     </div>
                     <div class="bg-slate-50 p-2 mt-3 rounded border border-slate-200 text-xs text-slate-700">
                         <div class="mb-1"><span class="font-bold text-slate-800">Frequency:</span> Single dose</div>
@@ -3122,7 +3126,7 @@ function calcCharcoal() {
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="font-bold text-slate-600">Activated charcoal : liquid 1:8</span>
-                        <span class="font-bold text-slate-800">${mdacVolStr} ${hasW ? '<span class="text-sm font-normal">mL</span>' : ''}</span>
+                        <span class="font-bold text-slate-800">${mdacVolStr} ${hasW ? '<span class="text-sm font-normal">ml</span>' : ''}</span>
                     </div>
                     <div class="bg-slate-50 p-2 mt-3 rounded border border-slate-200 text-xs text-slate-700">
                         <div class="mb-1"><span class="font-bold text-slate-800">Frequency:</span> Every 4-6 hours</div>
@@ -3194,7 +3198,7 @@ function renderWbiCalculator(container) {
             <div class="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 shadow-inner">
                 <div class="font-bold text-amber-700 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>Maharaj Formula Preparation</div>
                 1 set = PEG 4000 (90g) + Electrolytes (14.3g) = Total 104.3g.<br>
-                Mix with clean water 1,500 mL.
+                Mix with clean water 1,500 ml.
             </div>
             <div id="wbi-content"></div>
             
@@ -3238,37 +3242,37 @@ function calcWbi() {
     
     if (age > 0 && age < 6) {
         ageGroup = "Small Children (9 mo - 6 yr)";
-        rateText = "25 mL/kg/hr (Max 500 mL/hr)";
-        rateVal = rnd(Math.min(wt * 25, 500)) + " mL/hr";
+        rateText = "25 ml/kg/hr (Max 500 ml/hr)";
+        rateVal = rnd(Math.min(wt * 25, 500)) + " ml/hr";
     } else if (age >= 6 && age < 12) {
         ageGroup = "Children (6 - 12 yr)";
-        rateText = "1,000 mL/hr";
-        rateVal = "1,000 mL/hr";
+        rateText = "1,000 ml/hr";
+        rateVal = "1,000 ml/hr";
     } else if (age >= 12) {
         ageGroup = "Adolescents & Adults (≥ 12 yr)";
-        rateText = "1,500 - 2,000 mL/hr";
-        rateVal = "1,500 - 2,000 mL/hr";
+        rateText = "1,500 - 2,000 ml/hr";
+        rateVal = "1,500 - 2,000 ml/hr";
     } else if (hasW) {
         if (wt < 20) {
             ageGroup = "Small Children (Estimated by weight < 20kg)";
-            rateText = "25 mL/kg/hr (Max 500 mL/hr)";
-            rateVal = rnd(Math.min(wt * 25, 500)) + " mL/hr";
+            rateText = "25 ml/kg/hr (Max 500 ml/hr)";
+            rateVal = rnd(Math.min(wt * 25, 500)) + " ml/hr";
         } else if (wt < 40) {
             ageGroup = "Children (Estimated by weight 20-40kg)";
-            rateText = "1,000 mL/hr";
-            rateVal = "1,000 mL/hr";
+            rateText = "1,000 ml/hr";
+            rateVal = "1,000 ml/hr";
         } else {
             ageGroup = "Adolescents & Adults (Estimated by weight ≥ 40kg)";
-            rateText = "1,500 - 2,000 mL/hr";
-            rateVal = "1,500 - 2,000 mL/hr";
+            rateText = "1,500 - 2,000 ml/hr";
+            rateVal = "1,500 - 2,000 ml/hr";
         }
     }
     
     if ((hasW || age > 0) && rateVal !== "-") {
-        if (rateVal === "0 mL/hr") {
+        if (rateVal === "0 ml/hr") {
             rateVal = "-";
         } else {
-            orderStr = `Colon prep (1 set = Polyethylene glycol 4000 (90 gm) + Electrolyte (14.3 gm) = 104.3 gm) 1 set + clean water 1,500 mL oral / feed via gastric tube rate <b>${rateVal}</b> until clear rectal effluent`;
+            orderStr = `Colon prep (1 set = Polyethylene glycol 4000 (90 gm) + Electrolyte (14.3 gm) = 104.3 gm) 1 set + clean water 1,500 ml oral / feed via gastric tube rate <b>${rateVal}</b> until clear rectal effluent`;
         }
     }
 
@@ -3303,11 +3307,11 @@ function calcWbi() {
             <div class="p-3 text-[11px] text-slate-700 space-y-2 bg-white">
                 <div class="font-bold text-slate-800 underline">แบบผสมก่อนใช้:</div>
                 <ul class="list-disc pl-4 space-y-1">
-                    <li><b>Polyethylene glycol-electrolyte solution (PEG-ELS) (55 gm/sachet)x4:</b> ส่วนที่ 1: ผง Polyethylene glycol 4000 (PEG 4000) + น้ำร้อน 300 mL, ส่วนที่ 2: ผง electrolyte + น้ำต้มสุก 500 mL. ผสมส่วนที่ 1 และ 2 (total 800mL) แล้วเติมน้ำสะอาด 200 mL => ได้สารละลาย ปริมาตร 1 L</li>
-                    <li><b>Colon prep® (สูตรศูนย์พิษวิทยารามาธิบดี):</b> ส่วนที่ 1: Macrogol (Polyethylene glycol 4000 [PEG 4000]) = 44.81 gm/sachet, ส่วนที่ 2: electrolyte. ผสมส่วนที่ 1 และ 2 (total 52 gm/sachet) + น้ำ 750 mL</li>
+                    <li><b>Polyethylene glycol-electrolyte solution (PEG-ELS) (55 gm/sachet)x4:</b> ส่วนที่ 1: ผง Polyethylene glycol 4000 (PEG 4000) + น้ำร้อน 300 ml, ส่วนที่ 2: ผง electrolyte + น้ำต้มสุก 500 ml. ผสมส่วนที่ 1 และ 2 (total 800ml) แล้วเติมน้ำสะอาด 200 ml => ได้สารละลาย ปริมาตร 1 L</li>
+                    <li><b>Colon prep® (สูตรศูนย์พิษวิทยารามาธิบดี):</b> ส่วนที่ 1: Macrogol (Polyethylene glycol 4000 [PEG 4000]) = 44.81 gm/sachet, ส่วนที่ 2: electrolyte. ผสมส่วนที่ 1 และ 2 (total 52 gm/sachet) + น้ำ 750 ml</li>
                     <li><b>Niflec® (137.55 gm/sachet):</b> ส่วนที่ 1: Macrogol (Polyethylene glycol 4000 [PEG 4000]), ส่วนที่ 2: electrolyte. Niflec® 1 sachet + น้ำ 2 L</li>
-                    <li><b>Forlax® (Polyethylene glycol 4000 [PEG 4000] = 10 gm/sachet) + electrolyte:</b> นำส่วนที่ 1 Forlax® 5.5 sachet (55 gm) + น้ำสะอาด 300 mL, ส่วนที่ 2 ผง electrolyte + น้ำต้มสุก 500 mL. ผสม 1 และ 2 แล้วเติมน้ำสะอาด 200 mL => ได้สารละลาย 1 L</li>
-                    <li><b>Forlax® (Polyethylene glycol 4000 [PEG 4000] = 10 gm/sachet) + Swiff® solution:</b> นำส่วนที่ 1 Forlax® 5.5 sachet (55 gm) + น้ำสะอาด 300 mL, ส่วนที่ 2 Swiff® solution (Sodium phosphate 2.4 gm/mL + Disodium hydrogen phosphate 0.9 gm/mL) = 21 mL. ผสม 1 และ 2 แล้วเติมน้ำสะอาดจนได้สารละลาย 1 L</li>
+                    <li><b>Forlax® (Polyethylene glycol 4000 [PEG 4000] = 10 gm/sachet) + electrolyte:</b> นำส่วนที่ 1 Forlax® 5.5 sachet (55 gm) + น้ำสะอาด 300 ml, ส่วนที่ 2 ผง electrolyte + น้ำต้มสุก 500 ml. ผสม 1 และ 2 แล้วเติมน้ำสะอาด 200 ml => ได้สารละลาย 1 L</li>
+                    <li><b>Forlax® (Polyethylene glycol 4000 [PEG 4000] = 10 gm/sachet) + Swiff® solution:</b> นำส่วนที่ 1 Forlax® 5.5 sachet (55 gm) + น้ำสะอาด 300 ml, ส่วนที่ 2 Swiff® solution (Sodium phosphate 2.4 gm/ml + Disodium hydrogen phosphate 0.9 gm/ml) = 21 ml. ผสม 1 และ 2 แล้วเติมน้ำสะอาดจนได้สารละลาย 1 L</li>
                 </ul>
                 <div class="font-bold text-slate-800 underline mt-2">แบบพร้อมใช้ (Solution ready to use):</div>
                 <ul class="list-disc pl-4 space-y-1">
@@ -3534,10 +3538,10 @@ function calcNac() {
             <div class="mb-4 border border-indigo-200 rounded-lg overflow-hidden shadow-sm">
                 <div class="bg-indigo-600 text-white font-bold p-2 text-sm">Loading Dose (140 mg/kg)</div>
                 <div class="p-3 bg-white grid grid-cols-2 gap-2 text-sm">
-                    <div><b>NAC 20% Vol:</b> <span class="text-indigo-700 font-bold">${loadVol20Str}</span> ${hasW ? 'mL' : ''}</div>
-                    <div><b>Diluent Vol:</b> <span class="text-blue-700 font-bold">${loadDiluentStr}</span> ${hasW ? 'mL' : ''}</div>
+                    <div><b>NAC 20% Vol:</b> <span class="text-indigo-700 font-bold">${loadVol20Str}</span> ${hasW ? 'ml' : ''}</div>
+                    <div><b>Diluent Vol:</b> <span class="text-blue-700 font-bold">${loadDiluentStr}</span> ${hasW ? 'ml' : ''}</div>
                     <div class="col-span-2 pt-2 border-t mt-1 flex justify-between items-center">
-                        <div><b>Total 5% Solution Volume:</b> <span class="text-lg font-bold text-green-700">${loadTotalStr}</span> ${hasW ? 'mL' : ''}</div>
+                        <div><b>Total 5% Solution Volume:</b> <span class="text-lg font-bold text-green-700">${loadTotalStr}</span> ${hasW ? 'ml' : ''}</div>
                         <div class="bg-slate-100 px-2 py-1 rounded text-xs font-bold text-slate-600 self-center">Max 15.4 g</div>
                     </div>
                 </div>
@@ -3546,10 +3550,10 @@ function calcNac() {
                 <div class="bg-blue-600 text-white font-bold p-2 text-sm">Maintenance Dose (70 mg/kg) x 17 doses</div>
                 <div class="bg-blue-50 text-xs p-2 text-blue-800 border-b border-blue-100">Every 4 hours</div>
                 <div class="p-3 bg-white grid grid-cols-2 gap-2 text-sm">
-                    <div><b>NAC 20% Vol:</b> <span class="text-indigo-700 font-bold">${maintVol20Str}</span> ${hasW ? 'mL' : ''}</div>
-                    <div><b>Diluent Vol:</b> <span class="text-blue-700 font-bold">${maintDiluentStr}</span> ${hasW ? 'mL' : ''}</div>
+                    <div><b>NAC 20% Vol:</b> <span class="text-indigo-700 font-bold">${maintVol20Str}</span> ${hasW ? 'ml' : ''}</div>
+                    <div><b>Diluent Vol:</b> <span class="text-blue-700 font-bold">${maintDiluentStr}</span> ${hasW ? 'ml' : ''}</div>
                     <div class="col-span-2 pt-2 border-t mt-1 flex justify-between items-center">
-                        <div><b>Total 5% Solution Volume:</b> <span class="text-lg font-bold text-green-700">${maintTotalStr}</span> ${hasW ? 'mL' : ''}</div>
+                        <div><b>Total 5% Solution Volume:</b> <span class="text-lg font-bold text-green-700">${maintTotalStr}</span> ${hasW ? 'ml' : ''}</div>
                         <div class="bg-slate-100 px-2 py-1 rounded text-xs font-bold text-slate-600 self-center">Max 7.7 g</div>
                     </div>
                 </div>
@@ -3624,12 +3628,12 @@ function renderNacBag(title, mgKg, wt, maxDose, diluent, duration, color) {
                     </div>
                     <div class="bg-indigo-50 p-2 rounded border border-indigo-100">
                         <div class="text-xs text-indigo-500 mb-1">NAC 20% Volume</div>
-                        <div class="font-bold text-indigo-700 text-lg">${vol20} mL</div>
+                        <div class="font-bold text-indigo-700 text-lg">${vol20} ml</div>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
                     <div class="text-xs font-bold text-slate-500 uppercase">Mix in D5W:</div>
-                    <div class="font-bold text-blue-600 text-lg">${diluent} mL</div>
+                    <div class="font-bold text-blue-600 text-lg">${diluent} ml</div>
                 </div>
             </div>
         </div>
@@ -3686,7 +3690,7 @@ function calcAtropine() {
         let orderStr = '-';
         if (hasW && isPed) {
             let bolus = rnd(wt * 0.02);
-            orderStr = `Atropine ${bolus} mg + NSS 100 mL IV drip rate 10 mL/hr`;
+            orderStr = `Atropine ${bolus} mg + NSS 100 ml IV drip rate 10 ml/hr`;
         }
         
         html += `
@@ -3717,7 +3721,7 @@ function calcAtropine() {
                         <div class="mt-3 bg-rose-50 p-2 rounded border border-rose-100 text-sm">
                             <span class="font-bold text-rose-800">Preparation Example:</span><br>
                             ${orderStr} 
-                            <div class="text-xs text-rose-600 mt-1">(Rate 10 mL/hr = 10% of loading dose per hour)</div>
+                            <div class="text-xs text-rose-600 mt-1">(Rate 10 ml/hr = 10% of loading dose per hour)</div>
                         </div>
                     </div>
                 </div>
@@ -3731,8 +3735,8 @@ function calcAtropine() {
                             <div><span class="font-bold text-slate-700">Maintenance:</span> 10% to 20% of loading dose per hour</div>
                             <div class="mt-2 bg-rose-50 p-2 rounded border border-rose-100 text-sm">
                                 <span class="font-bold text-rose-800">Preparation Example:</span><br>
-                                Atropine total of bolus (mg) + NSS 100 mL IV drip rate 10 mL/hr 
-                                <div class="text-xs text-rose-600 mt-1">(Rate 10 mL/hr = 10% of loading dose per hour)</div>
+                                Atropine total of bolus (mg) + NSS 100 ml IV drip rate 10 ml/hr 
+                                <div class="text-xs text-rose-600 mt-1">(Rate 10 ml/hr = 10% of loading dose per hour)</div>
                             </div>
                         </div>
                     </div>
@@ -3744,8 +3748,8 @@ function calcAtropine() {
                             <div><span class="font-bold text-slate-700">Maintenance:</span> 10% to 20% of loading dose per hour</div>
                             <div class="mt-2 bg-rose-50 p-2 rounded border border-rose-100 text-sm">
                                 <span class="font-bold text-rose-800">Preparation Example:</span><br>
-                                Atropine total of bolus (mg) + NSS 100 mL IV drip rate 10 mL/hr 
-                                <div class="text-xs text-rose-600 mt-1">(Rate 10 mL/hr = 10% of loading dose per hour)</div>
+                                Atropine total of bolus (mg) + NSS 100 ml IV drip rate 10 ml/hr 
+                                <div class="text-xs text-rose-600 mt-1">(Rate 10 ml/hr = 10% of loading dose per hour)</div>
                             </div>
                         </div>
                     </div>
@@ -3926,38 +3930,38 @@ function calcBotulism() {
         if (pGroup === 'Adult (>= 17 yrs)') {
             doseCalc = '1 Vial';
             calcPct = '100%';
-            initRate = '0.5 mL/min';
-            titRate = '1 mL/min for next 30 min';
-            maxRate = '2 mL/min until finish';
+            initRate = '0.5 ml/min';
+            titRate = '1 ml/min for next 30 min';
+            maxRate = '2 ml/min until finish';
         } else if (pGroup === 'Infant (< 1 yr)') {
             doseCalc = '10% of Adult Dose';
             calcPct = '10%';
-            initRate = '0.01 mL/kg/min';
-            titRate = 'Increase 0.01 mL/kg/min every 30 min';
-            maxRate = '0.03 mL/kg/min';
+            initRate = '0.01 ml/kg/min';
+            titRate = 'Increase 0.01 ml/kg/min every 30 min';
+            maxRate = '0.03 ml/kg/min';
         } else if (pGroup === 'Pediatric (<= 30 kg)') {
             doseCalc = hasW ? rnd(2 * wt) + '% of Adult Dose' : '2 x Weight (kg) = % of Adult Dose';
             calcPct = hasW ? rnd(2 * wt) + '%' : '-';
-            initRate = '0.01 mL/kg/min';
-            titRate = 'Increase 0.01 mL/kg/min every 30 min';
-            maxRate = '0.03 mL/kg/min';
+            initRate = '0.01 ml/kg/min';
+            titRate = 'Increase 0.01 ml/kg/min every 30 min';
+            maxRate = '0.03 ml/kg/min';
         } else {
             doseCalc = hasW ? rnd(wt + 30) + '% of Adult Dose' : 'Weight (kg) + 30 = % of Adult Dose';
             calcPct = hasW ? rnd(wt + 30) + '%' : '-';
-            initRate = '0.01 mL/kg/min';
-            titRate = 'Increase 0.01 mL/kg/min every 30 min';
-            maxRate = '0.03 mL/kg/min';
+            initRate = '0.01 ml/kg/min';
+            titRate = 'Increase 0.01 ml/kg/min every 30 min';
+            maxRate = '0.03 ml/kg/min';
         }
         
         let actInit = '-', actTit = '-', actMax = '-';
         if (hasW && pGroup !== 'Adult (>= 17 yrs)') {
-            actInit = rnd(0.01 * wt) + ' mL/min';
-            actTit = '+' + rnd(0.01 * wt) + ' mL/min';
-            actMax = rnd(0.03 * wt) + ' mL/min';
+            actInit = rnd(0.01 * wt) + ' ml/min';
+            actTit = '+' + rnd(0.01 * wt) + ' ml/min';
+            actMax = rnd(0.03 * wt) + ' ml/min';
         } else if (pGroup === 'Adult (>= 17 yrs)') {
-            actInit = '0.5 mL/min';
-            actTit = '+0.5 mL/min';
-            actMax = '2 mL/min';
+            actInit = '0.5 ml/min';
+            actTit = '+0.5 ml/min';
+            actMax = '2 ml/min';
         }
         
         html += `
@@ -4013,7 +4017,7 @@ function calcBotulism() {
             let initR = wt * 25;
             let maintR = wt * 50;
             doseStr = rnd(dose) + ' mg';
-            volStr = rnd(vol) + ' mL';
+            volStr = rnd(vol) + ' ml';
             initStr = rnd(initR) + ' mg/hr';
             maintStr = rnd(maintR) + ' mg/hr';
         }
@@ -4035,7 +4039,7 @@ function calcBotulism() {
                             </div>
                             <div class="bg-indigo-50 p-2 rounded border border-indigo-100">
                                 <div class="text-xs text-indigo-500 mb-1">Preparation</div>
-                                <div class="font-bold text-indigo-800 text-xs">Reconstitute to 50 mg/mL</div>
+                                <div class="font-bold text-indigo-800 text-xs">Reconstitute to 50 mg/ml</div>
                             </div>
                         </div>
                         
@@ -4069,7 +4073,7 @@ function calcBotulism() {
             <div class="p-3 bg-white text-xs text-slate-700 space-y-3">
                 <div class="bg-blue-50 p-2 rounded border border-blue-200">
                     <span class="font-bold text-blue-800"><i class="fas fa-lungs mr-1"></i> Respiratory:</span> 
-                    Monitor NIF and vital capacity. Intubate if NIF < -30 cm H2O or VC < 20 mL/kg.
+                    Monitor NIF and vital capacity. Intubate if NIF < -30 cm H2O or VC < 20 ml/kg.
                 </div>
                 <div class="bg-yellow-50 p-2 rounded border border-yellow-200">
                     <span class="font-bold text-yellow-800"><i class="fas fa-stomach mr-1"></i> GI Decontamination:</span> 
@@ -4144,9 +4148,9 @@ function calcCalcium() {
         if (hasW) {
             let pDoseMg = wt * 60;
             if (pDoseMg > 3000) pDoseMg = 3000; // max adult dose
-            let pVolMl = pDoseMg / 100; // 10% solution = 100mg/mL
+            let pVolMl = pDoseMg / 100; // 10% solution = 100mg/ml
             pDoseStr = rnd(pDoseMg) + " mg";
-            pVolStr = rnd(pVolMl) + " mL";
+            pVolStr = rnd(pVolMl) + " ml";
         }
         
         html += `
@@ -4192,7 +4196,7 @@ function calcCalcium() {
                         </div>
                         <div class="flex items-center justify-between mb-3">
                             <span class="text-slate-500 font-bold">10% Calcium Gluconate Vol</span>
-                            <span class="font-bold text-lg text-indigo-700">30 mL</span>
+                            <span class="font-bold text-lg text-indigo-700">30 ml</span>
                         </div>
                         
                         <div class="bg-orange-50 p-2 rounded border border-orange-100 text-orange-800">
@@ -4205,11 +4209,11 @@ function calcCalcium() {
                 <div class="grid grid-cols-2 gap-3 text-xs mt-3">
                     <div class="border border-slate-200 p-2 rounded bg-slate-50 text-center">
                         <div class="font-bold text-slate-700 mb-1 border-b border-slate-200 pb-1">Calcium Gluconate 10%</div>
-                        <div class="text-slate-600">Volume: 10 mL<br>Elemental Ca: 93 mg<br>4.64 mEq (2.32 mmol)</div>
+                        <div class="text-slate-600">Volume: 10 ml<br>Elemental Ca: 93 mg<br>4.64 mEq (2.32 mmol)</div>
                     </div>
                     <div class="border border-slate-200 p-2 rounded bg-slate-50 text-center">
                         <div class="font-bold text-slate-700 mb-1 border-b border-slate-200 pb-1">Calcium Chloride 10%</div>
-                        <div class="text-slate-600">Volume: 10 mL<br>Elemental Ca: 273 mg<br>13.6 mEq (6.8 mmol)</div>
+                        <div class="text-slate-600">Volume: 10 ml<br>Elemental Ca: 273 mg<br>13.6 mEq (6.8 mmol)</div>
                     </div>
                 </div>
             </div>
@@ -4219,13 +4223,13 @@ function calcCalcium() {
         let f1Rate = '-', f2Rate = '-';
         if (hasW) {
             // Formula 1: 10% Ca 110ml + D5W 890ml (1000ml total). Ca gluconate = 11000mg total.
-            // 11mg/mL Ca gluconate
-            // Dose: 0.5 - 1.5 mg/kg/h of elemental Ca? Wait, 10% Calcium gluconate has 9.3mg elemental Ca per mL.
-            // Formula 1 has 110 mL of 10% = 11000 mg Ca gluconate. Elemental = 1023 mg.
+            // 11mg/ml Ca gluconate
+            // Dose: 0.5 - 1.5 mg/kg/h of elemental Ca? Wait, 10% Calcium gluconate has 9.3mg elemental Ca per ml.
+            // Formula 1 has 110 ml of 10% = 11000 mg Ca gluconate. Elemental = 1023 mg.
             // Rate is 24.4 - 73.3 ml/hr for 50kg. So 0.5-1.5 mg/kg/h of Elemental Ca.
             // Vol required = (Dose * wt) / Conc = (0.5 * wt) / 1.02
-            f1Rate = rnd((0.5 * wt) / 1.02) + ' - ' + rnd((1.5 * wt) / 1.02) + ' mL/hr';
-            f2Rate = rnd((0.5 * wt) / 0.93) + ' - ' + rnd((1.5 * wt) / 0.93) + ' mL/hr';
+            f1Rate = rnd((0.5 * wt) / 1.02) + ' - ' + rnd((1.5 * wt) / 1.02) + ' ml/hr';
+            f2Rate = rnd((0.5 * wt) / 0.93) + ' - ' + rnd((1.5 * wt) / 0.93) + ' ml/hr';
         }
         
         html += `
@@ -4233,7 +4237,7 @@ function calcCalcium() {
                 ${!hasW ? '<div class="text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight first.</div>' : ''}
                 
                 <div class="flex items-center justify-around bg-orange-50 border border-orange-200 rounded p-2 text-xs text-orange-900 shadow-sm">
-                    <div><i class="fas fa-flask text-orange-500 mr-1"></i><b>Max Concentration:</b> 20 mg/mL</div>
+                    <div><i class="fas fa-flask text-orange-500 mr-1"></i><b>Max Concentration:</b> 20 mg/ml</div>
                     <div><i class="fas fa-tachometer-alt text-orange-500 mr-1"></i><b>Max Rate:</b> ${maxRateText}</div>
                 </div>
 
@@ -4243,7 +4247,7 @@ function calcCalcium() {
                     </div>
                     <div class="p-3 bg-white text-sm space-y-2">
                         <div class="bg-slate-50 p-2 rounded border border-slate-200">
-                            <b>Preparation:</b> 10% Calcium gluconate 10-20 mL + 5%DW 50-100 mL
+                            <b>Preparation:</b> 10% Calcium gluconate 10-20 ml + 5%DW 50-100 ml
                         </div>
                         <div class="flex items-center gap-2 text-indigo-800">
                             <i class="fas fa-tint"></i> <b>Administer:</b> IV drip in 10-20 min
@@ -4258,8 +4262,8 @@ function calcCalcium() {
                     </div>
                     <div class="p-3 bg-white text-sm space-y-3">
                         <div class="bg-slate-50 p-2 rounded border border-slate-200 text-xs">
-                            <b>Preparation:</b> 10% Calcium gluconate 110 mL + 5%DW 890 mL<br>
-                            <span class="text-slate-500">(Elemental Ca 1.02 mg/mL)</span>
+                            <b>Preparation:</b> 10% Calcium gluconate 110 ml + 5%DW 890 ml<br>
+                            <span class="text-slate-500">(Elemental Ca 1.02 mg/ml)</span>
                         </div>
                         <div class="flex justify-between items-center border-t border-slate-100 pt-2">
                             <span class="font-bold text-slate-700">Calculated Rate:</span>
@@ -4275,8 +4279,8 @@ function calcCalcium() {
                     </div>
                     <div class="p-3 bg-white text-sm space-y-3">
                         <div class="bg-slate-50 p-2 rounded border border-slate-200 text-xs">
-                            <b>Preparation:</b> 10% Calcium gluconate 50 mL + 5%DW 450 mL<br>
-                            <span class="text-slate-500">(Elemental Ca 0.93 mg/mL)</span>
+                            <b>Preparation:</b> 10% Calcium gluconate 50 ml + 5%DW 450 ml<br>
+                            <span class="text-slate-500">(Elemental Ca 0.93 mg/ml)</span>
                         </div>
                         <div class="flex justify-between items-center border-t border-slate-100 pt-2">
                             <span class="font-bold text-slate-700">Calculated Rate:</span>
@@ -4293,7 +4297,7 @@ function calcCalcium() {
                     <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">Skin Exposure</div>
                     <div class="p-3 bg-white text-xs">
                         <div class="mb-1"><span class="font-bold">Dose:</span> 2.5% calcium gel</div>
-                        <div class="mb-1"><span class="font-bold text-indigo-700">Prep:</span> Mix 10% calcium gluconate 25 mL with 75 mL of K-Y Jelly or water-based gel (2.5%)</div>
+                        <div class="mb-1"><span class="font-bold text-indigo-700">Prep:</span> Mix 10% calcium gluconate 25 ml with 75 ml of K-Y Jelly or water-based gel (2.5%)</div>
                         <div><span class="font-bold text-blue-700">Admin:</span> Apply for 30 min (twice). Reapply the dressing at least every 4 h until pain is relieved/ 2 days. (Irrigate all exposed areas promptly with water for >= 30 min before gel)</div>
                     </div>
                 </div>
@@ -4301,7 +4305,7 @@ function calcCalcium() {
                 <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
                     <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">Intradermal Infiltration (If topical fails)</div>
                     <div class="p-3 bg-white text-xs">
-                        <div class="mb-1"><span class="font-bold">Dose:</span> 0.5 mL of a 5% solution per cm² of surface burn</div>
+                        <div class="mb-1"><span class="font-bold">Dose:</span> 0.5 ml of a 5% solution per cm² of surface burn</div>
                         <div class="mb-1"><span class="font-bold text-indigo-700">Prep:</span> 5% calcium gluconate solution</div>
                         <div><span class="font-bold text-blue-700">Admin:</span> Subcutaneous infiltration extending 0.5 cm beyond margin. <b>Do not use chloride salt!</b></div>
                     </div>
@@ -4310,8 +4314,8 @@ function calcCalcium() {
                 <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
                     <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">Regional IV Infusion (Bier block)</div>
                     <div class="p-3 bg-white text-xs">
-                        <div class="mb-1"><span class="font-bold">Dose:</span> 10-20 mL of 10% calcium gluconate</div>
-                        <div class="mb-1"><span class="font-bold text-indigo-700">Prep:</span> Dilute 10% calcium gluconate 10-20 mL with 30-40 mL of 0.9% NSS (2% - 2.5%).</div>
+                        <div class="mb-1"><span class="font-bold">Dose:</span> 10-20 ml of 10% calcium gluconate</div>
+                        <div class="mb-1"><span class="font-bold text-indigo-700">Prep:</span> Dilute 10% calcium gluconate 10-20 ml with 30-40 ml of 0.9% NSS (2% - 2.5%).</div>
                         <div><span class="font-bold text-blue-700">Admin:</span> Bier block technique. Ischemia maintained for 25-30 min; BP cuff sequentially released over 5 min.</div>
                     </div>
                 </div>
@@ -4319,8 +4323,8 @@ function calcCalcium() {
                 <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
                     <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">Intra-arterial</div>
                     <div class="p-3 bg-white text-xs">
-                        <div class="mb-1"><span class="font-bold">Dose:</span> 10 mL of 10% calcium gluconate</div>
-                        <div class="mb-1"><span class="font-bold text-indigo-700">Prep:</span> Dilute 10% calcium gluconate 10 mL with 50 mL of D5W (1.67%).</div>
+                        <div class="mb-1"><span class="font-bold">Dose:</span> 10 ml of 10% calcium gluconate</div>
+                        <div class="mb-1"><span class="font-bold text-indigo-700">Prep:</span> Dilute 10% calcium gluconate 10 ml with 50 ml of D5W (1.67%).</div>
                         <div><span class="font-bold text-blue-700">Admin:</span> Infuse over 4 h either through brachial or radial artery catheter.</div>
                     </div>
                 </div>
@@ -4330,7 +4334,7 @@ function calcCalcium() {
                         <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">Eye Exposure</div>
                         <div class="p-3 bg-white text-xs">
                             <div class="mb-1"><span class="font-bold">Dose:</span> 1% calcium drops</div>
-                            <div class="mb-1"><span class="font-bold text-indigo-700">Prep:</span> Mix 10% calcium gluconate 50 mL with 450 mL of NSS (1%)</div>
+                            <div class="mb-1"><span class="font-bold text-indigo-700">Prep:</span> Mix 10% calcium gluconate 50 ml with 450 ml of NSS (1%)</div>
                             <div><span class="font-bold text-blue-700">Admin:</span> 1% solution every 4-6 h for 1-2 days. (Irrigate promptly with LR or NSS before drops)</div>
                         </div>
                     </div>
@@ -4338,7 +4342,7 @@ function calcCalcium() {
                         <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">Inhalation Exposure</div>
                         <div class="p-3 bg-white text-xs">
                             <div class="mb-1"><span class="font-bold">Dose:</span> 2.5% calcium gluconate</div>
-                            <div class="mb-1"><span class="font-bold text-indigo-700">Prep:</span> Mix 10% calcium gluconate 1.5 mL with 4.5 mL of sterile water or NSS (2.5%)</div>
+                            <div class="mb-1"><span class="font-bold text-indigo-700">Prep:</span> Mix 10% calcium gluconate 1.5 ml with 4.5 ml of sterile water or NSS (2.5%)</div>
                             <div><span class="font-bold text-blue-700">Admin:</span> Nebulize</div>
                         </div>
                     </div>
@@ -4593,14 +4597,14 @@ function calcDantrolene() {
                     <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">Preparation: Dantrium / Revonto</div>
                     <div class="p-3 bg-white text-xs space-y-1">
                         <div><span class="font-bold text-slate-700">Vial:</span> 20 mg/vial</div>
-                        <div><span class="font-bold text-slate-700">Instructions:</span> Add 60 mL sterile water, shake ~20 sec until clear (pH 9.5).</div>
+                        <div><span class="font-bold text-slate-700">Instructions:</span> Add 60 ml sterile water, shake ~20 sec until clear (pH 9.5).</div>
                     </div>
                 </div>
                 <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
                     <div class="bg-slate-100 text-slate-700 font-bold p-2 text-sm">Preparation: Ryanodex</div>
                     <div class="p-3 bg-white text-xs space-y-1">
                         <div><span class="font-bold text-slate-700">Vial:</span> 250 mg/vial</div>
-                        <div><span class="font-bold text-slate-700">Instructions:</span> Add 5 mL preservative-free sterile water, shake 10 sec until uniform orange suspension (pH 10.5).</div>
+                        <div><span class="font-bold text-slate-700">Instructions:</span> Add 5 ml preservative-free sterile water, shake 10 sec until uniform orange suspension (pH 10.5).</div>
                         <div class="text-red-600 font-bold mt-1">Incompatible with dextrose / 0.9% NaCl for reconstitution!</div>
                     </div>
                 </div>
