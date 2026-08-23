@@ -1,0 +1,9 @@
+[
+  ["Edetate Calcium Disodium (CaNa2EDTA) \u2014 Tintinalli Ed9", "", "", "", "", "", "Edetate Calcium Disodium (CaNa2EDTA) \u2014 Goldfrank Ed11", "", "", "", ""],
+  ["Indication", "Dose", "Calc dose (mg/day)", "Vol (mL)", "Frequency / Note", "", "Indication", "Dose", "Calc dose (mg/day)", "Vol (mL)", "Frequency / Note"],
+  ["Lead \u2014 severe", "1500 mg/m\u00b2/day", "Use BSA", "", "Continuous IV \u00d7 5 days", "", "Lead \u2014 severe (encephalopathy)", "1500 mg/m\u00b2/day (max 3 g/day)", "Use BSA", "", "Continuous IV or \u00f72\u20134 doses \u00d7 5 days; start 4 h after BAL"],
+  ["Lead \u2014 less severe", "50 mg/kg/day (or 1000 mg/m\u00b2/day)", "=IF($B$13=\"\",\"\",ROUND(50*$B$13,0)&\" mg/day\")", "", "IV \u00f72\u20134 doses \u00d7 5 days", "", "Lead \u2014 less severe", "\u2014 (not specified)", "", "", "\u2014"],
+  ["Preparation", "1 g/vial (200 mg/mL); dilute in D5W or NS", "", "", "Short half-life \u2014 continuous infusion preferred"],
+  ["Contraindications / AE", "", "", "", "CI: severe renal disease, anuria, hepatitis. AE: nephrotoxicity, transient \u2191AST/ALT"],
+  ["Reference", "", "", "", "Tintinalli 9th / Goldfrank 11th (chelators comparison)"]
+]

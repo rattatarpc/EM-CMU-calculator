@@ -579,7 +579,7 @@ function startCalculation() {
             <div class="card">
                 <div class="card-header bg-teal-600"><i class="fas fa-search mr-2"></i>Drug Reference — เลือกหรือค้นหายา</div>
                 <div class="p-4">
-                    <input type="text" id="drugSearch" class="inp mb-3 max-w-sm" placeholder="พิมพ์ชื่อยา เช่น Dopamine, Adrenaline..." oninput="filterDrugs()">
+                    <input type="text" id="drugSearch" class="inp mb-3 max-w-sm" placeholder="พิมพ์ชื่อยา เช่น Dopamine, Adrenaline..." oninput="filterManualDrugs()">
                     <div id="drugChips" class="flex flex-wrap gap-2 max-h-40 overflow-y-auto pb-1"></div>
                     <div id="drugInfoCard" class="hidden drug-info-card">
                         <div class="flex items-start justify-between mb-2 border-b border-blue-200 pb-2">
@@ -1396,9 +1396,9 @@ function recalc() {
 
     document.getElementById('ibwDisplay').innerText = P.ibw > 0 && P.height > 0 ? (rnd(P.ibw) + ' kg') : '--';
     document.getElementById('lbwDisplay').innerText = P.lbw > 0 && P.height > 0 ? (rnd(P.lbw) + ' kg') : '--';
-    const estPedBanner = document.getElementById('ped-est-banner');
-    if (estPedBanner) {
-        const textSpan = estPedBanner.querySelector('span');
+    const banners = document.querySelectorAll('.est-weight-banner');
+    banners.forEach(banner => {
+        const textSpan = banner.querySelector('span');
         if (textSpan) {
             if (P.age <= 0) {
                 textSpan.innerHTML = `Estimated Weight: Enter age to calculate`;
@@ -1411,7 +1411,7 @@ function recalc() {
                 textSpan.innerHTML = `Estimated Weight = <b>${wt}</b> kg <span class="text-xs text-slate-400 font-normal ml-1">(&ge;1 yr: (yr&times;2)+8)</span>`;
             }
         }
-    }
+    });
 
     // Apply Calc Weight mode
     if (calcWtMode === 'tbw') P.calcWt = P.tbw;
@@ -1512,6 +1512,9 @@ const antidoteList = [
     { name: 'DIGOXIN-SPECIFIC ANTIBODY FRAGMENTS' },
     { name: 'DIMERCAPROL (BRITISH ANTI-LEWISITE OR BAL)' },
     { name: 'EDETATE CALCIUM DISODIUM (CaNa2EDTA)' },
+    { name: 'SUCCIMER (DMSA)' },
+    { name: 'D-PENICILLAMINE' },
+    { name: 'DMPS (2,3-DIMERCAPTO-1-PROPANESULFONIC ACID)' },
     { name: 'ETHANOL' },
     { name: 'FOLATES: LEUCOVORIN (FOLINIC ACID) AND FOLIC ACID' },
     { name: 'FOMEPIZOLE' },
@@ -1530,7 +1533,6 @@ const antidoteList = [
     { name: 'PRUSSIAN BLUE' },
     { name: 'PYRIDOXINE' },
     { name: 'SODIUM BICARBONATE' },
-    { name: 'SUCCIMER (2,3-DIMERCAPTOSUCCINIC ACID) AND DMPS' },
     { name: 'THIAMINE HYDROCHLORIDE' },
     { name: 'URIDINE TRIACETATE' },
     { name: 'VITAMIN K1' },
@@ -1539,7 +1541,7 @@ const antidoteList = [
 
 // --- RSI ---
 const rsiPre = [
-    {name:'Atropine', min:0.02, max:0.02, usual: 0.02, wt:'tbw', note:'Min 0.1 mg, Max 0.5 mg', absMin: 0.1, absMax: 0.5, prep:'-'},
+    {name:'Atropine', min:0.02, max:0.02, usual: 0.02, wt:'tbw', note:'Max 0.5 mg', absMax: 0.5, prep:'-'},
 ];
 const rsiSed = [
     {name:'Etomidate',   min:0.2, max:0.6, usual: 0.3, wt:'lbw', note:'Use LBW', prep:'-'},
@@ -1688,7 +1690,7 @@ const pedEmDrugs = [
     {name:'Epinephrine (Croup NB)',        dose:0.5,  max:5,   prep:'Adrenaline 1:1000',                     unit:'ml/kg', concMgMl:1,   route:'Nebulized'},
     {name:'Amiodarone',                    dose:5,    max:300, prep:'150 mg/3 ml',                                       unit:'mg/kg', concMgMl:null, route:'IV/IO'},
     {name:'Lidocaine 1% (10mg/ml)',        dose:1,    max:100, prep:'2%w/v 10 ml (200 mg/10 ml)',                                       unit:'mg/kg', concMgMl:10,  route:'IV/IO'},
-    {name:'Atropine',                      dose:0.02, max:0.5, prep:'Min 0.1 mg',                             unit:'mg/kg', concMgMl:null, route:'IV/IO'},
+    {name:'Atropine',                      dose:0.02, max:0.5, prep:'',                             unit:'mg/kg', concMgMl:null, route:'IV/IO'},
     {name:'Adenosine (1st dose)',          dose:0.1,  max:6,   prep:'2 mg/2 ml',                                       unit:'mg/kg', concMgMl:null, route:'IV/IO'},
     {name:'Adenosine (2nd dose)',          dose:0.2,  max:12,  prep:'2 mg/2 ml',                                       unit:'mg/kg', concMgMl:null, route:'IV/IO'},
     {name:'MgSO4',                         doseStr:'25-50', max:null, prep:'50% Magnesium sulfate 2 ml/Ampule', unit:'mg/kg', concMgMl:null, route:'IV/IO'},
@@ -2800,7 +2802,7 @@ function renderDrugChips(list) {
     ).join('');
 }
 
-function filterDrugs() {
+function filterManualDrugs() {
     const q = document.getElementById('drugSearch').value.toLowerCase();
     const filtered = q ? manualDrugDB.filter(d => d.name.toLowerCase().includes(q)) : manualDrugDB;
     renderDrugChips(filtered);
@@ -3187,7 +3189,7 @@ function renderWbiCalculator(container) {
     container.innerHTML = `
         <div class="p-4 bg-white">
             <div id="wbi-content"></div>
-            
+
             <div class="mt-4 border border-red-200 rounded-lg overflow-hidden shadow-sm">
                 <div class="bg-red-50 p-2 text-sm font-bold text-red-700 border-b border-red-200">
                     <i class="fas fa-hand-paper mr-1"></i>CMU Safety Stop Criteria & Notes
@@ -3205,12 +3207,6 @@ function renderWbiCalculator(container) {
                     <p class="pt-2 border-t border-slate-200 mt-2"><b>Special Consideration:</b> Pregnancy (FDA Category C), Breastfeeding (Infant risk cannot be ruled out)</p>
                 </div>
             </div>
-
-            <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 shadow-inner">
-                <div class="font-bold text-amber-700 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>Maharaj Formula How to Mix/Dilute</div>
-                1 set = PEG 4000 (90g) + Electrolytes (14.3g) = Total 104.3g.<br>
-                Mix with clean water 1,500 ml.
-            </div>
         </div>
     `;
 }
@@ -3223,9 +3219,6 @@ function calcWbi() {
     const age = P.age || 0;
     
     let html = '';
-    if (!hasW && age <= 0) {
-        html += '<div class="mb-4 text-center text-red-500 font-bold p-3 bg-red-50 border border-red-200 rounded-lg shadow-sm animate-pulse"><i class="fas fa-exclamation-circle mr-2"></i>Please enter patient weight or age first.</div>';
-    }
 
     let rateText = "-";
     let rateVal = "-";
@@ -3292,6 +3285,11 @@ function calcWbi() {
             </div>
         </div>
         
+        <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 shadow-inner">
+            <div class="font-bold text-amber-700 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>Maharaj Formula How to Mix/Dilute</div>
+            1 set = PEG 4000 (90g) + Electrolytes (14.3g) = Total 104.3g.<br>
+            Mix with clean water 1,500 ml.
+        </div>
         <div class="mt-4 border border-blue-200 rounded-lg overflow-hidden shadow-sm">
             <div class="bg-blue-50 p-2 text-sm font-bold text-blue-800 border-b border-blue-200">
                 <i class="fas fa-info-circle mr-1"></i>Other PEG How to Mix/Dilute
@@ -3427,6 +3425,9 @@ function selectAntidote(name) {
     } else if (name === 'DANTROLENE SODIUM') {
         renderDantroleneCalculator(content);
         calcDantrolene();
+    } else if (['DIMERCAPROL (BRITISH ANTI-LEWISITE OR BAL)', 'EDETATE CALCIUM DISODIUM (CaNa2EDTA)', 'SUCCIMER (DMSA)', 'D-PENICILLAMINE', 'DMPS (2,3-DIMERCAPTO-1-PROPANESULFONIC ACID)'].includes(name)) {
+        renderChelatorCalculator(content, name);
+        calcChelator(name);
     } else if (name === 'DEFEROXAMINE') {
         renderDeferoxamineCalculator(content);
         calcDeferoxamine();
@@ -3441,14 +3442,123 @@ function selectAntidote(name) {
     }
 }
 
+function renderChelatorCalculator(container, name) {
+    container.innerHTML = `<div class="p-4 bg-white"><div id="chelators-content"></div></div>`;
+}
+
+function calcChelator(name) {
+    const content = document.getElementById('chelators-content');
+    if (!content) return;
+    const hasW = P.calcWt && P.calcWt > 0;
+    const wt = hasW ? P.calcWt : 0;
+    const data = {
+        'DIMERCAPROL (BRITISH ANTI-LEWISITE OR BAL)': {
+            title: 'Dimercaprol (British Anti-Lewisite / BAL)',
+            prep: '3 ml ampule = 100 mg/ml in peanut oil + benzyl benzoate. Deep IM only. Never IV due to fat embolism risk.',
+            safety: 'Contraindications: peanut allergy, organic mercury exposure, hepatic insufficiency. Adverse effects: injection pain, hypertension, tachycardia, nausea/vomiting, fever, hemolysis in G6PD deficiency and nephrotoxicity.',
+            tintinalli: [
+                ['Lead encephalopathy / severe', '4 mg/kg', hasW ? `${rnd(wt * 4)} mg` : '-', hasW ? `${rnd(wt * 4 / 50)} ml` : '-', 'Deep IM q4h for 5 days'],
+                ['Arsenic', '3 mg/kg', hasW ? `${rnd(wt * 3)} mg` : '-', hasW ? `${rnd(wt * 3 / 50)} ml` : '-', 'IM q4h for 48 hr, then twice daily for 7&ndash;10 days'],
+                ['Mercury &mdash; first dose', '5 mg/kg', hasW ? `${rnd(wt * 5)} mg` : '-', hasW ? `${rnd(wt * 5 / 50)} ml` : '-', 'IM first dose'],
+                ['Mercury &mdash; subsequent', '2.5 mg/kg', hasW ? `${rnd(wt * 2.5)} mg` : '-', hasW ? `${rnd(wt * 2.5 / 50)} ml` : '-', 'Then q12&ndash;24h for 10 days']
+            ],
+            goldfrank: [
+                ['Lead encephalopathy / severe', '4 mg/kg (or 75 mg/m&sup2;)', hasW ? `${rnd(wt * 4)} mg` : '-', hasW ? `${rnd(wt * 4 / 50)} ml` : '-', 'Deep IM q4h for 5 days'],
+                ['Arsenic', '3&ndash;5 mg/kg', hasW ? `${rnd(wt * 3)}&ndash;${rnd(wt * 5)} mg` : '-', hasW ? `${rnd(wt * 3 / 50)}&ndash;${rnd(wt * 5 / 50)} ml` : '-', 'IM q4&ndash;6h'],
+                ['Mercury &mdash; first dose', '5 mg/kg', hasW ? `${rnd(wt * 5)} mg` : '-', hasW ? `${rnd(wt * 5 / 50)} ml` : '-', 'IM first dose'],
+                ['Mercury &mdash; subsequent', '2.5 mg/kg', hasW ? `${rnd(wt * 2.5)} mg` : '-', hasW ? `${rnd(wt * 2.5 / 50)} ml` : '-', 'Then q4h&rarr;q6h&rarr;q12&ndash;24h (&le;10 days)']
+            ],
+            reference: 'Antidotes in Depth A28 Dimercaprol (Howland); BAL package insert 2006; Tintinalli 9th / Goldfrank 11th'
+        },
+        'EDETATE CALCIUM DISODIUM (CaNa2EDTA)': {
+            title: 'Edetate Calcium Disodium (CaNa2EDTA)',
+            prep: '1 g/vial (200 mg/ml). Dilute in D5W or NS. Short half-life; continuous infusion is preferred.',
+            safety: 'Contraindications: severe renal disease, anuria and hepatitis. Adverse effects: nephrotoxicity and transient elevation of AST/ALT.',
+            tintinalli: [
+                ['Lead &mdash; severe', '1,500 mg/m&sup2;/day', 'Use BSA', '-', 'Continuous IV for 5 days'],
+                ['Lead &mdash; less severe', '50 mg/kg/day (or 1,000 mg/m&sup2;/day)', hasW ? `${rnd(wt * 50)} mg/day` : '-', '-', 'IV divided into 2&ndash;4 doses for 5 days']
+            ],
+            goldfrank: [
+                ['Lead &mdash; severe (encephalopathy)', '1,500 mg/m&sup2;/day (max 3 g/day)', 'Use BSA', '-', 'Continuous IV or divided into 2&ndash;4 doses for 5 days; start 4 hr after BAL'],
+                ['Lead &mdash; less severe', '&mdash; (not specified)', '&mdash;', '-', '&mdash;']
+            ],
+            reference: 'Tintinalli 9th / Goldfrank 11th (chelators comparison)'
+        },
+        'SUCCIMER (DMSA)': {
+            title: 'Succimer (DMSA)',
+            prep: '100 mg capsule; capsule may be opened and given with or without food.',
+            safety: 'No listed contraindication in the source table. Adverse effects: nausea, vomiting, diarrhea, metallic taste, transient elevation of AST/ALT, rash, pruritus, drowsiness.',
+            tintinalli: [
+                ['Lead / arsenic / mercury (PO)', '10 mg/kg/dose', hasW ? `${rnd(Math.min(wt * 10, 500))} mg/dose` : '-', '-', 'PO q8h for 5 days, then q12h for 14 days (child max 500 mg/dose)']
+            ],
+            goldfrank: [
+                ['Lead / arsenic / mercury (PO)', '10 mg/kg/dose (child: 350 mg/m&sup2;)', hasW ? `${rnd(Math.min(wt * 10, 500))} mg/dose` : '-', '-', 'PO q8h for 5 days, then q12h for 14 days']
+            ],
+            reference: 'Tintinalli 9th / Goldfrank 11th (chelators comparison)'
+        },
+        'D-PENICILLAMINE': {
+            title: 'D-Penicillamine',
+            prep: '250 mg tablet/capsule.',
+            safety: 'Contraindication: penicillin allergy. Adverse effects: leukopenia, thrombocytopenia, enuresis and abdominal pain.',
+            tintinalli: [
+                ['Lead', '1&ndash;1.5 g/day (fixed)', '1,000&ndash;1,500 mg/day', '-', 'PO divided into 3&ndash;4 doses'],
+                ['Mercury', '250 mg every 6 hr (fixed)', '250 mg every 6 hr', '-', 'PO'],
+                ['Arsenic', '25 mg/kg every 6 hr', hasW ? `${rnd(wt * 25)} mg/dose` : '-', '-', 'PO every 6 hr']
+            ],
+            goldfrank: [
+                ['Lead', '1&ndash;1.5 g/day (fixed)', '1,000&ndash;1,500 mg/day', '-', 'PO divided into 3&ndash;4 doses'],
+                ['Mercury', '250 mg every 6 hr (fixed)', '250 mg every 6 hr', '-', 'PO'],
+                ['Arsenic', '25 mg/kg every 6 hr', hasW ? `${rnd(wt * 25)} mg/dose` : '-', '-', 'PO every 6 hr']
+            ],
+            reference: 'Tintinalli 9th / Goldfrank 11th (chelators comparison)'
+        },
+        'DMPS (2,3-DIMERCAPTO-1-PROPANESULFONIC ACID)': {
+            title: 'DMPS (2,3-Dimercapto-1-propanesulfonic acid)',
+            prep: '5% solution = 50 mg/ml.',
+            safety: 'Adverse effects: allergic reactions, increased copper/zinc excretion, nausea, pruritus, vertigo, weakness and toxic epidermal necrolysis (TEN).',
+            tintinalli: [
+                ['Arsenic', '&mdash;', '-', '-', 'No data in source']
+            ],
+            goldfrank: [
+                ['Arsenic (not FDA approved)', '5 mg/kg/dose IM (5%)', hasW ? `${rnd(wt * 5)} mg` : '-', hasW ? `${rnd(wt * 5 / 50)} ml` : '-', 'Day 1 q6&ndash;8h; Day 2 q8&ndash;12h; Day 3+ q12&ndash;24h']
+            ],
+            reference: 'Goldfrank 11th (chelators comparison); Tintinalli 9th &mdash; no data in source'
+        }
+    }[name];
+    if (!data) return;
+
+    const thead = '<tr class="bg-indigo-50 text-slate-600"><th class="px-2 py-2 text-left">Indication</th><th class="px-2 py-2 text-left">Dose</th><th class="px-2 py-2 text-left">Calculated dose</th><th class="px-2 py-2 text-left">Volume</th><th class="px-2 py-2 text-left">Route / frequency / order</th></tr>';
+    const renderRef = (label, rows) => `
+        <div class="rounded-lg border border-slate-300 overflow-hidden shadow-sm">
+            <div class="bg-slate-700 text-white p-2 text-sm font-bold">${label}</div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs sm:text-sm">
+                    <thead>${thead}</thead>
+                    <tbody>${rows.map(row => `<tr class="border-t border-slate-200"><td class="px-2 py-2 font-semibold text-slate-700">${row[0]}</td><td class="px-2 py-2">${row[1]}</td><td class="px-2 py-2 font-bold text-indigo-700">${row[2]}</td><td class="px-2 py-2 font-bold text-indigo-700">${row[3]}</td><td class="px-2 py-2 text-xs">${row[4]}</td></tr>`).join('')}</tbody>
+                </table>
+            </div>
+        </div>`;
+
+    content.innerHTML = `
+        <div class="space-y-4">
+            ${!hasW && name !== 'D-PENICILLAMINE' ? '<div class="p-3 text-center text-red-700 font-bold bg-red-50 border border-red-200 rounded-lg">Please enter patient weight first for weight-based calculations.</div>' : ''}
+            <div class="space-y-3">
+                ${renderRef('Tintinalli 9th edition', data.tintinalli)}
+                ${renderRef('Goldfrank 11th edition', data.goldfrank)}
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900"><div class="font-bold text-amber-800 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>How to Mix/Dilute</div>${data.prep}</div>
+                <div class="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-900"><div class="font-bold text-red-800 mb-1"><i class="fas fa-triangle-exclamation mr-1"></i>Contraindications / Adverse effects</div>${data.safety}</div>
+            </div>
+            <div class="rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs text-slate-700"><div class="font-bold text-slate-800 mb-1"><i class="fas fa-book-medical mr-1"></i>Reference</div>${data.reference}</div>
+        </div>
+    `;
+}
+
 function renderDeferoxamineCalculator(container) {
     container.innerHTML = `
         <div class="p-4 bg-white">
             <div id="deferoxamine-content"></div>
-            <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 shadow-inner">
-                <div class="font-bold text-amber-700 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>How to Mix/Dilute (Desferal Inj 0.5 g)</div>
-                Reconstitute powder with SWFI &asymp;100 mg/ml (500 mg + 5 ml SWFI; verify product label). Do <b>not</b> use NSS for reconstitution. For IV: dilute with NSS or Ringer to a final volume of 150 ml. Not compatible with heparin-containing solutions. Store &lt;25&deg;C; do not freeze.
-            </div>
         </div>
     `;
 }
@@ -3545,6 +3655,84 @@ function calcDeferoxamine() {
                         </div>
                     </div>
 
+                    <div class="border border-slate-300 rounded-lg overflow-hidden shadow-sm bg-white">
+                        <div class="bg-slate-800 text-white p-2 text-sm font-bold flex items-center gap-2">
+                            <i class="fas fa-sitemap"></i>Acute iron ingestion decision flow
+                        </div>
+                        <div class="p-2 sm:p-3 overflow-x-auto">
+                            <img src="Gemini_Generated_Image_3tmmou3tmmou3tmm.jpg" alt="Algorithm for decision analysis after iron salt ingestion" class="block w-full h-auto min-w-[760px] rounded border border-slate-200" loading="lazy">
+                        </div>
+                    </div>
+
+                    <div class="hidden border border-slate-300 rounded-lg overflow-hidden shadow-sm">
+                        <div class="bg-slate-800 text-white p-2 text-sm font-bold flex items-center gap-2">
+                            <i class="fas fa-project-diagram"></i>Acute iron ingestion decision flow
+                        </div>
+                        <div class="p-3 bg-slate-50 text-xs text-slate-800">
+                            <div class="text-center">
+                                <div class="inline-block rounded border border-amber-400 bg-amber-100 px-4 py-2 font-bold">Iron ingested</div>
+                                <div class="text-slate-400 text-lg leading-5">&darr;</div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <div class="rounded-lg border border-blue-300 bg-blue-50 p-2 space-y-2">
+                                    <div class="text-center rounded border border-blue-300 bg-blue-100 p-2 font-bold">Asymptomatic</div>
+                                    <div class="text-center text-slate-400">&darr;</div>
+                                    <div class="rounded bg-white border border-blue-200 p-2 text-center font-semibold">History of ingestion</div>
+                                    <div class="grid grid-cols-3 gap-1 text-center">
+                                        <div class="rounded bg-white border border-blue-200 p-1">&lt;20 mg/kg</div>
+                                        <div class="rounded bg-white border border-blue-200 p-1">20&ndash;60 mg/kg<br>or unknown</div>
+                                        <div class="rounded bg-white border border-blue-200 p-1">&gt;60 mg/kg</div>
+                                    </div>
+                                    <div class="rounded bg-white border border-blue-200 p-2 text-center">&lt;20 mg/kg: observe symptoms only</div>
+                                    <div class="rounded bg-white border border-blue-200 p-2 text-center">20&ndash;60 mg/kg or unknown: Abdominal radiograph; define need for lavage/WBI &rarr; Serum [Fe] at 4 hr</div>
+                                    <div class="rounded bg-amber-100 border-2 border-amber-400 p-2 text-center font-bold">
+                                        <div>&gt;60 mg/kg</div>
+                                        <div class="text-2xl leading-6 text-amber-700">&rarr;</div>
+                                        <div class="rounded bg-amber-200 border border-amber-500 p-1">Only GI symptoms present pathway</div>
+                                        <div class="mt-1 text-xs font-normal">Continue to Abdominal radiograph + Acid-base status; define need for lavage/WBI</div>
+                                    </div>
+                                    <div class="text-center text-slate-400">&darr;</div>
+                                    <div class="rounded bg-white border border-blue-200 p-2 text-center font-semibold">&lt;20 mg/kg pathway: Asymptomatic at 6&ndash;8 h postingestion &rarr; Discharge</div>
+                                </div>
+
+                                <div class="rounded-lg border border-amber-300 bg-amber-50 p-2 space-y-2">
+                                    <div class="text-center rounded border border-amber-400 bg-amber-100 p-2 font-bold">Only GI symptoms present</div>
+                                    <div class="text-center text-slate-400">&darr;</div>
+                                    <div class="rounded bg-white border border-amber-200 p-2 text-center">Abdominal radiograph + Acid-base status; define need for lavage/WBI</div>
+                                    <div class="text-center text-slate-400">&darr;</div>
+                                    <div class="rounded bg-white border border-amber-200 p-2 text-center font-semibold">Obtain serum [Fe] at 4 hr postingestion</div>
+                                    <div class="grid grid-cols-1 gap-1 text-center">
+                                        <div class="rounded bg-white border border-amber-200 p-2">&lt;500 mcg/dL or unavailable, <b>AND</b> asymptomatic with normal Acid-base status<br><span class="text-slate-400">&darr;</span><br>Asymptomatic at 6&ndash;8 h postingestion &rarr; Discharge</div>
+                                        <div class="rounded bg-white border border-amber-200 p-2">&gt;500 mcg/dL, metabolic acidosis, or symptoms develop/persist<br><span class="text-slate-400">&darr;</span><br>Baseline urine; start deferoxamine therapy</div>
+                                    </div>
+                                </div>
+
+                                <div class="rounded-lg border border-violet-300 bg-violet-50 p-2 space-y-2">
+                                    <div class="text-center rounded border border-violet-300 bg-violet-100 p-2 font-bold">Systemic toxicity</div>
+                                    <div class="text-center text-slate-400">&darr;</div>
+                                    <div class="rounded bg-white border border-violet-200 p-2 text-center">Acidosis, altered mental status, or hemodynamic instability</div>
+                                    <div class="text-center text-slate-400">&darr;</div>
+                                    <div class="rounded bg-white border border-violet-200 p-2 text-center">Abdominal radiograph + Acid-base status; define need for lavage/WBI</div>
+                                    <div class="text-center text-slate-400">&darr;</div>
+                                    <div class="rounded bg-white border border-violet-200 p-2 text-center">Send serum [Fe]</div>
+                                    <div class="text-center text-slate-400">&darr;</div>
+                                    <div class="rounded bg-violet-100 border border-violet-300 p-2 text-center font-bold">Baseline urine; start deferoxamine therapy</div>
+                                    <div class="text-center text-slate-400">&darr;</div>
+                                    <div class="rounded bg-white border border-violet-200 p-2 text-center font-semibold">Urine color alteration?</div>
+                                    <div class="grid grid-cols-2 gap-1 text-center">
+                                        <div class="rounded bg-white border border-violet-200 p-1"><b>Yes</b><br>Continue deferoxamine for maximum 24 hr<br>&darr;<br>Clinically stable?</div>
+                                        <div class="rounded bg-white border border-violet-200 p-1"><b>No</b><br>Clinically stable?</div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-1 text-center">
+                                        <div class="rounded bg-white border border-violet-200 p-1"><b>Yes</b> &rarr; Stop deferoxamine</div>
+                                        <div class="rounded bg-white border border-violet-200 p-1"><b>No</b> &rarr; Continue deferoxamine, maximum 24 hr, then reassess</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-3 border-t border-slate-200 pt-2 text-[11px] text-slate-500">Reference algorithm after iron salt ingestion; GI = gastrointestinal, WBI = whole-bowel irrigation. Use toxicology consultation and current local protocol.</div>
+                        </div>
+                    </div>
+
                     <div class="rounded-lg border border-purple-200 overflow-hidden">
                         <div class="bg-purple-50 p-2 text-sm font-bold text-purple-800 border-b border-purple-200">
                             <i class="fas fa-hourglass-half mr-1"></i>Maintenance dose (after the 15 mg/kg/hr hour)
@@ -3631,11 +3819,28 @@ function calcDeferoxamine() {
                 </div>
             </div>
 
+            <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 shadow-inner">
+                <div class="font-bold text-amber-700 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>How to Mix/Dilute (Desferal Inj 0.5 g)</div>
+                Reconstitute powder with SWFI &asymp;100 mg/ml (500 mg + 5 ml SWFI; verify product label). Do <b>not</b> use NSS for reconstitution. For IV: dilute with NSS or Ringer to a final volume of 150 ml. Not compatible with heparin-containing solutions. Store &lt;25&deg;C; do not freeze.
+            </div>
+
             <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
                 <div class="bg-slate-100 p-2 text-sm font-bold text-slate-700 border-b border-slate-200 flex items-center gap-2">
                     <i class="fas fa-book-medical text-slate-500"></i> Reference &amp; Guidelines
                 </div>
                 <div class="p-3 bg-white text-xs text-slate-700">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                        <div class="rounded-lg border border-indigo-200 bg-indigo-50 p-3">
+                            <div class="font-bold text-indigo-800 mb-1"><i class="fas fa-book-medical mr-1"></i>Clinical dosing reference</div>
+                            <div class="text-indigo-900">Antidotes in Depth, A7 Deferoxamine, Mary Ann Howland</div>
+                            <div class="mt-1 text-indigo-700">Used for acute iron toxicity, chronic iron overload, route selection and dose/rate guidance.</div>
+                        </div>
+                        <div class="rounded-lg border border-amber-200 bg-amber-50 p-3">
+                            <div class="font-bold text-amber-800 mb-1"><i class="fas fa-file-medical mr-1"></i>Product preparation reference</div>
+                            <div class="text-amber-900">Deferoxamine package insert (Hospira, 2018); supplied Desferal reference image/PDF</div>
+                            <div class="mt-1 text-amber-700">Used for reconstitution, dilution, stability, compatibility and administration precautions.</div>
+                        </div>
+                    </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div class="bg-green-50 p-2 rounded border border-green-200">
                             <div class="font-bold text-green-800 mb-1 border-b border-green-200 pb-1">Indications</div>
@@ -3672,14 +3877,11 @@ function renderDigoxinFabCalculator(container) {
     container.innerHTML = `
         <div class="p-4 bg-white">
             <div class="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <label class="block"><span class="font-semibold text-slate-600">Serum digoxin concentration SDC (ng/ml)</span><input id="digoxinFabSdc" type="number" min="0" step="0.1" class="inp mt-1" oninput="calcDigoxinFab()" placeholder="e.g. 5"></label>
+                <label class="block"><span class="font-semibold text-slate-600">Serum digoxin concentration (SDC)</span><div class="flex gap-1 mt-1"><input id="digoxinFabSdc" type="number" min="0" step="0.1" class="inp flex-1 min-w-0" oninput="calcDigoxinFab()" placeholder="e.g. 5"><select id="digoxinFabSdcUnit" class="inp w-auto flex-shrink-0" onchange="calcDigoxinFab()"><option value="ng_ml">ng/ml</option><option value="nmol_l">nmol/L</option></select></div></label>
                 <label class="block"><span class="font-semibold text-slate-600">Amount ingested (mg)</span><input id="digoxinFabIngested" type="number" min="0" step="0.1" class="inp mt-1" oninput="calcDigoxinFab()" placeholder="e.g. 12.5"></label>
             </div>
+            <div class="mb-4 text-[11px] text-slate-500">SDC conversion: 1 ng/ml = 1.28 nmol/L (formula uses ng/ml).</div>
             <div id="digoxinFab-content"></div>
-            <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 shadow-inner">
-                <div class="font-bold text-amber-700 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>How to Mix/Dilute</div>
-                DigiFab 40 mg/vial. Reconstitute each vial with 4 ml SWFI &rarr; 10 mg/ml. Each vial binds &asymp;0.5 mg digoxin. Give IV slowly over &ge;30 min (bolus if critically ill). Pediatric: may further dilute to 1 mg/ml with 36 ml NS.
-            </div>
         </div>
     `;
 }
@@ -3688,10 +3890,12 @@ function calcDigoxinFab() {
     const content = document.getElementById('digoxinFab-content');
     if (!content) return;
     const sdcEl = document.getElementById('digoxinFabSdc');
+    const sdcUnitEl = document.getElementById('digoxinFabSdcUnit');
     const ingestedEl = document.getElementById('digoxinFabIngested');
     const hasW = (P.calcWt && P.calcWt > 0);
     const wt = hasW ? P.calcWt : 0;
-    const sdc = sdcEl ? (parseFloat(sdcEl.value) || 0) : 0;
+    const sdcRaw = sdcEl ? (parseFloat(sdcEl.value) || 0) : 0;
+    const sdc = (sdcUnitEl && sdcUnitEl.value === 'nmol_l') ? sdcRaw / 1.28 : sdcRaw;
     const ingested = ingestedEl ? (parseFloat(ingestedEl.value) || 0) : 0;
 
     const hasCalc = (hasW && sdc > 0) || ingested > 0;
@@ -3742,6 +3946,37 @@ function calcDigoxinFab() {
                 </div>
             </div>
 
+            <div class="border border-slate-300 rounded-lg overflow-hidden shadow-sm">
+                <div class="bg-slate-800 text-white p-3 text-sm font-bold flex items-center gap-2">
+                    <i class="fas fa-square-root-alt"></i>Digoxin-specific Fab dosing
+                    <span class="text-xs font-normal text-slate-300">(round up to whole vials)</span>
+                </div>
+                <div class="p-3 bg-slate-50 text-sm text-slate-700 space-y-3">
+                    <div class="bg-white border border-blue-200 rounded-lg p-3">
+                        <div class="text-center text-base sm:text-lg font-semibold text-slate-800 leading-relaxed">
+                            No. of vials =
+                            <span class="inline-flex flex-col align-middle mx-1 text-center">
+                                <span class="border-b border-slate-700 px-2">SDC (ng/ml) &times; Patient weight (kg)</span>
+                                <span class="px-2">100</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="bg-white border border-purple-200 rounded-lg p-3">
+                        <div class="text-center text-base sm:text-lg font-semibold text-slate-800 leading-relaxed">
+                            No. of vials =
+                            <span class="inline-flex flex-col align-middle mx-1 text-center">
+                                <span class="border-b border-slate-700 px-2">Amount ingested (mg)</span>
+                                <span class="px-2">0.5 (mg/vial)</span>
+                            </span>
+                            &times; 80% bioavailability
+                        </div>
+                    </div>
+                    <div class="text-xs text-slate-600 border-t border-slate-200 pt-2">
+                        SDC = serum digoxin concentration. If entered in nmol/L, it is converted to ng/ml before applying the serum-based formula. Results are rounded up to whole vials.
+                    </div>
+                </div>
+            </div>
+
             <div class="border border-amber-200 rounded-lg overflow-hidden shadow-sm">
                 <div class="bg-amber-500 text-white font-bold p-2 text-sm">Empiric Therapy</div>
                 <div class="p-3 bg-white text-sm">
@@ -3765,11 +4000,28 @@ function calcDigoxinFab() {
                 DigiFab ${orderVials === null ? '(per calculated dose above)' : orderVials} vials &mdash; reconstitute each with 4 ml SWFI (10 mg/ml), IV infusion over &ge;30 min
             </div>
 
+            <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-900 shadow-inner">
+                <div class="font-bold text-amber-700 mb-1"><i class="fas fa-prescription-bottle mr-1"></i>How to Mix/Dilute</div>
+                DigiFab 40 mg/vial. Reconstitute each vial with 4 ml SWFI &rarr; 10 mg/ml. Each vial binds &asymp;0.5 mg digoxin. Give IV slowly over &ge;30 min (bolus if critically ill). Pediatric: may further dilute to 1 mg/ml with 36 ml NS.
+            </div>
+
             <div class="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
                 <div class="bg-slate-100 p-2 text-sm font-bold text-slate-700 border-b border-slate-200 flex items-center gap-2">
                     <i class="fas fa-book-medical text-slate-500"></i> Reference &amp; Guidelines
                 </div>
                 <div class="p-3 bg-white text-xs text-slate-700">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                        <div class="rounded-lg border border-indigo-200 bg-indigo-50 p-3">
+                            <div class="font-bold text-indigo-800 mb-1"><i class="fas fa-book-medical mr-1"></i>Clinical dosing reference</div>
+                            <div class="text-indigo-900">Antidotes in Depth, A22 Digoxin-Specific Antibody Fragments (Smith &amp; Howland)</div>
+                            <div class="mt-1 text-indigo-700">Used for indications, serum-based and ingestion-based dose calculations, and empiric therapy.</div>
+                        </div>
+                        <div class="rounded-lg border border-amber-200 bg-amber-50 p-3">
+                            <div class="font-bold text-amber-800 mb-1"><i class="fas fa-file-medical mr-1"></i>Product preparation reference</div>
+                            <div class="text-amber-900">DigiFab package insert (BTG, 2014)</div>
+                            <div class="mt-1 text-amber-700">Used for vial reconstitution, infusion time, dilution and monitoring/safety information.</div>
+                        </div>
+                    </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div class="bg-green-50 p-2 rounded border border-green-200">
                             <div class="font-bold text-green-800 mb-1 border-b border-green-200 pb-1">Indications</div>
@@ -3822,8 +4074,9 @@ function renderAntidotes() {
         else if (window.currentAntidote === 'ATROPINE' && typeof calcAtropine === 'function') calcAtropine();
         else if (window.currentAntidote === 'BOTULINUM ANTITOXIN' && typeof calcBotulism === 'function') calcBotulism();
         else if (window.currentAntidote === 'CALCIUM' && typeof calcCalcium === 'function') calcCalcium();
-        else if (window.currentAntidote === 'L-CARNITINE' && typeof calcCarnitine === 'function') calcCarnitine();
+         else if (window.currentAntidote === 'L-CARNITINE' && typeof calcCarnitine === 'function') calcCarnitine();
          else if (window.currentAntidote === 'DANTROLENE SODIUM' && typeof calcDantrolene === 'function') calcDantrolene();
+         else if (['DIMERCAPROL (BRITISH ANTI-LEWISITE OR BAL)', 'EDETATE CALCIUM DISODIUM (CaNa2EDTA)', 'SUCCIMER (DMSA)', 'D-PENICILLAMINE', 'DMPS (2,3-DIMERCAPTO-1-PROPANESULFONIC ACID)'].includes(window.currentAntidote) && typeof calcChelator === 'function') calcChelator(window.currentAntidote);
          else if (window.currentAntidote === 'DEFEROXAMINE' && typeof calcDeferoxamine === 'function') calcDeferoxamine();
          else if (window.currentAntidote === 'DIGOXIN-SPECIFIC ANTIBODY FRAGMENTS' && typeof calcDigoxinFab === 'function') calcDigoxinFab();
     }

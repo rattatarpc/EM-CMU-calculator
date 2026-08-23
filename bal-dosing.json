@@ -1,0 +1,8 @@
+[
+  ["Indication", "Dose (mg/kg)", "Calculated dose (mg)", "Volume (mL)", "Reference"],
+  ["Lead encephalopathy / severe lead", "4 mg/kg", "=IF($B$13=\"\",\"\",ROUND(4*$B$13,0))", "=IF($B$13=\"\",\"\",ROUND(4*$B$13/50,1))", "Deep IM q4h \u00d7 5 days \u2014 Tintinalli 9th; Goldfrank 11th (75 mg/m\u00b2 or 4 mg/kg)"],
+  ["Arsenic (Tintinalli)", "3 mg/kg", "=IF($B$13=\"\",\"\",ROUND(3*$B$13,0))", "=IF($B$13=\"\",\"\",ROUND(3*$B$13/50,1))", "IM q4h \u00d7 48h, then bid \u00d7 7\u201310 days \u2014 Tintinalli 9th"],
+  ["Arsenic (Goldfrank)", "3\u20135 mg/kg", "=IF($B$13=\"\",\"\",ROUND(3*$B$13,0)&\"\u2013\"&ROUND(5*$B$13,0))", "=IF($B$13=\"\",\"\",ROUND(3*$B$13/50,1)&\"\u2013\"&ROUND(5*$B$13/50,1))", "IM q4\u20136h \u2014 Goldfrank 11th"],
+  ["Mercury (Tintinalli)", "5 \u2192 2.5 mg/kg", "=IF($B$13=\"\",\"\",ROUND(5*$B$13,0))", "=IF($B$13=\"\",\"\",ROUND(5*$B$13/50,1))", "IM 5 mg/kg first, then 2.5 mg/kg q12\u201324h \u00d7 10 days \u2014 Tintinalli 9th"],
+  ["Mercury (Goldfrank)", "5 \u2192 2.5 mg/kg (taper)", "=IF($B$13=\"\",\"\",ROUND(5*$B$13,0))", "=IF($B$13=\"\",\"\",ROUND(5*$B$13/50,1))", "IM 5 mg/kg q4h \u00d7 2d \u2192 2.5 mg/kg q6h \u00d7 2d \u2192 2.5 mg/kg q12\u201324h (\u226410 days) \u2014 Goldfrank 11th"]
+]

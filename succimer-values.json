@@ -1,0 +1,8 @@
+[
+  ["Succimer (DMSA) \u2014 Tintinalli Ed9", "", "", "", "", "", "Succimer (DMSA) \u2014 Goldfrank Ed11", "", "", "", ""],
+  ["Indication", "Dose", "Calc dose (mg)", "Vol (mL)", "Frequency / Note", "", "Indication", "Dose", "Calc dose (mg)", "Vol (mL)", "Frequency / Note"],
+  ["Lead / arsenic / mercury (PO)", "10 mg/kg/dose", "=IF($B$13=\"\",\"\",ROUND(10*$B$13,0))", "", "PO q8h \u00d7 5 days, then q12h \u00d7 14 days (child max 500 mg/dose)", "", "Lead / arsenic / mercury (PO)", "10 mg/kg/dose (child: 350 mg/m\u00b2)", "=IF($B$13=\"\",\"\",ROUND(10*$B$13,0))", "", "PO q8h \u00d7 5 days \u2192 q12h \u00d7 14 days"],
+  ["Preparation", "100 mg capsule (can open; give with/without food)"],
+  ["Contraindications / AE", "", "", "", "CI: none. AE: nausea, vomiting, diarrhea, metallic taste, transient \u2191AST/ALT, rash, pruritus, drowsiness"],
+  ["Reference", "", "", "", "Tintinalli 9th / Goldfrank 11th (chelators comparison)"]
+]

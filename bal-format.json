@@ -1,0 +1,80 @@
+{
+  "requests": [
+    {
+      "mergeCells": { "range": { "sheetId": 806262178, "startRowIndex": 208, "endRowIndex": 209, "startColumnIndex": 0, "endColumnIndex": 5 }, "mergeType": "MERGE_ALL" }
+    },
+    {
+      "mergeCells": { "range": { "sheetId": 806262178, "startRowIndex": 208, "endRowIndex": 209, "startColumnIndex": 6, "endColumnIndex": 11 }, "mergeType": "MERGE_ALL" }
+    },
+    {
+      "repeatCell": {
+        "range": { "sheetId": 806262178, "startRowIndex": 208, "endRowIndex": 209, "startColumnIndex": 0, "endColumnIndex": 5 },
+        "cell": { "userEnteredFormat": { "backgroundColor": { "red": 0.486, "green": 0.227, "blue": 0.929 }, "horizontalAlignment": "LEFT", "verticalAlignment": "MIDDLE", "wrapStrategy": "WRAP", "textFormat": { "foregroundColor": { "red": 1, "green": 1, "blue": 1 }, "bold": true, "fontSize": 11 } } },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": { "sheetId": 806262178, "startRowIndex": 208, "endRowIndex": 209, "startColumnIndex": 6, "endColumnIndex": 11 },
+        "cell": { "userEnteredFormat": { "backgroundColor": { "red": 0.486, "green": 0.227, "blue": 0.929 }, "horizontalAlignment": "LEFT", "verticalAlignment": "MIDDLE", "wrapStrategy": "WRAP", "textFormat": { "foregroundColor": { "red": 1, "green": 1, "blue": 1 }, "bold": true, "fontSize": 11 } } },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": { "sheetId": 806262178, "startRowIndex": 209, "endRowIndex": 210, "startColumnIndex": 0, "endColumnIndex": 5 },
+        "cell": { "userEnteredFormat": { "backgroundColor": { "red": 0.929, "green": 0.914, "blue": 0.996 }, "horizontalAlignment": "CENTER", "verticalAlignment": "MIDDLE", "wrapStrategy": "WRAP", "textFormat": { "foregroundColor": { "red": 0.357, "green": 0.129, "blue": 0.714 }, "bold": true, "fontSize": 10 } } },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": { "sheetId": 806262178, "startRowIndex": 209, "endRowIndex": 210, "startColumnIndex": 6, "endColumnIndex": 11 },
+        "cell": { "userEnteredFormat": { "backgroundColor": { "red": 0.929, "green": 0.914, "blue": 0.996 }, "horizontalAlignment": "CENTER", "verticalAlignment": "MIDDLE", "wrapStrategy": "WRAP", "textFormat": { "foregroundColor": { "red": 0.357, "green": 0.129, "blue": 0.714 }, "bold": true, "fontSize": 10 } } },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": { "sheetId": 806262178, "startRowIndex": 210, "endRowIndex": 214, "startColumnIndex": 0, "endColumnIndex": 11 },
+        "cell": { "userEnteredFormat": { "horizontalAlignment": "LEFT", "verticalAlignment": "TOP", "wrapStrategy": "WRAP", "textFormat": { "fontSize": 10 } } },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateDimensionProperties": { "range": { "sheetId": 806262178, "dimension": "ROWS", "startIndex": 208, "endIndex": 209 }, "properties": { "pixelSize": 28 }, "fields": "pixelSize" }
+    },
+    {
+      "updateDimensionProperties": { "range": { "sheetId": 806262178, "dimension": "ROWS", "startIndex": 209, "endIndex": 214 }, "properties": { "pixelSize": 44 }, "fields": "pixelSize" }
+    },
+    {
+      "updateBorders": {
+        "range": { "sheetId": 806262178, "startRowIndex": 208, "endRowIndex": 214, "startColumnIndex": 0, "endColumnIndex": 11 },
+        "top": { "style": "SOLID", "width": 2, "color": { "red": 0.75, "green": 0.72, "blue": 0.95 } },
+        "bottom": { "style": "SOLID", "width": 2, "color": { "red": 0.75, "green": 0.72, "blue": 0.95 } },
+        "left": { "style": "SOLID", "width": 2, "color": { "red": 0.75, "green": 0.72, "blue": 0.95 } },
+        "right": { "style": "SOLID", "width": 2, "color": { "red": 0.75, "green": 0.72, "blue": 0.95 } },
+        "innerHorizontal": { "style": "SOLID", "width": 1, "color": { "red": 0.88, "green": 0.86, "blue": 0.98 } },
+        "innerVertical": { "style": "SOLID", "width": 1, "color": { "red": 0.88, "green": 0.86, "blue": 0.98 } }
+      }
+    },
+    {
+      "repeatCell": {
+        "range": { "sheetId": 806262178, "startRowIndex": 214, "endRowIndex": 219, "startColumnIndex": 0, "endColumnIndex": 5 },
+        "cell": { "userEnteredFormat": { "horizontalAlignment": "LEFT", "verticalAlignment": "TOP", "wrapStrategy": "WRAP", "textFormat": { "fontSize": 10 } } },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "updateBorders": {
+        "range": { "sheetId": 806262178, "startRowIndex": 214, "endRowIndex": 219, "startColumnIndex": 0, "endColumnIndex": 5 },
+        "top": { "style": "SOLID", "width": 2, "color": { "red": 0.75, "green": 0.72, "blue": 0.95 } },
+        "bottom": { "style": "SOLID", "width": 2, "color": { "red": 0.75, "green": 0.72, "blue": 0.95 } },
+        "left": { "style": "SOLID", "width": 2, "color": { "red": 0.75, "green": 0.72, "blue": 0.95 } },
+        "right": { "style": "SOLID", "width": 2, "color": { "red": 0.75, "green": 0.72, "blue": 0.95 } },
+        "innerHorizontal": { "style": "SOLID", "width": 1, "color": { "red": 0.88, "green": 0.86, "blue": 0.98 } },
+        "innerVertical": { "style": "SOLID", "width": 1, "color": { "red": 0.88, "green": 0.86, "blue": 0.98 } }
+      }
+    }
+  ]
+}

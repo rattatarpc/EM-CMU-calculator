@@ -1,0 +1,10 @@
+[
+  ["D-Penicillamine \u2014 Tintinalli Ed9", "", "", "", "", "", "D-Penicillamine \u2014 Goldfrank Ed11", "", "", "", ""],
+  ["Indication", "Dose", "Calc dose (mg)", "Vol (mL)", "Frequency / Note", "", "Indication", "Dose", "Calc dose (mg)", "Vol (mL)", "Frequency / Note"],
+  ["Lead", "1\u20131.5 g/day (fixed)", "1,000\u20131,500 mg/day", "", "PO \u00f7 3\u20134 doses", "", "Lead", "\u2014", "", "", "No data in source"],
+  ["Mercury", "250 mg q6h (fixed)", "250 mg q6h", "", "PO", "", "Mercury", "\u2014", "", "", "No data in source"],
+  ["Arsenic", "25 mg/kg q6h", "=IF($B$13=\"\",\"\",ROUND(25*$B$13,0))", "", "PO q6h", "", "Arsenic", "\u2014", "", "", "No data in source"],
+  ["Preparation", "250 mg tablet/capsule"],
+  ["Contraindications / AE", "", "", "", "CI: penicillin allergy. AE: leukopenia, thrombocytopenia, enuresis, abdominal pain"],
+  ["Reference", "", "", "", "Tintinalli 9th (chelators comparison); Goldfrank 11th \u2014 no data in source"]
+]

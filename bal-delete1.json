@@ -1,0 +1,9 @@
+{
+  "requests": [
+    {
+      "deleteDimension": {
+        "range": { "sheetId": 806262178, "dimension": "ROWS", "startIndex": 219, "endIndex": 220 }
+      }
+    }
+  ]
+}

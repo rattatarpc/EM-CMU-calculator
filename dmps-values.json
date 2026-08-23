@@ -1,0 +1,8 @@
+[
+  ["DMPS (2,3-Dimercapto-1-propanesulfonic acid) \u2014 Tintinalli Ed9", "", "", "", "", "", "DMPS (2,3-Dimercapto-1-propanesulfonic acid) \u2014 Goldfrank Ed11", "", "", "", ""],
+  ["Indication", "Dose", "Calc dose (mg)", "Vol (mL)", "Frequency / Note", "", "Indication", "Dose", "Calc dose (mg)", "Vol (mL)", "Frequency / Note"],
+  ["Arsenic", "\u2014", "", "", "No data in source", "", "Arsenic (not FDA approved)", "5 mg/kg/dose IM (5%)", "=IF($B$13=\"\",\"\",ROUND(5*$B$13,0))", "=IF($B$13=\"\",\"\",ROUND(5*$B$13/50,1))", "Day 1 q6\u20138h, Day 2 q8\u201312h, Day 3+ q12\u201324h"],
+  ["Preparation", "5% solution = 50 mg/mL"],
+  ["Adverse effects", "", "", "", "Allergic reactions, \u2191Cu/Zn excretion, nausea, pruritus, vertigo, weakness, TEN"],
+  ["Reference", "", "", "", "Goldfrank 11th (chelators comparison); Tintinalli 9th \u2014 no data in source"]
+]

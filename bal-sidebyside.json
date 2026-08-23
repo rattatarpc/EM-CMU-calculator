@@ -1,0 +1,8 @@
+[
+  ["Dimercaprol (BAL) \u2014 Tintinalli Ed9", "", "", "", "", "", "Dimercaprol (BAL) \u2014 Goldfrank Ed11", "", "", "", ""],
+  ["Indication", "Dose", "Calc dose (mg)", "Vol (mL)", "Frequency / Note", "", "Indication", "Dose", "Calc dose (mg)", "Vol (mL)", "Frequency / Note"],
+  ["Lead encephalopathy / severe", "4 mg/kg", "=IF($B$13=\"\",\"\",ROUND(4*$B$13,0))", "=IF($B$13=\"\",\"\",ROUND(4*$B$13/50,1))", "Deep IM q4h \u00d7 5 days", "", "Lead encephalopathy / severe", "4 mg/kg (or 75 mg/m\u00b2)", "=IF($B$13=\"\",\"\",ROUND(4*$B$13,0))", "=IF($B$13=\"\",\"\",ROUND(4*$B$13/50,1))", "Deep IM q4h \u00d7 5 days"],
+  ["Arsenic", "3 mg/kg", "=IF($B$13=\"\",\"\",ROUND(3*$B$13,0))", "=IF($B$13=\"\",\"\",ROUND(3*$B$13/50,1))", "IM q4h \u00d7 48h, then bid \u00d7 7\u201310 days", "", "Arsenic", "3\u20135 mg/kg", "=IF($B$13=\"\",\"\",ROUND(3*$B$13,0)&\"\u2013\"&ROUND(5*$B$13,0))", "=IF($B$13=\"\",\"\",ROUND(3*$B$13/50,1)&\"\u2013\"&ROUND(5*$B$13/50,1))", "IM q4\u20136h"],
+  ["Mercury \u2014 first dose", "5 mg/kg", "=IF($B$13=\"\",\"\",ROUND(5*$B$13,0))", "=IF($B$13=\"\",\"\",ROUND(5*$B$13/50,1))", "IM first dose", "", "Mercury \u2014 first dose", "5 mg/kg", "=IF($B$13=\"\",\"\",ROUND(5*$B$13,0))", "=IF($B$13=\"\",\"\",ROUND(5*$B$13/50,1))", "IM first dose"],
+  ["Mercury \u2014 subsequent", "2.5 mg/kg", "=IF($B$13=\"\",\"\",ROUND(2.5*$B$13,0))", "=IF($B$13=\"\",\"\",ROUND(2.5*$B$13/50,1))", "then q12\u201324h \u00d7 10 days", "", "Mercury \u2014 subsequent", "2.5 mg/kg", "=IF($B$13=\"\",\"\",ROUND(2.5*$B$13,0))", "=IF($B$13=\"\",\"\",ROUND(2.5*$B$13/50,1))", "then q4h\u2192q6h\u2192q12\u201324h (\u226410 days)"]
+]
