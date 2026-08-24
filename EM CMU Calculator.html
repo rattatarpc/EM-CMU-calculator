@@ -1651,9 +1651,10 @@ const pedCommonGroups = [
         {name:'Phenytoin (Dilantin)', prep:'', route:'IV', min:5, max:8, unit:'mg/kg/day', divisor:3, concMgMl:50, dosePrefix:'Maintenance', note:'in NSS q 8 hr'},
         {name:'Phenobarbital', prep:'200 mg / 1 ml', route:'IV', min:20, max:20, unit:'mg/kg/dose', maxAdult:1000, concMgMl:200, dosePrefix:'Loading', note:'(rate < 2 mg/kg/min)'},
         {name:'Phenobarbital', prep:'', route:'IV', min:4, max:6, unit:'mg/kg/day', divisor:2, concMgMl:200, dosePrefix:'Maintenance', note:'q 12 hr'},
-        {name:'Sodium Valproate', prep:'400 mg / 4 ml', route:'IV', min:20, max:40, unit:'mg/kg/dose', concMgMl:100, dosePrefix:'Loading', note:'(rate < 1-3 mg/kg/min)<br><span class="text-orange-500 font-bold">Caution:</span> < 2yo may induce fulminant hepatitis<br><span class="text-red-500 font-bold">Avoid in:</span> metabolic/liver disease, thrombocytopenia'},
-        {name:'Sodium Valproate', prep:'', route:'IV', min:1, max:5, unit:'mg/kg/hr', concMgMl:100, dosePrefix:'Maintenance', doseNote:'Rate (mg/hr)', note:'IV infusion<br><span class="text-orange-500 font-bold">Caution:</span> < 2yo may induce fulminant hepatitis<br><span class="text-red-500 font-bold">Avoid in:</span> metabolic/liver disease, thrombocytopenia'},
-        {name:'Levetiracetam (Keppra)', prep:'500 mg / 5 ml', route:'IV', min:20, max:60, unit:'mg/kg/dose', maxAdult:4000, concMgMl:100, dosePrefix:'Loading', note:'(infusion > 15 min)'},
+        {name:'Sodium Valproate', prep:'400 mg / 4 ml', route:'IV', min:20, max:40, unit:'mg/kg/dose', concMgMl:100, dosePrefix:'Loading', nameNote:'<span class="text-orange-500 font-bold">Caution:</span> < 2yo may induce fulminant hepatitis<br><span class="text-red-500 font-bold">Avoid in:</span> metabolic/liver disease, thrombocytopenia', note:'(rate < 1-3 mg/kg/min)'},
+        {name:'Sodium Valproate', prep:'', route:'IV', min:1, max:5, unit:'mg/kg/hr', concMgMl:100, dosePrefix:'Maintenance', doseNote:'Rate (mg/hr)', note:'IV infusion'},
+        {name:'Levetiracetam (Keppra)', prep:'500 mg / 5 ml', route:'IV', min:20, max:60, unit:'mg/kg/dose', maxAdult:4000, concMgMl:100, dosePrefix:'Loading (Range)', note:'(infusion > 15 min)'},
+        {name:'Levetiracetam (Keppra)', prep:'', route:'IV', min:40, max:40, unit:'mg/kg/dose', maxAdult:4000, concMgMl:100, dosePrefix:'Loading (Target 40)', note:'(infusion > 15 min)'},
         {name:'Levetiracetam (Keppra)', prep:'', route:'IV', min:10, max:30, unit:'mg/kg/dose', concMgMl:100, dosePrefix:'Maintenance', note:'q 12 hr'},
         {name:'Lacosamide', prep:'200 mg / 20 ml', route:'IV', min:10, max:10, unit:'mg/kg/dose', maxAdult:400, concMgMl:10, doseNote:'Max 20 mg/kg', note:''},
     ]},
@@ -2089,7 +2090,8 @@ function renderDrugGroups(groupsArray, containerId) {
             }
 
             if (isGrouped && !isSameName) {
-                html += `<tr><td colspan="6" class="pt-2 pb-1 !border-b-0"><div class="font-semibold text-slate-700 flex flex-wrap items-center gap-1">${item.name}${drugMetaBtn(item.name)}${calcBtn}</div></td></tr>`;
+                let nameNoteHtml = item.nameNote ? `<div class="text-[11px] font-normal w-full mt-0.5 leading-tight">${item.nameNote}</div>` : '';
+                html += `<tr><td colspan="6" class="pt-2 pb-1 !border-b-0"><div class="font-semibold text-slate-700 flex flex-wrap items-center gap-1">${item.name}${drugMetaBtn(item.name)}${calcBtn}</div>${nameNoteHtml}</td></tr>`;
             }
             
             let tdBorder = 'pb-2';
