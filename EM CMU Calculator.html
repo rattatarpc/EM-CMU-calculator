@@ -569,10 +569,276 @@ function startCalculation() {
                     <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-white/20 shrink-0"><i class="fas fa-flask-vial text-2xl"></i></div>
                     <div><div class="font-bold text-xl">Manual Calculator</div><div class="text-teal-100 text-sm">Concentration  Drip Rate  Drug Search</div></div>
                 </button>
+                <!-- 8. OB-GYNE -->
+                <button onclick="navigate('obgyne','OB-GYNE')" class="flex items-center gap-4 p-5 rounded-2xl text-left hover:-translate-y-1 transition-all shadow-md hover:shadow-lg text-white bg-rose-500 hover:bg-rose-600 border border-rose-600">
+                    <div class="w-14 h-14 rounded-xl flex items-center justify-center bg-white/20 shrink-0"><i class="fas fa-person-pregnant text-2xl"></i></div>
+                    <div><div class="font-bold text-xl">OB-GYNE</div><div class="text-rose-100 text-sm">Uterotonic  Drugs  PPH Management</div></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- OB-GYNE PAGE -->
+        <div id="page-obgyne" class="page space-y-4">
+            <div class="card">
+                <div class="card-header bg-rose-500"><i class="fas fa-person-pregnant mr-2"></i>OB-GYNE — Uterotonic &amp; PPH Drugs</div>
+                <div class="p-3">
+                    <div class="mb-3 p-2 bg-rose-50 border border-rose-200 rounded-lg text-xs text-rose-700 leading-relaxed">
+                        <b>ตารางเปรียบเทียบยา Uterotonic ตาม Guideline ต่างๆ</b><br>
+                        <span class="text-slate-500">สีแดง = Contraindication ที่สำคัญ | ⭐ = ยาอันดับที่แนะนำ</span>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mb-3 text-xs">
+                        <span class="px-2 py-1 rounded bg-sky-100 text-sky-700 font-semibold border border-sky-200">ACOG 2017</span>
+                        <span class="px-2 py-1 rounded bg-emerald-100 text-emerald-700 font-semibold border border-emerald-200">Thai RTCOG 2021 — Prevention</span>
+                        <span class="px-2 py-1 rounded bg-teal-100 text-teal-700 font-semibold border border-teal-200">Thai RTCOG 2021 — Treatment</span>
+                        <span class="px-2 py-1 rounded bg-amber-100 text-amber-700 font-semibold border border-amber-200">Thai RTCOG 2025 — Prevention</span>
+                        <span class="px-2 py-1 rounded bg-orange-100 text-orange-700 font-semibold border border-orange-200">Thai RTCOG 2025 — Treatment</span>
+                        <span class="px-2 py-1 rounded bg-pink-100 text-pink-700 font-semibold border border-pink-200">Tintinalli 9th ED</span>
+                    </div>
+                    <div class="overflow-x-auto rounded-xl border border-slate-200">
+                    <table class="w-full text-xs" style="min-width:900px; border-collapse:collapse;">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" style="width:110px; text-align:left; vertical-align:middle; background:#f1f5f9; border:1px solid #cbd5e1; padding:6px 8px;">ยา</th>
+                                <th rowspan="2" style="width:80px; vertical-align:middle; background:#f1f5f9; border:1px solid #cbd5e1; padding:6px 8px;">รายละเอียด</th>
+                                <th rowspan="2" style="background:#e0f2fe; color:#0369a1; border:1px solid #7dd3fc; padding:6px 8px; vertical-align:middle;">ACOG 2017</th>
+                                <th colspan="2" style="background:#d1fae5; color:#065f46; border:1px solid #6ee7b7; padding:6px 8px;">Thai RTCOG 2021</th>
+                                <th colspan="2" style="background:#fef3c7; color:#92400e; border:1px solid #fcd34d; padding:6px 8px;">Thai RTCOG 2025</th>
+                                <th rowspan="2" style="background:#fce7f3; color:#9d174d; border:1px solid #f9a8d4; padding:6px 8px; vertical-align:middle;">Tintinalli<br>9th ED</th>
+                            </tr>
+                            <tr>
+                                <th style="background:#d1fae5; color:#065f46; border:1px solid #6ee7b7; padding:6px 8px;">Prevention</th>
+                                <th style="background:#a7f3d0; color:#064e3b; border:1px solid #34d399; padding:6px 8px;">Treatment</th>
+                                <th style="background:#fef3c7; color:#92400e; border:1px solid #fcd34d; padding:6px 8px;">Prevention</th>
+                                <th style="background:#fed7aa; color:#7c2d12; border:1px solid #fb923c; padding:6px 8px;">Treatment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- OXYTOCIN -->
+                            <tr>
+                                <td rowspan="3" style="vertical-align:middle; border:1px solid #cbd5e1; padding:6px 8px; font-weight:700; background:#fafafa;">Oxytocin<br><span style="font-style:italic; font-weight:400; color:#64748b;">(Syntocinon®)</span></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#f8fafc; color:#475569; font-weight:600; white-space:nowrap;">Dose &amp; Route</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• <b>IV:</b> 10–40 units ใน 500–1,000 mL (Continuous infusion)</div><div>• <b>IM:</b> 10 units</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;">• 10 ยูนิต IM หรือ IV ช้า ๆ</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• <b>Initial:</b> 10 units IM หรือ 20-40 units ใน 1,000 mL IV drip 180 mL/h (60 drops/min)</div><div class="mt-1">• <b>Cont.:</b> 20 units ใน 1,000 mL IV drip 120 mL/h (40 drops/min)</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>⭐ <b>ยาอันดับ 1</b></div><div>• 10 ยูนิต IM หรือ IV ช้า ๆ นาน 1-2 นาที</div><div class="mt-1">• <i>Onset:</i> IM 3-7 นาที (นาน 1 ชม.), IV ทันที (peak 30 นาที)</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• <b>Initial:</b> 10 ยูนิต IM หรือ เจือจาง IV ช้า ๆ 1-2 นาที หรือผสม crystalloids IV 5-10 นาที</div><div class="mt-1">• <b>Maint.:</b> 10-20 ยูนิต ใน 1 L IV ต่อเนื่อง ≥ 4 ชม. หรือจนเลือดหยุด</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;">• 20 units/1000 mL NSS หรือ 10 units IM</td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#fff5f5; color:#b91c1c; font-weight:600; white-space:nowrap;">Contraindication</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; color:#b91c1c; vertical-align:top;">• หายาก (Rare), Hypersensitivity</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; color:#b91c1c; vertical-align:top;">• แพ้ยา</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; color:#b91c1c; vertical-align:top;">• Hypersensitivity</td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#f8fafc; color:#475569; font-weight:600; white-space:nowrap;">Adverse Event</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• ปกติไม่มี</div><div>• N/V, Hyponatremia (ให้ยานาน)</div><div>• Hypotension (ถ้าฉีด IV push)</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• คลื่นไส้ อาเจียน</div><div>• Hyponatremia (ให้นาน)</div><div>• ความดันต่ำ (ถ้าฉีด IV เร็ว)</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• คลื่นไส้ อาเจียน</div><div>• Hyponatremia (ให้นาน)</div><div>• ความดันต่ำ (ถ้าฉีด IV เร็ว)</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• คลื่นไส้ อาเจียน</div><div>• Hyponatremia (ให้นาน)</div><div>• ความดันต่ำ (ถ้าฉีด IV เร็ว)</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                            </tr>
+                            <tr><td colspan="8" style="height:4px; background:#f1f5f9; border:none;"></td></tr>
+                            <!-- METHYLERGONOVINE -->
+                            <tr>
+                                <td rowspan="3" style="vertical-align:middle; border:1px solid #cbd5e1; padding:6px 8px; font-weight:700; background:#fafafa;">Methylergonovine /<br>Methylergometrine<br><span style="font-style:italic; font-weight:400; color:#64748b;">(Methergine®)</span></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#f8fafc; color:#475569; font-weight:600; white-space:nowrap;">Dose &amp; Route</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• 0.2 mg IM</div><div>• ให้ทุก 2-4 ชม.</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;">• 0.2 มิลลิกรัม IM หรือ IV</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• 0.2 mg IM/IV q 15 min (Max. 5 doses)</div><div class="mt-1">• หากจำเป็น ให้ 0.2 mg IM/IV slowly q 2-4 h</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div style="color:#b91c1c; font-weight:600;">• ไม่แนะนำ ให้ใช้ป้องกัน PPH (รวมถึงชนิด fixed-dose ผสม oxytocin)</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• <b>2nd line</b></div><div>• 0.2 มิลลิกรัม IM หรือ IV ช้า ๆ ให้ซ้ำ 2-4 ชม. (ไม่เกิน 5 doses)</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• 0.2 mg IM หรือ IV หรือ PO</div><div>• ซ้ำได้ทุก 2-4 ชม.</div></td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#fff5f5; color:#b91c1c; font-weight:600; white-space:nowrap;">Contraindication</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; color:#b91c1c; vertical-align:top;">• Hypertension, Preeclampsia, CV disease, Hypersensitivity</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; color:#b91c1c; vertical-align:top;">• ห้ามใช้ในรายที่มีความดันโลหิตสูง</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; color:#b91c1c; vertical-align:top;">• ห้ามใช้ในรายที่มีความดันโลหิตสูง</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; color:#b91c1c; vertical-align:top;">• ห้ามใช้ในรายที่มีความดันโลหิตสูง</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; color:#b91c1c; vertical-align:top;">• Hypersensitivity, HTN, Eclampsia, Preeclampsia</td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#f8fafc; color:#475569; font-weight:600; white-space:nowrap;">Adverse Event</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• <u>N</u>/V</div><div>• Severe HTN (โดยเฉพาะเมื่อให้ IV)</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• คลื่นไส้ อาเจียน</div><div>• ความดันโลหิตสูงขึ้น</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• คลื่นไส้ อาเจียน</div><div>• ความดันโลหิตสูงขึ้น</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                            </tr>
+                            <tr><td colspan="8" style="height:4px; background:#f1f5f9; border:none;"></td></tr>
+                            <!-- MISOPROSTOL -->
+                            <tr>
+                                <td rowspan="3" style="vertical-align:middle; border:1px solid #cbd5e1; padding:6px 8px; font-weight:700; background:#fafafa;">Misoprostol<br><span style="font-style:italic; font-weight:400; color:#64748b;">(Cytotec®)</span></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#f8fafc; color:#475569; font-weight:600; white-space:nowrap;">Dose &amp; Route</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;">• 600-1,000 µg Oral, Sublingual, หรือ Rectal (ครั้งเดียว)</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;">• 400-600 ไมโครกรัม รับประทาน</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;">• 600-1,000 µg (4 tab) Oral, Sublingual, หรือ Rectal</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>⭐ <b>(เลือกลำดับ 3)</b></div><div>• 400-600 ไมโครกรัม รับประทาน</div><div class="mt-1">• <i>Onset:</i> อมใต้ลิ้น ซึมใน 9-15 นาที</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• <b>(2nd line)</b></div><div>• 600-1,000 ไมโครกรัม รับประทาน, อมใต้ลิ้น, หรือเหน็บทวารหนัก (ครั้งเดียว)</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;">• 1,000 µg PR, SL, หรือ PO ครั้งเดียว</td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#fff5f5; color:#b91c1c; font-weight:600; white-space:nowrap;">Contraindication</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; color:#b91c1c; vertical-align:top;">• หายาก (Rare), Hypersensitivity</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; color:#b91c1c; vertical-align:top;">• แพ้ยา</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; color:#b91c1c; vertical-align:top;">• Hypersensitivity</td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#f8fafc; color:#475569; font-weight:600; white-space:nowrap;">Adverse Event</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• <u>N</u>/V, ท้องเสีย</div><div>• หนาวสั่น, ไข้, ปวดศีรษะ</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• N/V ท้องเสีย</div><div>• หนาวสั่น ไข้ ปวดศีรษะ</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• N/V ท้องเสีย</div><div>• หนาวสั่น ไข้ ปวดศีรษะ</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• คลื่นไส้ อาเจียน ท้องเสีย</div><div>• หนาวสั่น ไข้ ปวดศีรษะ</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                            </tr>
+                            <tr><td colspan="8" style="height:4px; background:#f1f5f9; border:none;"></td></tr>
+                            <!-- CARBETOCIN -->
+                            <tr>
+                                <td rowspan="3" style="vertical-align:middle; border:1px solid #cbd5e1; padding:6px 8px; font-weight:700; background:#fafafa;">Carbetocin<br><span style="font-style:italic; font-weight:400; color:#64748b;">(Duratocin®)</span></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#f8fafc; color:#475569; font-weight:600; white-space:nowrap;">Dose &amp; Route</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;">• 100 ไมโครกรัม IM หรือ IV นานกว่า 1 นาที</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>⭐ <b>(เลือกลำดับ 2)</b></div><div>• 100 ไมโครกรัม IM หรือ IV นานกว่า 1 นาที</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#fff5f5; color:#b91c1c; font-weight:600; white-space:nowrap;">Contraindication</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; color:#b91c1c; vertical-align:top;">• แพ้ยา</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#f8fafc; color:#475569; font-weight:600; white-space:nowrap;">Adverse Event</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• คลื่นไส้ อาเจียน</div><div>• ปวดท้อง ร้อนรูบาน</div><div>• ปวดศีรษะ ความดันต่ำ คัน</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• คลื่นไส้ อาเจียน</div><div>• ปวดท้อง ร้อนรูบาน ปวดศีรษะ</div><div>• ความดันต่ำ คัน</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                            </tr>
+                            <tr><td colspan="8" style="height:4px; background:#f1f5f9; border:none;"></td></tr>
+                            <!-- 15-METHYL PGF2ALPHA / CARBOPROST -->
+                            <tr>
+                                <td rowspan="3" style="vertical-align:middle; border:1px solid #cbd5e1; padding:6px 8px; font-weight:700; background:#fafafa;">15-methyl PGF2alpha /<br>Carboprost<br><span style="font-style:italic; font-weight:400; color:#64748b;">(Hemabate®)</span></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#f8fafc; color:#475569; font-weight:600; white-space:nowrap;">Dose &amp; Route</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;">• 0.25 mg IM หรือ Intramyometrial ทุก 15-90 นาที (Max 8 doses)</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div style="color:#b91c1c; font-weight:600;">• ไม่แนะนำ ให้ใช้กลุ่ม Prostaglandins เพื่อป้องกัน PPH</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;">• 250 µg IM ทุก 15-90 นาที (Total dose 2 mg)</td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#fff5f5; color:#b91c1c; font-weight:600; white-space:nowrap;">Contraindication</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; color:#b91c1c; vertical-align:top;"><div>• Asthma</div><div>• <i>Relative:</i> HTN, hepatic, pulmonary, cardiac disease</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; color:#b91c1c; vertical-align:top;">• Asthma</td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#f8fafc; color:#475569; font-weight:600; white-space:nowrap;">Adverse Event</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• <u>N</u>/V, ท้องเสีย</div><div>• ไข้, ปวดศีรษะ, หนาวสั่น</div><div>• HTN, Bronchospasm</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                            </tr>
+                            <tr><td colspan="8" style="height:4px; background:#f1f5f9; border:none;"></td></tr>
+                            <!-- SULPROSTONE -->
+                            <tr>
+                                <td rowspan="3" style="vertical-align:middle; border:1px solid #cbd5e1; padding:6px 8px; font-weight:700; background:#fafafa;">Sulprostone<br><span style="font-style:italic; font-weight:400; color:#64748b;">(Nalador®)</span></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#f8fafc; color:#475569; font-weight:600; white-space:nowrap;">Dose &amp; Route</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• <b>Initial:</b> 500 µg / 500 mL IV drip 100-500 µg/h</div><div class="mt-1">• <b>Cont.:</b> 500 µg / 500 mL IV drip 100 µg/h (Max 1,500 µg/24h)</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div style="color:#b91c1c; font-weight:600;">• ไม่แนะนำ ให้ใช้กลุ่ม Prostaglandins เพื่อป้องกัน PPH</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#fff5f5; color:#b91c1c; font-weight:600; white-space:nowrap;">Contraindication</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#f8fafc; color:#475569; font-weight:600; white-space:nowrap;">Adverse Event</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• <u>N</u>/V, ท้องเสีย</div><div>• หนาวสั่น ไข้ ปวดศีรษะ</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                            </tr>
+                            <tr><td colspan="8" style="height:4px; background:#f1f5f9; border:none;"></td></tr>
+                            <!-- TRANEXAMIC ACID -->
+                            <tr>
+                                <td rowspan="3" style="vertical-align:middle; border:1px solid #cbd5e1; padding:6px 8px; font-weight:700; background:#fafafa;">Tranexamic Acid<br><span style="font-style:italic; font-weight:400; color:#64748b;">(Transamin®)</span></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#f8fafc; color:#475569; font-weight:600; white-space:nowrap;">Dose &amp; Route</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div>• 1 g IV ใน 10-20 นาที (ภายใน 3 ชม. หลังคลอด)</div><div class="mt-1">• ให้ซ้ำได้หลัง 30 นาที หรือเลือดออกซ้ำใน 24 ชม.</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top;"><div style="color:#b91c1c; font-weight:600;">• ไม่แนะนำ ให้ใช้ป้องกัน PPH (ทั้งคลอดปกติและผ่าตัด)</div></td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#fff5f5; color:#b91c1c; font-weight:600; white-space:nowrap;">Contraindication</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                            </tr>
+                            <tr>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; background:#f8fafc; color:#475569; font-weight:600; white-space:nowrap;">Adverse Event</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                                <td style="border:1px solid #cbd5e1; padding:6px 8px; vertical-align:top; color:#64748b;">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                    <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800 leading-relaxed space-y-1">
+                        <div class="font-bold text-amber-900 mb-1">📌 หมายเหตุสำคัญ</div>
+                        <div>• Thai RTCOG 2025 <b>ไม่แนะนำ</b> กลุ่ม Prostaglandins (Sulprostone, 15-methyl PGF2α) และ Tranexamic Acid เพื่อป้องกัน PPH</div>
+                        <div>• Thai RTCOG 2025 <b>ไม่แนะนำ</b> Methylergonovine แบบ fixed-dose ผสม Oxytocin เพื่อป้องกัน PPH</div>
+                        <div>• การให้ Oxytocin IV push เร็วอาจทำให้เกิด Hypotension ควรให้ช้า ๆ</div>
+                        <div>• ผู้ป่วยความดันสูง/Preeclampsia: ห้ามใช้ Methylergonovine</div>
+                        <div>• ผู้ป่วย Asthma: ระมัดระวังการใช้ 15-methyl PGF2α (Carboprost)</div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- MANUAL CALCULATOR PAGE -->
+
         <div id="page-manual" class="page space-y-4">
 
             <!-- Drug Search -->
@@ -1475,7 +1741,11 @@ function navigate(page, title = '') {
     } else {
         btnBack.classList.remove('hidden');
         catTitle.innerText = title;
-        document.getElementById('patientPanel').classList.remove('hidden');
+        if (page === 'obgyne') {
+            document.getElementById('patientPanel').classList.add('hidden');
+        } else {
+            document.getElementById('patientPanel').classList.remove('hidden');
+        }
         if (page === 'manual') setTimeout(onManualEnter, 0);
     }
     renderAll();
@@ -1484,7 +1754,7 @@ function navigate(page, title = '') {
     const searchContainer = document.getElementById('globalSearchContainer');
     const globalSearch = document.getElementById('globalSearch');
     const searchDropdown = document.getElementById('globalSearchDropdown');
-    if (page !== 'home' && page !== 'antidote') {
+    if (page !== 'home' && page !== 'antidote' && page !== 'obgyne') {
         searchContainer.classList.remove('hidden');
         globalSearch.value = '';
         if (searchDropdown) searchDropdown.classList.add('hidden');
