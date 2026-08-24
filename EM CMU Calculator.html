@@ -2090,8 +2090,8 @@ function renderDrugGroups(groupsArray, containerId) {
             }
 
             if (isGrouped && !isSameName) {
-                let nameNoteHtml = item.nameNote ? `<div class="text-[11px] font-normal w-full mt-0.5 leading-tight">${item.nameNote}</div>` : '';
-                html += `<tr><td colspan="6" class="pt-2 pb-1 !border-b-0"><div class="font-semibold text-slate-700 flex flex-wrap items-center gap-1">${item.name}${drugMetaBtn(item.name)}${calcBtn}</div>${nameNoteHtml}</td></tr>`;
+                let calcBtnHtml = calcBtn ? `<div class="mt-1">${calcBtn}</div>` : '';
+                html += `<tr><td colspan="6" class="pt-2 pb-1 !border-b-0"><div class="font-semibold text-slate-700 flex flex-wrap items-center gap-1">${item.name}${drugMetaBtn(item.name)}</div>${calcBtnHtml}</td></tr>`;
             }
             
             let tdBorder = 'pb-2';
@@ -2104,15 +2104,19 @@ function renderDrugGroups(groupsArray, containerId) {
 
             const rt = item.route ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold ${routeColor(item.route)}">${item.route}</span>` : '';
             
+            let nameNoteHtml = item.nameNote ? `<div class="text-[11px] font-normal w-full mb-1 leading-tight">${item.nameNote}</div>` : '';
+
             let drugPrepHtml = '';
             if (!isGrouped) {
-                drugPrepHtml = `<div class="font-semibold text-slate-700 flex flex-wrap items-center gap-1">${item.name}${drugMetaBtn(item.name)}${calcBtn}</div>`;
+                let calcBtnHtml = calcBtn ? `<div class="mt-1">${calcBtn}</div>` : '';
+                drugPrepHtml = `<div class="font-semibold text-slate-700 flex flex-wrap items-center gap-1">${item.name}${drugMetaBtn(item.name)}</div>${calcBtnHtml}${nameNoteHtml}`;
                 if (item.prep) {
                     drugPrepHtml += `<div class="text-[11px] text-slate-400 mt-1.5">${item.prep}</div>`;
                 }
             } else {
+                drugPrepHtml = !isSameName ? nameNoteHtml : '';
                 if (item.prep) {
-                    drugPrepHtml = `<div class="text-[11px] text-slate-500">${item.prep}</div>`;
+                    drugPrepHtml += `<div class="text-[11px] text-slate-500">${item.prep}</div>`;
                 }
             }
 
