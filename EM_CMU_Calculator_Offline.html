@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <script>
@@ -1964,35 +1964,35 @@ const pedEmDrugs = [
 ];
 
 const pedDrips = [
-    {id:'pd-epi',  name:'Epinephrine (Inotrope)', initMin:0.05, initMax:0.5,  max:1,    concMcgMl:10,  prep:'ผสมยา 1 mg (1 ml) ใน NSS, D5W 100 ml (10 mcg/ml)', mixes: [
-        { prep: 'ผสมยา 1 mg (1 ml) ใน NSS, D5W 100 ml (10 mcg/ml)', conc: 10 },
-        { prep: 'ผสมยา 4 mg (4 ml) ใน NSS, D5W 250 ml (16 mcg/ml)', conc: 16 },
-        { prep: 'ผสมยา 8 mg (8 ml) ใน NSS, D5W 250 ml (32 mcg/ml)', conc: 32 }
+    {id:'pd-epi',  name:'Epinephrine (Inotrope)', initMin:0.05, initMax:0.5,  max:1,    concMcgMl:10,  prep:'ยา 1 mg (1 ml) ผสมสารน้ำ (NSS) up to 100 ml (10 mcg/ml)', mixes: [
+        { prep: 'ยา 1 mg (1 ml) ผสมสารน้ำ (NSS) up to 100 ml (10 mcg/ml)', conc: 10 },
+        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ (NSS) up to 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ยา 8 mg (8 ml) ผสมสารน้ำ (NSS) up to 250 ml (32 mcg/ml)', conc: 32 }
     ]},
-    {id:'pd-nor',  name:'Norepinephrine (Pressor)', initMin:0.05, initMax:0.1, max:2,   concMcgMl:16,  prep:'ผสมยา 4 mg (4 ml) ใน D5W, D5S 250 ml (16 mcg/ml)', mixes: [
-        { prep: 'ผสมยา 2 mg (2 ml) ใน D5W, D5S 250 ml (8 mcg/ml)', conc: 8 },
-        { prep: 'ผสมยา 4 mg (4 ml) ใน D5W, D5S 250 ml (16 mcg/ml)', conc: 16 },
-        { prep: 'ผสมยา 8 mg (8 ml) ใน D5W, D5S 250 ml (32 mcg/ml)', conc: 32 }
+    {id:'pd-nor',  name:'Norepinephrine (Pressor)', initMin:0.05, initMax:0.1, max:2,   concMcgMl:16,  prep:'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 250 ml (16 mcg/ml)', mixes: [
+        { prep: 'ยา 2 mg (2 ml) ผสมสารน้ำ (D5W) up to 250 ml (8 mcg/ml)', conc: 8 },
+        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ยา 8 mg (8 ml) ผสมสารน้ำ (D5W) up to 250 ml (32 mcg/ml)', conc: 32 }
     ]},
-    {id:'pd-dop',  name:'Dopamine', initMin:2, initMax:20, max:30,           concMcgMl:2000, prep:'ยา 200 mg (8 ml) + D5W หรือ NSS 92 ml (2000 mcg/ml)', mixes: [
-        { prep: 'ยา 100 mg (4 ml) + D5W หรือ NSS 96 ml (1000 mcg/ml)', conc: 1000 },
-        { prep: 'ยา 1 vial (250 mg) + D5W upto 250 ml (1000 mcg/ml)', conc: 1000 },
-        { prep: 'ยา 200 mg (8 ml) + D5W หรือ NSS 92 ml (2000 mcg/ml)', conc: 2000 },
-        { prep: 'ยา 1 vial (250 mg) + D5W upto 125 ml (2000 mcg/ml)', conc: 2000 }
+    {id:'pd-dop',  name:'Dopamine', initMin:2, initMax:20, max:30,           concMcgMl:2000, prep:'ยา 200 mg (8 ml) ผสมสารน้ำ (NSS) up to 100 ml (2000 mcg/ml)', mixes: [
+        { prep: 'ยา 100 mg (4 ml) ผสมสารน้ำ (NSS) up to 100 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 250 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 200 mg (8 ml) ผสมสารน้ำ (NSS) up to 100 ml (2000 mcg/ml)', conc: 2000 },
+        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 125 ml (2000 mcg/ml)', conc: 2000 }
     ]},
-    {id:'pd-dob',  name:'Dobutamine', initMin:2, initMax:20, max:20,         concMcgMl:1000, prep:'ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (1000 mcg/ml)', mixes: [
-        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (1000 mcg/ml)', conc: 1000 },
-        { prep: 'ยา 2 vial (500 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (2000 mcg/ml)', conc: 2000 },
-        { prep: 'ยา 4 vial (1000 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (4000 mcg/ml)', conc: 4000 }
+    {id:'pd-dob',  name:'Dobutamine', initMin:2, initMax:20, max:20,         concMcgMl:1000, prep:'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 250 ml (1000 mcg/ml)', mixes: [
+        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 250 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 2 vial (500 mg) ผสมสารน้ำ (NSS) up to 250 ml (2000 mcg/ml)', conc: 2000 },
+        { prep: 'ยา 4 vial (1000 mg) ผสมสารน้ำ (NSS) up to 250 ml (4000 mcg/ml)', conc: 4000 }
     ]},
-    {id:'pd-mil',  name:'Milrinone', initMin:0.25, initMax:0.75, max:0.75,   concMcgMl:100,  prep:'ยา 10 mg (10 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (100 mcg/ml)', mixes: [
-        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (100 mcg/ml)', conc: 100 },
-        { prep: 'ยา 15 mg (15 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (150 mcg/ml)', conc: 150 },
-        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 50 ml (200 mcg/ml)', conc: 200 }
+    {id:'pd-mil',  name:'Milrinone', initMin:0.25, initMax:0.75, max:0.75,   concMcgMl:100,  prep:'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (100 mcg/ml)', mixes: [
+        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (100 mcg/ml)', conc: 100 },
+        { prep: 'ยา 15 mg (15 ml) ผสมสารน้ำ (NSS) up to 100 ml (150 mcg/ml)', conc: 150 },
+        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 50 ml (200 mcg/ml)', conc: 200 }
     ]},
-    {id:'pd-iso',  name:'Isoproterenol', initMin:0.02, initMax:0.5, max:2,   concMcgMl:4,    prep:'ยา 10 ml (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 ml (4 mcg/ml)', unit:'mcg/min', perMin:true, mixes: [
-        { prep: 'ยา 10 ml (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 ml (4 mcg/ml)', conc: 4 },
-        { prep: 'ยา 10 ml (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (20 mcg/ml)', conc: 20 }
+    {id:'pd-iso',  name:'Isoproterenol', initMin:0.02, initMax:0.5, max:2,   concMcgMl:4,    prep:'ยา 2 mg (10 ml) ผสมสารน้ำ (NSS) up to 500 ml (4 mcg/ml)', unit:'mcg/min', perMin:true, mixes: [
+        { prep: 'ยา 2 mg (10 ml) ผสมสารน้ำ (NSS) up to 500 ml (4 mcg/ml)', conc: 4 },
+        { prep: 'ยา 2 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (20 mcg/ml)', conc: 20 }
     ]},
 ];
 
@@ -2006,35 +2006,35 @@ const neoDrugs = [
 ];
 
 const neoDrips = [
-    {id:'nd-epi',  name:'Epinephrine', initMin:0.05, initMax:1,  max:1,    concMcgMl:10, prep:'ผสมยา 1 mg (1 ml) ใน NSS, D5W 100 ml (10 mcg/ml)', mixes: [
-        { prep: 'ผสมยา 1 mg (1 ml) ใน NSS, D5W 100 ml (10 mcg/ml)', conc: 10 },
-        { prep: 'ผสมยา 4 mg (4 ml) ใน NSS, D5W 250 ml (16 mcg/ml)', conc: 16 },
-        { prep: 'ผสมยา 8 mg (8 ml) ใน NSS, D5W 250 ml (32 mcg/ml)', conc: 32 }
+    {id:'nd-epi',  name:'Epinephrine', initMin:0.05, initMax:1,  max:1,    concMcgMl:10, prep:'ยา 1 mg (1 ml) ผสมสารน้ำ (NSS) up to 100 ml (10 mcg/ml)', mixes: [
+        { prep: 'ยา 1 mg (1 ml) ผสมสารน้ำ (NSS) up to 100 ml (10 mcg/ml)', conc: 10 },
+        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ (NSS) up to 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ยา 8 mg (8 ml) ผสมสารน้ำ (NSS) up to 250 ml (32 mcg/ml)', conc: 32 }
     ]},
-    {id:'nd-nor', name:'Norepinephrine (PHT/Septic)', initMin:0.2, initMax:2, max:2,    concMcgMl:16,   prep:'ผสมยา 4 mg (4 ml) ใน D5W, D5S 250 ml (16 mcg/ml)', mixes: [
-        { prep: 'ผสมยา 2 mg (2 ml) ใน D5W, D5S 250 ml (8 mcg/ml)', conc: 8 },
-        { prep: 'ผสมยา 4 mg (4 ml) ใน D5W, D5S 250 ml (16 mcg/ml)', conc: 16 },
-        { prep: 'ผสมยา 8 mg (8 ml) ใน D5W, D5S 250 ml (32 mcg/ml)', conc: 32 }
+    {id:'nd-nor', name:'Norepinephrine (PHT/Septic)', initMin:0.2, initMax:2, max:2,    concMcgMl:16,   prep:'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 250 ml (16 mcg/ml)', mixes: [
+        { prep: 'ยา 2 mg (2 ml) ผสมสารน้ำ (D5W) up to 250 ml (8 mcg/ml)', conc: 8 },
+        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ยา 8 mg (8 ml) ผสมสารน้ำ (D5W) up to 250 ml (32 mcg/ml)', conc: 32 }
     ]},
-    {id:'nd-dop', name:'Dopamine', initMin:2, initMax:20, max:30,              concMcgMl:2000, prep:'ยา 200 mg (8 ml) + D5W หรือ NSS 92 ml (2000 mcg/ml)', mixes: [
-        { prep: 'ยา 100 mg (4 ml) + D5W หรือ NSS 96 ml (1000 mcg/ml)', conc: 1000 },
-        { prep: 'ยา 1 vial (250 mg) + D5W upto 250 ml (1000 mcg/ml)', conc: 1000 },
-        { prep: 'ยา 200 mg (8 ml) + D5W หรือ NSS 92 ml (2000 mcg/ml)', conc: 2000 },
-        { prep: 'ยา 1 vial (250 mg) + D5W upto 125 ml (2000 mcg/ml)', conc: 2000 }
+    {id:'nd-dop', name:'Dopamine', initMin:2, initMax:20, max:30,              concMcgMl:2000, prep:'ยา 200 mg (8 ml) ผสมสารน้ำ (NSS) up to 100 ml (2000 mcg/ml)', mixes: [
+        { prep: 'ยา 100 mg (4 ml) ผสมสารน้ำ (NSS) up to 100 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 250 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 200 mg (8 ml) ผสมสารน้ำ (NSS) up to 100 ml (2000 mcg/ml)', conc: 2000 },
+        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 125 ml (2000 mcg/ml)', conc: 2000 }
     ]},
-    {id:'nd-dob', name:'Dobutamine', initMin:2, initMax:25, max:25,            concMcgMl:1000, prep:'ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (1000 mcg/ml)', mixes: [
-        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (1000 mcg/ml)', conc: 1000 },
-        { prep: 'ยา 2 vial (500 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (2000 mcg/ml)', conc: 2000 },
-        { prep: 'ยา 4 vial (1000 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (4000 mcg/ml)', conc: 4000 }
+    {id:'nd-dob', name:'Dobutamine', initMin:2, initMax:25, max:25,            concMcgMl:1000, prep:'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 250 ml (1000 mcg/ml)', mixes: [
+        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 250 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 2 vial (500 mg) ผสมสารน้ำ (NSS) up to 250 ml (2000 mcg/ml)', conc: 2000 },
+        { prep: 'ยา 4 vial (1000 mg) ผสมสารน้ำ (NSS) up to 250 ml (4000 mcg/ml)', conc: 4000 }
     ]},
-    {id:'nd-mil', name:'Milrinone', initMin:0.375, initMax:0.75, max:0.75,     concMcgMl:100,  prep:'ยา 10 mg (10 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (100 mcg/ml)', mixes: [
-        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (100 mcg/ml)', conc: 100 },
-        { prep: 'ยา 15 mg (15 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (150 mcg/ml)', conc: 150 },
-        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 50 ml (200 mcg/ml)', conc: 200 }
+    {id:'nd-mil', name:'Milrinone', initMin:0.375, initMax:0.75, max:0.75,     concMcgMl:100,  prep:'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (100 mcg/ml)', mixes: [
+        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (100 mcg/ml)', conc: 100 },
+        { prep: 'ยา 15 mg (15 ml) ผสมสารน้ำ (NSS) up to 100 ml (150 mcg/ml)', conc: 150 },
+        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 50 ml (200 mcg/ml)', conc: 200 }
     ]},
-    {id:'nd-iso', name:'Isoproterenol', initMin:0.02, initMax:0.5, max:2,      concMcgMl:4,    prep:'ยา 10 ml (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 ml (4 mcg/ml)', unit:'mcg/min', perMin:true, mixes: [
-        { prep: 'ยา 10 ml (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 ml (4 mcg/ml)', conc: 4 },
-        { prep: 'ยา 10 ml (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (20 mcg/ml)', conc: 20 }
+    {id:'nd-iso', name:'Isoproterenol', initMin:0.02, initMax:0.5, max:2,      concMcgMl:4,    prep:'ยา 2 mg (10 ml) ผสมสารน้ำ (NSS) up to 500 ml (4 mcg/ml)', unit:'mcg/min', perMin:true, mixes: [
+        { prep: 'ยา 2 mg (10 ml) ผสมสารน้ำ (NSS) up to 500 ml (4 mcg/ml)', conc: 4 },
+        { prep: 'ยา 2 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (20 mcg/ml)', conc: 20 }
     ]}
 ];
 
@@ -2053,47 +2053,47 @@ const adultEmDrugs = [
 ];
 
 const adultInotropes = [
-    {id:'ai-epi', name:'Epinephrine',    initMin:0.05, initMax:2,   max:2,   concMcgMl:4,    doseDef:0.1,  unit:'mcg/kg/min', prep:'ยา 1 mg (1 ml) ผสมสารน้ำ 249 ml (4 mcg/ml)', mixes: [
-        { prep: 'ยา 1 mg (1 ml) ผสมสารน้ำ 999 ml (1 mcg/ml)', conc: 1 },
-        { prep: 'ยา 1 mg (1 ml) ผสมสารน้ำ 249 ml (4 mcg/ml)', conc: 4 },
-        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ 246 ml (16 mcg/ml)', conc: 16 },
-        { prep: 'ยา 6 mg (6 ml) ผสมสารน้ำ 94 ml (60 mcg/ml)', conc: 60 },
-        { prep: 'ยา 16 mg (16 ml) ผสมสารน้ำ 234 ml (64 mcg/ml)', conc: 64 },
-        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำ 100 ml (100 mcg/ml)', conc: 100 }
+    {id:'ai-epi', name:'Epinephrine',    initMin:0.05, initMax:2,   max:2,   concMcgMl:4,    doseDef:0.1,  unit:'mcg/kg/min', prep:'ยา 1 mg (1 ml) ผสมสารน้ำ (NSS) up to 250 ml (4 mcg/ml)', mixes: [
+        { prep: 'ยา 1 mg (1 ml) ผสมสารน้ำ (NSS) up to 1000 ml (1 mcg/ml)', conc: 1 },
+        { prep: 'ยา 1 mg (1 ml) ผสมสารน้ำ (NSS) up to 250 ml (4 mcg/ml)', conc: 4 },
+        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ (NSS) up to 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ยา 6 mg (6 ml) ผสมสารน้ำ (NSS) up to 100 ml (60 mcg/ml)', conc: 60 },
+        { prep: 'ยา 16 mg (16 ml) ผสมสารน้ำ (NSS) up to 250 ml (64 mcg/ml)', conc: 64 },
+        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (100 mcg/ml)', conc: 100 }
     ]},
-    {id:'ai-nor', name:'Norepinephrine (Cardiogenic)', initMin:0.05, initMax:0.4, max:0.4, concMcgMl:16, doseDef:0.1, unit:'mcg/kg/min', prep:'ผสมยา 4 mg (4 ml) ใน D5W, D5S 250 ml (16 mcg/ml)', mixes: [
-        { prep: 'ผสมยา 2 mg (2 ml) ใน D5W, D5S 250 ml (8 mcg/ml)', conc: 8 },
-        { prep: 'ผสมยา 4 mg (4 ml) ใน D5W, D5S 250 ml (16 mcg/ml)', conc: 16 },
-        { prep: 'ผสมยา 8 mg (8 ml) ใน D5W, D5S 250 ml (32 mcg/ml)', conc: 32 },
-        { prep: 'ผสมยา 4 mg (4 ml) ใน D5W, D5S 100 ml (40 mcg/ml)', conc: 40 },
-        { prep: 'ผสมยา 8 mg (8 ml) ใน D5W, D5S 100 ml (80 mcg/ml)', conc: 80 }
+    {id:'ai-nor', name:'Norepinephrine (Cardiogenic)', initMin:0.05, initMax:0.4, max:0.4, concMcgMl:16, doseDef:0.1, unit:'mcg/kg/min', prep:'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 250 ml (16 mcg/ml)', mixes: [
+        { prep: 'ยา 2 mg (2 ml) ผสมสารน้ำ (D5W) up to 250 ml (8 mcg/ml)', conc: 8 },
+        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ยา 8 mg (8 ml) ผสมสารน้ำ (D5W) up to 250 ml (32 mcg/ml)', conc: 32 },
+        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 100 ml (40 mcg/ml)', conc: 40 },
+        { prep: 'ยา 8 mg (8 ml) ผสมสารน้ำ (D5W) up to 100 ml (80 mcg/ml)', conc: 80 }
     ]},
-    {id:'ai-nor2',name:'Norepinephrine (Septic/Post-arrest)', initMin:0.05, initMax:3.3, max:3.3, concMcgMl:16, doseDef:0.1, unit:'mcg/kg/min', prep:'ผสมยา 4 mg (4 ml) ใน D5W, D5S 250 ml (16 mcg/ml)', mixes: [
-        { prep: 'ผสมยา 2 mg (2 ml) ใน D5W, D5S 250 ml (8 mcg/ml)', conc: 8 },
-        { prep: 'ผสมยา 4 mg (4 ml) ใน D5W, D5S 250 ml (16 mcg/ml)', conc: 16 },
-        { prep: 'ผสมยา 8 mg (8 ml) ใน D5W, D5S 250 ml (32 mcg/ml)', conc: 32 },
-        { prep: 'ผสมยา 4 mg (4 ml) ใน D5W, D5S 100 ml (40 mcg/ml)', conc: 40 },
-        { prep: 'ผสมยา 8 mg (8 ml) ใน D5W, D5S 100 ml (80 mcg/ml)', conc: 80 }
+    {id:'ai-nor2',name:'Norepinephrine (Septic/Post-arrest)', initMin:0.05, initMax:3.3, max:3.3, concMcgMl:16, doseDef:0.1, unit:'mcg/kg/min', prep:'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 250 ml (16 mcg/ml)', mixes: [
+        { prep: 'ยา 2 mg (2 ml) ผสมสารน้ำ (D5W) up to 250 ml (8 mcg/ml)', conc: 8 },
+        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ยา 8 mg (8 ml) ผสมสารน้ำ (D5W) up to 250 ml (32 mcg/ml)', conc: 32 },
+        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 100 ml (40 mcg/ml)', conc: 40 },
+        { prep: 'ยา 8 mg (8 ml) ผสมสารน้ำ (D5W) up to 100 ml (80 mcg/ml)', conc: 80 }
     ]},
-    {id:'ai-dop', name:'Dopamine',       initMin:2,    initMax:20,  max:50,  concMcgMl:2000, doseDef:5,   unit:'mcg/kg/min', prep:'ยา 200 mg (8 ml) + D5W หรือ NSS 92 ml (2000 mcg/ml)', mixes: [
-        { prep: 'ยา 100 mg (4 ml) + D5W หรือ NSS 96 ml (1000 mcg/ml)', conc: 1000 },
-        { prep: 'ยา 1 vial (250 mg) + D5W upto 250 ml (1000 mcg/ml)', conc: 1000 },
-        { prep: 'ยา 200 mg (8 ml) + D5W หรือ NSS 92 ml (2000 mcg/ml)', conc: 2000 },
-        { prep: 'ยา 1 vial (250 mg) + D5W upto 125 ml (2000 mcg/ml)', conc: 2000 }
+    {id:'ai-dop', name:'Dopamine',       initMin:2,    initMax:20,  max:50,  concMcgMl:2000, doseDef:5,   unit:'mcg/kg/min', prep:'ยา 200 mg (8 ml) ผสมสารน้ำ (NSS) up to 100 ml (2000 mcg/ml)', mixes: [
+        { prep: 'ยา 100 mg (4 ml) ผสมสารน้ำ (NSS) up to 100 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 250 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 200 mg (8 ml) ผสมสารน้ำ (NSS) up to 100 ml (2000 mcg/ml)', conc: 2000 },
+        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 125 ml (2000 mcg/ml)', conc: 2000 }
     ]},
-    {id:'ai-dob', name:'Dobutamine',     initMin:2,    initMax:20,  max:40,  concMcgMl:1000, doseDef:5,   unit:'mcg/kg/min', prep:'ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (1000 mcg/ml)', mixes: [
-        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (1000 mcg/ml)', conc: 1000 },
-        { prep: 'ยา 2 vial (500 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (2000 mcg/ml)', conc: 2000 },
-        { prep: 'ยา 4 vial (1000 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 250 ml (4000 mcg/ml)', conc: 4000 }
+    {id:'ai-dob', name:'Dobutamine',     initMin:2,    initMax:20,  max:40,  concMcgMl:1000, doseDef:5,   unit:'mcg/kg/min', prep:'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 250 ml (1000 mcg/ml)', mixes: [
+        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 250 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 2 vial (500 mg) ผสมสารน้ำ (NSS) up to 250 ml (2000 mcg/ml)', conc: 2000 },
+        { prep: 'ยา 4 vial (1000 mg) ผสมสารน้ำ (NSS) up to 250 ml (4000 mcg/ml)', conc: 4000 }
     ]},
-    {id:'ai-mil', name:'Milrinone',      initMin:0.375, initMax:0.75, max:0.75, concMcgMl:100, doseDef:0.375, unit:'mcg/kg/min', prep:'ยา 10 mg (10 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (100 mcg/ml)', mixes: [
-        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (100 mcg/ml)', conc: 100 },
-        { prep: 'ยา 15 mg (15 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (150 mcg/ml)', conc: 150 },
-        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 50 ml (200 mcg/ml)', conc: 200 }
+    {id:'ai-mil', name:'Milrinone',      initMin:0.375, initMax:0.75, max:0.75, concMcgMl:100, doseDef:0.375, unit:'mcg/kg/min', prep:'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (100 mcg/ml)', mixes: [
+        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (100 mcg/ml)', conc: 100 },
+        { prep: 'ยา 15 mg (15 ml) ผสมสารน้ำ (NSS) up to 100 ml (150 mcg/ml)', conc: 150 },
+        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 50 ml (200 mcg/ml)', conc: 200 }
     ]},
-    {id:'ai-iso', name:'Isoproterenol',  initMin:2,    initMax:10,  max:30,  concMcgMl:4,    doseDef:2,   unit:'mcg/min',    prep:'ยา 10 ml (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 ml (4 mcg/ml)', perMin:true, mixes: [
-        { prep: 'ยา 10 ml (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 500 ml (4 mcg/ml)', conc: 4 },
-        { prep: 'ยา 10 ml (2 mg) ผสมสารน้ำให้ได้ปริมาตรสุดท้าย 100 ml (20 mcg/ml)', conc: 20 }
+    {id:'ai-iso', name:'Isoproterenol',  initMin:2,    initMax:10,  max:30,  concMcgMl:4,    doseDef:2,   unit:'mcg/min',    prep:'ยา 2 mg (10 ml) ผสมสารน้ำ (NSS) up to 500 ml (4 mcg/ml)', perMin:true, mixes: [
+        { prep: 'ยา 2 mg (10 ml) ผสมสารน้ำ (NSS) up to 500 ml (4 mcg/ml)', conc: 4 },
+        { prep: 'ยา 2 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (20 mcg/ml)', conc: 20 }
     ]},
 ];
 
