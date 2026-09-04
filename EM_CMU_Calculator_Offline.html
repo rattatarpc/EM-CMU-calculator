@@ -963,7 +963,7 @@ function startCalculation() {
             <div id="ped-common-vs-card" class="hidden"></div>
             <div class="est-weight-banner bg-amber-50 border border-amber-200 rounded-xl p-3 text-sm text-amber-700 flex items-center gap-2 mb-4">
                 <i class="fas fa-calculator"></i>
-                <span>ถ้าไม่ทราบน้ำหนัก: กรอกอายุ up to น้ำหนักประเมิน = (Age×2)+8 = <b id="estWtPed">?</b> kg</span>
+                <span>ถ้าไม่ทราบน้ำหนัก: กรอกอายุ upto น้ำหนักประเมิน = (Age×2)+8 = <b id="estWtPed">?</b> kg</span>
             </div>
             <div id="ped-common-container" class="space-y-4"></div>
             
@@ -1830,12 +1830,12 @@ const pedCommonGroups = [
         {name:'Hydrocortisone (IV)', prep:'', route:'IV', min:5, max:5, unit:'mg/kg/dose', maxAdult:250, note:'q 6 hr'},
     ]},
     { title:'Respiratory', style:'background:#a5f3fc; color:#164e63;', items: [
-        {name:'Berodual (Fenoterol+Ipratropium)', prep:'', route:'NB', fixed:'BW < 20 kg: ½ Nebule (1 ml)<br>BW ≥ 20 kg: 1 Nebule (2 ml)', maxAdult:'Adult Dose', note:'+ NSS up to 4 ml'},
+        {name:'Berodual (Fenoterol+Ipratropium)', prep:'', route:'NB', fixed:'BW < 20 kg: ½ Nebule (1 ml)<br>BW ≥ 20 kg: 1 Nebule (2 ml)', maxAdult:'Adult Dose', note:'NSS upto 4 ml'},
         {name:'Fluticasone', prep:'50 mcg / dose', route:'NB', fixed:'1 mg/dose', maxAdult:'Adult Dose', note:'q 20 min (Max 3x)'},
-        {name:'Ventolin', prep:'5 mg / ml', route:'NB', min:0.03, max:0.03, unit:'mg/kg/dose', concMgMl:5, dosePrefix:'Solution 0.5%', doseNote:'(Age < 5 yr: 2.5 mg/dose)', note:'+ NSS up to 4 ml, q 20 min'},
-        {name:'Ventolin', prep:'2.5 mg / 2.5 ml', route:'NB', fixed:'2.5 mg/dose (1 NB)<br><span class="text-[10px] text-slate-500 font-normal">(Age < 5 yr: 2.5 mg/dose)</span>', dosePrefix:'Nebule', note:'+ NSS up to 4 ml, q 20 min'},
+        {name:'Ventolin', prep:'5 mg / ml', route:'NB', min:0.03, max:0.03, unit:'mg/kg/dose', concMgMl:5, dosePrefix:'Solution 0.5%', doseNote:'(Age < 5 yr: 2.5 mg/dose)', note:'NSS upto 4 ml, q 20 min'},
+        {name:'Ventolin', prep:'2.5 mg / 2.5 ml', route:'NB', fixed:'2.5 mg/dose (1 NB)<br><span class="text-[10px] text-slate-500 font-normal">(Age < 5 yr: 2.5 mg/dose)</span>', dosePrefix:'Nebule', note:'NSS upto 4 ml, q 20 min'},
         {name:'Pulmicort (Budesonide)', prep:'1 mg / 2 ml', route:'NB', fixed:'0.5–1 mg/dose', maxAdult:'2 mg/day', note:'q 20 min (Max 3x, Max 2 mg/day)'},
-        {name:'Adrenaline [croup]', prep:'1 mg/ml (1:1000)', route:'NB', min:0.05, max:0.5, unit:'ml/kg/dose', maxAdult:'Age < 4 yr: 2.5 ml<br>Age > 4 yr: 5 ml', concMgMl:1, note:'+ NSS up to 4 ml NB'},
+        {name:'Adrenaline [croup]', prep:'1 mg/ml (1:1000)', route:'NB', min:0.05, max:0.5, unit:'ml/kg/dose', maxAdult:'Age < 4 yr: 2.5 ml<br>Age > 4 yr: 5 ml', concMgMl:1, note:'NSS upto 4 ml NB'},
         {name:'Bromhexine Syrup', prep:'4 mg / 5 ml', route:'PO', min:0.6, max:0.8, unit:'mg/kg/day', maxAdult:'Adult Dose', divisor:3, concMgMl:0.8, note:'div tid'},
         {name:'Glyceryl Guaicolate Syrup', prep:'', route:'PO', fixed:'Adult Dose', maxAdult:'Adult Dose', note:'tid'},
     ]},
@@ -1964,35 +1964,35 @@ const pedEmDrugs = [
 ];
 
 const pedDrips = [
-    {id:'pd-epi',  name:'Epinephrine (Inotrope)', initMin:0.05, initMax:0.5,  max:1,    concMcgMl:10,  prep:'ยา 1 mg (1 ml) ผสมสารน้ำ (NSS) up to 100 ml (10 mcg/ml)', mixes: [
-        { prep: 'ยา 1 mg (1 ml) ผสมสารน้ำ (NSS) up to 100 ml (10 mcg/ml)', conc: 10 },
-        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ (NSS) up to 250 ml (16 mcg/ml)', conc: 16 },
-        { prep: 'ยา 8 mg (8 ml) ผสมสารน้ำ (NSS) up to 250 ml (32 mcg/ml)', conc: 32 }
+    {id:'pd-epi',  name:'Epinephrine (Inotrope)', initMin:0.05, initMax:0.5,  max:1,    concMcgMl:10,  prep:'ยา 1 mg (1 ml) NSS upto 100 ml (10 mcg/ml)', mixes: [
+        { prep: 'ยา 1 mg (1 ml) NSS upto 100 ml (10 mcg/ml)', conc: 10 },
+        { prep: 'ยา 4 mg (4 ml) NSS upto 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ยา 8 mg (8 ml) NSS upto 250 ml (32 mcg/ml)', conc: 32 }
     ]},
-    {id:'pd-nor',  name:'Norepinephrine (Pressor)', initMin:0.05, initMax:0.1, max:2,   concMcgMl:16,  prep:'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 250 ml (16 mcg/ml)', mixes: [
-        { prep: 'ยา 2 mg (2 ml) ผสมสารน้ำ (D5W) up to 250 ml (8 mcg/ml)', conc: 8 },
-        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 250 ml (16 mcg/ml)', conc: 16 },
-        { prep: 'ยา 8 mg (8 ml) ผสมสารน้ำ (D5W) up to 250 ml (32 mcg/ml)', conc: 32 }
+    {id:'pd-nor',  name:'Norepinephrine (Pressor)', initMin:0.05, initMax:0.1, max:2,   concMcgMl:16,  prep:'ยา 4 mg (4 ml) D5W upto 250 ml (16 mcg/ml)', mixes: [
+        { prep: 'ยา 2 mg (2 ml) D5W upto 250 ml (8 mcg/ml)', conc: 8 },
+        { prep: 'ยา 4 mg (4 ml) D5W upto 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ยา 8 mg (8 ml) D5W upto 250 ml (32 mcg/ml)', conc: 32 }
     ]},
-    {id:'pd-dop',  name:'Dopamine', initMin:2, initMax:20, max:30,           concMcgMl:2000, prep:'ยา 200 mg (8 ml) ผสมสารน้ำ (NSS) up to 100 ml (2000 mcg/ml)', mixes: [
-        { prep: 'ยา 100 mg (4 ml) ผสมสารน้ำ (NSS) up to 100 ml (1000 mcg/ml)', conc: 1000 },
-        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 250 ml (1000 mcg/ml)', conc: 1000 },
-        { prep: 'ยา 200 mg (8 ml) ผสมสารน้ำ (NSS) up to 100 ml (2000 mcg/ml)', conc: 2000 },
-        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 125 ml (2000 mcg/ml)', conc: 2000 }
+    {id:'pd-dop',  name:'Dopamine', initMin:2, initMax:20, max:30,           concMcgMl:2000, prep:'ยา 200 mg (8 ml) NSS upto 100 ml (2000 mcg/ml)', mixes: [
+        { prep: 'ยา 100 mg (4 ml) NSS upto 100 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 1 vial (250 mg) NSS upto 250 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 200 mg (8 ml) NSS upto 100 ml (2000 mcg/ml)', conc: 2000 },
+        { prep: 'ยา 1 vial (250 mg) NSS upto 125 ml (2000 mcg/ml)', conc: 2000 }
     ]},
-    {id:'pd-dob',  name:'Dobutamine', initMin:2, initMax:20, max:20,         concMcgMl:1000, prep:'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 250 ml (1000 mcg/ml)', mixes: [
-        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 250 ml (1000 mcg/ml)', conc: 1000 },
-        { prep: 'ยา 2 vial (500 mg) ผสมสารน้ำ (NSS) up to 250 ml (2000 mcg/ml)', conc: 2000 },
-        { prep: 'ยา 4 vial (1000 mg) ผสมสารน้ำ (NSS) up to 250 ml (4000 mcg/ml)', conc: 4000 }
+    {id:'pd-dob',  name:'Dobutamine', initMin:2, initMax:20, max:20,         concMcgMl:1000, prep:'ยา 1 vial (250 mg) NSS upto 250 ml (1000 mcg/ml)', mixes: [
+        { prep: 'ยา 1 vial (250 mg) NSS upto 250 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 2 vial (500 mg) NSS upto 250 ml (2000 mcg/ml)', conc: 2000 },
+        { prep: 'ยา 4 vial (1000 mg) NSS upto 250 ml (4000 mcg/ml)', conc: 4000 }
     ]},
-    {id:'pd-mil',  name:'Milrinone', initMin:0.25, initMax:0.75, max:0.75,   concMcgMl:100,  prep:'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (100 mcg/ml)', mixes: [
-        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (100 mcg/ml)', conc: 100 },
-        { prep: 'ยา 15 mg (15 ml) ผสมสารน้ำ (NSS) up to 100 ml (150 mcg/ml)', conc: 150 },
-        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 50 ml (200 mcg/ml)', conc: 200 }
+    {id:'pd-mil',  name:'Milrinone', initMin:0.25, initMax:0.75, max:0.75,   concMcgMl:100,  prep:'ยา 10 mg (10 ml) NSS upto 100 ml (100 mcg/ml)', mixes: [
+        { prep: 'ยา 10 mg (10 ml) NSS upto 100 ml (100 mcg/ml)', conc: 100 },
+        { prep: 'ยา 15 mg (15 ml) NSS upto 100 ml (150 mcg/ml)', conc: 150 },
+        { prep: 'ยา 10 mg (10 ml) NSS upto 50 ml (200 mcg/ml)', conc: 200 }
     ]},
-    {id:'pd-iso',  name:'Isoproterenol', initMin:0.02, initMax:0.5, max:2,   concMcgMl:4,    prep:'ยา 2 mg (10 ml) ผสมสารน้ำ (NSS) up to 500 ml (4 mcg/ml)', unit:'mcg/min', perMin:true, mixes: [
-        { prep: 'ยา 2 mg (10 ml) ผสมสารน้ำ (NSS) up to 500 ml (4 mcg/ml)', conc: 4 },
-        { prep: 'ยา 2 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (20 mcg/ml)', conc: 20 }
+    {id:'pd-iso',  name:'Isoproterenol', initMin:0.02, initMax:0.5, max:2,   concMcgMl:4,    prep:'ยา 2 mg (10 ml) NSS upto 500 ml (4 mcg/ml)', unit:'mcg/min', perMin:true, mixes: [
+        { prep: 'ยา 2 mg (10 ml) NSS upto 500 ml (4 mcg/ml)', conc: 4 },
+        { prep: 'ยา 2 mg (10 ml) NSS upto 100 ml (20 mcg/ml)', conc: 20 }
     ]},
 ];
 
@@ -2006,35 +2006,35 @@ const neoDrugs = [
 ];
 
 const neoDrips = [
-    {id:'nd-epi',  name:'Epinephrine', initMin:0.05, initMax:1,  max:1,    concMcgMl:10, prep:'ยา 1 mg (1 ml) ผสมสารน้ำ (NSS) up to 100 ml (10 mcg/ml)', mixes: [
-        { prep: 'ยา 1 mg (1 ml) ผสมสารน้ำ (NSS) up to 100 ml (10 mcg/ml)', conc: 10 },
-        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ (NSS) up to 250 ml (16 mcg/ml)', conc: 16 },
-        { prep: 'ยา 8 mg (8 ml) ผสมสารน้ำ (NSS) up to 250 ml (32 mcg/ml)', conc: 32 }
+    {id:'nd-epi',  name:'Epinephrine', initMin:0.05, initMax:1,  max:1,    concMcgMl:10, prep:'ยา 1 mg (1 ml) NSS upto 100 ml (10 mcg/ml)', mixes: [
+        { prep: 'ยา 1 mg (1 ml) NSS upto 100 ml (10 mcg/ml)', conc: 10 },
+        { prep: 'ยา 4 mg (4 ml) NSS upto 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ยา 8 mg (8 ml) NSS upto 250 ml (32 mcg/ml)', conc: 32 }
     ]},
-    {id:'nd-nor', name:'Norepinephrine (PHT/Septic)', initMin:0.2, initMax:2, max:2,    concMcgMl:16,   prep:'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 250 ml (16 mcg/ml)', mixes: [
-        { prep: 'ยา 2 mg (2 ml) ผสมสารน้ำ (D5W) up to 250 ml (8 mcg/ml)', conc: 8 },
-        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 250 ml (16 mcg/ml)', conc: 16 },
-        { prep: 'ยา 8 mg (8 ml) ผสมสารน้ำ (D5W) up to 250 ml (32 mcg/ml)', conc: 32 }
+    {id:'nd-nor', name:'Norepinephrine (PHT/Septic)', initMin:0.2, initMax:2, max:2,    concMcgMl:16,   prep:'ยา 4 mg (4 ml) D5W upto 250 ml (16 mcg/ml)', mixes: [
+        { prep: 'ยา 2 mg (2 ml) D5W upto 250 ml (8 mcg/ml)', conc: 8 },
+        { prep: 'ยา 4 mg (4 ml) D5W upto 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ยา 8 mg (8 ml) D5W upto 250 ml (32 mcg/ml)', conc: 32 }
     ]},
-    {id:'nd-dop', name:'Dopamine', initMin:2, initMax:20, max:30,              concMcgMl:2000, prep:'ยา 200 mg (8 ml) ผสมสารน้ำ (NSS) up to 100 ml (2000 mcg/ml)', mixes: [
-        { prep: 'ยา 100 mg (4 ml) ผสมสารน้ำ (NSS) up to 100 ml (1000 mcg/ml)', conc: 1000 },
-        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 250 ml (1000 mcg/ml)', conc: 1000 },
-        { prep: 'ยา 200 mg (8 ml) ผสมสารน้ำ (NSS) up to 100 ml (2000 mcg/ml)', conc: 2000 },
-        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 125 ml (2000 mcg/ml)', conc: 2000 }
+    {id:'nd-dop', name:'Dopamine', initMin:2, initMax:20, max:30,              concMcgMl:2000, prep:'ยา 200 mg (8 ml) NSS upto 100 ml (2000 mcg/ml)', mixes: [
+        { prep: 'ยา 100 mg (4 ml) NSS upto 100 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 1 vial (250 mg) NSS upto 250 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 200 mg (8 ml) NSS upto 100 ml (2000 mcg/ml)', conc: 2000 },
+        { prep: 'ยา 1 vial (250 mg) NSS upto 125 ml (2000 mcg/ml)', conc: 2000 }
     ]},
-    {id:'nd-dob', name:'Dobutamine', initMin:2, initMax:25, max:25,            concMcgMl:1000, prep:'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 250 ml (1000 mcg/ml)', mixes: [
-        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 250 ml (1000 mcg/ml)', conc: 1000 },
-        { prep: 'ยา 2 vial (500 mg) ผสมสารน้ำ (NSS) up to 250 ml (2000 mcg/ml)', conc: 2000 },
-        { prep: 'ยา 4 vial (1000 mg) ผสมสารน้ำ (NSS) up to 250 ml (4000 mcg/ml)', conc: 4000 }
+    {id:'nd-dob', name:'Dobutamine', initMin:2, initMax:25, max:25,            concMcgMl:1000, prep:'ยา 1 vial (250 mg) NSS upto 250 ml (1000 mcg/ml)', mixes: [
+        { prep: 'ยา 1 vial (250 mg) NSS upto 250 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 2 vial (500 mg) NSS upto 250 ml (2000 mcg/ml)', conc: 2000 },
+        { prep: 'ยา 4 vial (1000 mg) NSS upto 250 ml (4000 mcg/ml)', conc: 4000 }
     ]},
-    {id:'nd-mil', name:'Milrinone', initMin:0.375, initMax:0.75, max:0.75,     concMcgMl:100,  prep:'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (100 mcg/ml)', mixes: [
-        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (100 mcg/ml)', conc: 100 },
-        { prep: 'ยา 15 mg (15 ml) ผสมสารน้ำ (NSS) up to 100 ml (150 mcg/ml)', conc: 150 },
-        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 50 ml (200 mcg/ml)', conc: 200 }
+    {id:'nd-mil', name:'Milrinone', initMin:0.375, initMax:0.75, max:0.75,     concMcgMl:100,  prep:'ยา 10 mg (10 ml) NSS upto 100 ml (100 mcg/ml)', mixes: [
+        { prep: 'ยา 10 mg (10 ml) NSS upto 100 ml (100 mcg/ml)', conc: 100 },
+        { prep: 'ยา 15 mg (15 ml) NSS upto 100 ml (150 mcg/ml)', conc: 150 },
+        { prep: 'ยา 10 mg (10 ml) NSS upto 50 ml (200 mcg/ml)', conc: 200 }
     ]},
-    {id:'nd-iso', name:'Isoproterenol', initMin:0.02, initMax:0.5, max:2,      concMcgMl:4,    prep:'ยา 2 mg (10 ml) ผสมสารน้ำ (NSS) up to 500 ml (4 mcg/ml)', unit:'mcg/min', perMin:true, mixes: [
-        { prep: 'ยา 2 mg (10 ml) ผสมสารน้ำ (NSS) up to 500 ml (4 mcg/ml)', conc: 4 },
-        { prep: 'ยา 2 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (20 mcg/ml)', conc: 20 }
+    {id:'nd-iso', name:'Isoproterenol', initMin:0.02, initMax:0.5, max:2,      concMcgMl:4,    prep:'ยา 2 mg (10 ml) NSS upto 500 ml (4 mcg/ml)', unit:'mcg/min', perMin:true, mixes: [
+        { prep: 'ยา 2 mg (10 ml) NSS upto 500 ml (4 mcg/ml)', conc: 4 },
+        { prep: 'ยา 2 mg (10 ml) NSS upto 100 ml (20 mcg/ml)', conc: 20 }
     ]}
 ];
 
@@ -2053,59 +2053,59 @@ const adultEmDrugs = [
 ];
 
 const adultInotropes = [
-    {id:'ai-epi', name:'Epinephrine',    initMin:0.05, initMax:2,   max:2,   concMcgMl:4,    doseDef:0.1,  unit:'mcg/kg/min', prep:'ยา 1 mg (1 ml) ผสมสารน้ำ (NSS) up to 250 ml (4 mcg/ml)', mixes: [
-        { prep: 'ยา 1 mg (1 ml) ผสมสารน้ำ (NSS) up to 1000 ml (1 mcg/ml)', conc: 1 },
-        { prep: 'ยา 1 mg (1 ml) ผสมสารน้ำ (NSS) up to 250 ml (4 mcg/ml)', conc: 4 },
-        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ (NSS) up to 250 ml (16 mcg/ml)', conc: 16 },
-        { prep: 'ยา 6 mg (6 ml) ผสมสารน้ำ (NSS) up to 100 ml (60 mcg/ml)', conc: 60 },
-        { prep: 'ยา 16 mg (16 ml) ผสมสารน้ำ (NSS) up to 250 ml (64 mcg/ml)', conc: 64 },
-        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (100 mcg/ml)', conc: 100 }
+    {id:'ai-epi', name:'Epinephrine',    initMin:0.05, initMax:2,   max:2,   concMcgMl:4,    doseDef:0.1,  unit:'mcg/kg/min', prep:'ยา 1 mg (1 ml) NSS upto 250 ml (4 mcg/ml)', mixes: [
+        { prep: 'ยา 1 mg (1 ml) NSS upto 1000 ml (1 mcg/ml)', conc: 1 },
+        { prep: 'ยา 1 mg (1 ml) NSS upto 250 ml (4 mcg/ml)', conc: 4 },
+        { prep: 'ยา 4 mg (4 ml) NSS upto 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ยา 6 mg (6 ml) NSS upto 100 ml (60 mcg/ml)', conc: 60 },
+        { prep: 'ยา 16 mg (16 ml) NSS upto 250 ml (64 mcg/ml)', conc: 64 },
+        { prep: 'ยา 10 mg (10 ml) NSS upto 100 ml (100 mcg/ml)', conc: 100 }
     ]},
-    {id:'ai-nor', name:'Norepinephrine (Cardiogenic)', initMin:0.05, initMax:0.4, max:0.4, concMcgMl:16, doseDef:0.1, unit:'mcg/kg/min', prep:'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 250 ml (16 mcg/ml)', mixes: [
-        { prep: 'ยา 2 mg (2 ml) ผสมสารน้ำ (D5W) up to 250 ml (8 mcg/ml)', conc: 8 },
-        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 250 ml (16 mcg/ml)', conc: 16 },
-        { prep: 'ยา 8 mg (8 ml) ผสมสารน้ำ (D5W) up to 250 ml (32 mcg/ml)', conc: 32 },
-        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 100 ml (40 mcg/ml)', conc: 40 },
-        { prep: 'ยา 8 mg (8 ml) ผสมสารน้ำ (D5W) up to 100 ml (80 mcg/ml)', conc: 80 }
+    {id:'ai-nor', name:'Norepinephrine (Cardiogenic)', initMin:0.05, initMax:0.4, max:0.4, concMcgMl:16, doseDef:0.1, unit:'mcg/kg/min', prep:'ยา 4 mg (4 ml) D5W upto 250 ml (16 mcg/ml)', mixes: [
+        { prep: 'ยา 2 mg (2 ml) D5W upto 250 ml (8 mcg/ml)', conc: 8 },
+        { prep: 'ยา 4 mg (4 ml) D5W upto 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ยา 8 mg (8 ml) D5W upto 250 ml (32 mcg/ml)', conc: 32 },
+        { prep: 'ยา 4 mg (4 ml) D5W upto 100 ml (40 mcg/ml)', conc: 40 },
+        { prep: 'ยา 8 mg (8 ml) D5W upto 100 ml (80 mcg/ml)', conc: 80 }
     ]},
-    {id:'ai-nor2',name:'Norepinephrine (Septic/Post-arrest)', initMin:0.05, initMax:3.3, max:3.3, concMcgMl:16, doseDef:0.1, unit:'mcg/kg/min', prep:'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 250 ml (16 mcg/ml)', mixes: [
-        { prep: 'ยา 2 mg (2 ml) ผสมสารน้ำ (D5W) up to 250 ml (8 mcg/ml)', conc: 8 },
-        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 250 ml (16 mcg/ml)', conc: 16 },
-        { prep: 'ยา 8 mg (8 ml) ผสมสารน้ำ (D5W) up to 250 ml (32 mcg/ml)', conc: 32 },
-        { prep: 'ยา 4 mg (4 ml) ผสมสารน้ำ (D5W) up to 100 ml (40 mcg/ml)', conc: 40 },
-        { prep: 'ยา 8 mg (8 ml) ผสมสารน้ำ (D5W) up to 100 ml (80 mcg/ml)', conc: 80 }
+    {id:'ai-nor2',name:'Norepinephrine (Septic/Post-arrest)', initMin:0.05, initMax:3.3, max:3.3, concMcgMl:16, doseDef:0.1, unit:'mcg/kg/min', prep:'ยา 4 mg (4 ml) D5W upto 250 ml (16 mcg/ml)', mixes: [
+        { prep: 'ยา 2 mg (2 ml) D5W upto 250 ml (8 mcg/ml)', conc: 8 },
+        { prep: 'ยา 4 mg (4 ml) D5W upto 250 ml (16 mcg/ml)', conc: 16 },
+        { prep: 'ยา 8 mg (8 ml) D5W upto 250 ml (32 mcg/ml)', conc: 32 },
+        { prep: 'ยา 4 mg (4 ml) D5W upto 100 ml (40 mcg/ml)', conc: 40 },
+        { prep: 'ยา 8 mg (8 ml) D5W upto 100 ml (80 mcg/ml)', conc: 80 }
     ]},
-    {id:'ai-dop', name:'Dopamine',       initMin:2,    initMax:20,  max:50,  concMcgMl:2000, doseDef:5,   unit:'mcg/kg/min', prep:'ยา 200 mg (8 ml) ผสมสารน้ำ (NSS) up to 100 ml (2000 mcg/ml)', mixes: [
-        { prep: 'ยา 100 mg (4 ml) ผสมสารน้ำ (NSS) up to 100 ml (1000 mcg/ml)', conc: 1000 },
-        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 250 ml (1000 mcg/ml)', conc: 1000 },
-        { prep: 'ยา 200 mg (8 ml) ผสมสารน้ำ (NSS) up to 100 ml (2000 mcg/ml)', conc: 2000 },
-        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 125 ml (2000 mcg/ml)', conc: 2000 }
+    {id:'ai-dop', name:'Dopamine',       initMin:2,    initMax:20,  max:50,  concMcgMl:2000, doseDef:5,   unit:'mcg/kg/min', prep:'ยา 200 mg (8 ml) NSS upto 100 ml (2000 mcg/ml)', mixes: [
+        { prep: 'ยา 100 mg (4 ml) NSS upto 100 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 1 vial (250 mg) NSS upto 250 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 200 mg (8 ml) NSS upto 100 ml (2000 mcg/ml)', conc: 2000 },
+        { prep: 'ยา 1 vial (250 mg) NSS upto 125 ml (2000 mcg/ml)', conc: 2000 }
     ]},
-    {id:'ai-dob', name:'Dobutamine',     initMin:2,    initMax:20,  max:40,  concMcgMl:1000, doseDef:5,   unit:'mcg/kg/min', prep:'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 250 ml (1000 mcg/ml)', mixes: [
-        { prep: 'ยา 1 vial (250 mg) ผสมสารน้ำ (NSS) up to 250 ml (1000 mcg/ml)', conc: 1000 },
-        { prep: 'ยา 2 vial (500 mg) ผสมสารน้ำ (NSS) up to 250 ml (2000 mcg/ml)', conc: 2000 },
-        { prep: 'ยา 4 vial (1000 mg) ผสมสารน้ำ (NSS) up to 250 ml (4000 mcg/ml)', conc: 4000 }
+    {id:'ai-dob', name:'Dobutamine',     initMin:2,    initMax:20,  max:40,  concMcgMl:1000, doseDef:5,   unit:'mcg/kg/min', prep:'ยา 1 vial (250 mg) NSS upto 250 ml (1000 mcg/ml)', mixes: [
+        { prep: 'ยา 1 vial (250 mg) NSS upto 250 ml (1000 mcg/ml)', conc: 1000 },
+        { prep: 'ยา 2 vial (500 mg) NSS upto 250 ml (2000 mcg/ml)', conc: 2000 },
+        { prep: 'ยา 4 vial (1000 mg) NSS upto 250 ml (4000 mcg/ml)', conc: 4000 }
     ]},
-    {id:'ai-mil', name:'Milrinone',      initMin:0.375, initMax:0.75, max:0.75, concMcgMl:100, doseDef:0.375, unit:'mcg/kg/min', prep:'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (100 mcg/ml)', mixes: [
-        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (100 mcg/ml)', conc: 100 },
-        { prep: 'ยา 15 mg (15 ml) ผสมสารน้ำ (NSS) up to 100 ml (150 mcg/ml)', conc: 150 },
-        { prep: 'ยา 10 mg (10 ml) ผสมสารน้ำ (NSS) up to 50 ml (200 mcg/ml)', conc: 200 }
+    {id:'ai-mil', name:'Milrinone',      initMin:0.375, initMax:0.75, max:0.75, concMcgMl:100, doseDef:0.375, unit:'mcg/kg/min', prep:'ยา 10 mg (10 ml) NSS upto 100 ml (100 mcg/ml)', mixes: [
+        { prep: 'ยา 10 mg (10 ml) NSS upto 100 ml (100 mcg/ml)', conc: 100 },
+        { prep: 'ยา 15 mg (15 ml) NSS upto 100 ml (150 mcg/ml)', conc: 150 },
+        { prep: 'ยา 10 mg (10 ml) NSS upto 50 ml (200 mcg/ml)', conc: 200 }
     ]},
-    {id:'ai-iso', name:'Isoproterenol',  initMin:2,    initMax:10,  max:30,  concMcgMl:4,    doseDef:2,   unit:'mcg/min',    prep:'ยา 2 mg (10 ml) ผสมสารน้ำ (NSS) up to 500 ml (4 mcg/ml)', perMin:true, mixes: [
-        { prep: 'ยา 2 mg (10 ml) ผสมสารน้ำ (NSS) up to 500 ml (4 mcg/ml)', conc: 4 },
-        { prep: 'ยา 2 mg (10 ml) ผสมสารน้ำ (NSS) up to 100 ml (20 mcg/ml)', conc: 20 }
+    {id:'ai-iso', name:'Isoproterenol',  initMin:2,    initMax:10,  max:30,  concMcgMl:4,    doseDef:2,   unit:'mcg/min',    prep:'ยา 2 mg (10 ml) NSS upto 500 ml (4 mcg/ml)', perMin:true, mixes: [
+        { prep: 'ยา 2 mg (10 ml) NSS upto 500 ml (4 mcg/ml)', conc: 4 },
+        { prep: 'ยา 2 mg (10 ml) NSS upto 100 ml (20 mcg/ml)', conc: 20 }
     ]},
 ];
 
 const adultAntiHtn = [
     {name:'Nitroglycerin (NTG)', prep:'50 mg/10 ml', init:'5 mcg/min', max:'200 mcg/min', initRate:'0.75', maxRate:'30', mix:'NTG 50 mg + NSS 115 ml IV'},
-    {name:'Nicardipine',         prep:'10 mg/10 ml', init:'5 mg/hr',   max:'15 mg/hr',    initRate:'25',   maxRate:'75', mix:'Nicardipine 20 mg + NSS up to 100 ml'},
+    {name:'Nicardipine',         prep:'10 mg/10 ml', init:'5 mg/hr',   max:'15 mg/hr',    initRate:'25',   maxRate:'75', mix:'Nicardipine 20 mg NSS upto 100 ml'},
     {name:'Labetalol',           prep:'100 mg/20 ml', init:'0.5 mg/min', max:'2 mg/min',  initRate:'15',   maxRate:'60', mix:'Labetalol 200 mg (40 ml) + NSS 60 ml'},
     {name:'Esmolol',             prep:'-',           init:'50 µg/kg/min', max:'300 µg/kg/min', initRate:'-', maxRate:'-', mix:'Bolus 500 µg/kg over 1 min'},
 ];
 
 const adultAntiArr = [
-    {name:'Lidocaine (Drip)',  init:'1 mg/min', max:'4 mg/min', initRate:'15', maxRate:'60', mix:'Lidocaine 2% 1000 mg (50 ml) + NSS/D5W up to 250 ml (4 mg/ml)'},
+    {name:'Lidocaine (Drip)',  init:'1 mg/min', max:'4 mg/min', initRate:'15', maxRate:'60', mix:'Lidocaine 2% 1000 mg (50 ml) NSS/D5W upto 250 ml (4 mg/ml)'},
     {name:'Diltiazem (Drip)', init:'5 mg/hr',  max:'15 mg/hr', initRate:'5',  maxRate:'15', mix:'Diltiazem 100 mg + NSS 100 ml IV (bolus 0.25 mg/kg over 5 min)'},
     {name:'Amiodarone (AF)',  init:'150–300 mg over 30–60 min', max:'900–1200 mg/24hr', initRate:'-', maxRate:'-', mix:'150 mg in 250 ml D5W over 30–60 min'},
 ];
@@ -2134,7 +2134,7 @@ const adultNeuroGroups = [
 ];
 
 const adultSed = [
-    {name:'Midazolam',         loading:'0.01–0.05 mg/kg (0.7–3.5 mg)', maint:'0.02–0.1 mg/kg/hr', concMgMl:0.5, prep:'Midazolam 50 mg + NSS up to 100 ml (0.5 mg/ml, Max 5 mg/ml)'},
+    {name:'Midazolam',         loading:'0.01–0.05 mg/kg (0.7–3.5 mg)', maint:'0.02–0.1 mg/kg/hr', concMgMl:0.5, prep:'Midazolam 50 mg NSS upto 100 ml (0.5 mg/ml, Max 5 mg/ml)'},
     {name:'Lorazepam',         loading:'0.02–0.04 mg/kg (max 2 mg)',    maint:'0.02–0.06 mg/kg q2-6h PRN', concMgMl:null, prep:'-'},
     {name:'Diazepam',          loading:'5–10 mg (fixed)',               maint:'0.03–0.1 mg/kg q0.5-6h PRN',concMgMl:null, prep:'-'},
     {name:'Propofol',          loading:'5 mcg/kg/min over 5 min',       maint:'5–50 mcg/kg/min',    concMgMl:10, prep:'Propofol 200 mg/20 ml (ไม่ผสม)'},
@@ -2873,7 +2873,7 @@ const manualDrugDB = [
         conc:'10–40 mcg/ml',
         concVal: 10, concUnit: 'mcg_ml',
         stdMg: 1, stdVol: 100, initDoseVal: 0.05,
-        mix:'1 mg (1 ml) + สารน้ำ up to 100 ml (10 mcg/ml)  หรือ 4 mg + 100 ml (40 mcg/ml)',
+        mix:'1 mg (1 ml) NSS upto 100 ml (10 mcg/ml)  หรือ 4 mg + 100 ml (40 mcg/ml)',
         fluid:'NSS, D5W, LR, D5NSS, D5S/2',
         unit:'mcg_kg_min'
     },
@@ -2906,7 +2906,7 @@ const manualDrugDB = [
         conc:'1 mg/ml (1000 mcg/ml)',
         concVal: 1000, concUnit: 'mcg_ml',
         stdMg: 250, stdVol: 250, initDoseVal: 5,
-        mix:'250 mg (1 vial) + D5W/NSS up to 250 ml (1 mg/ml)',
+        mix:'250 mg (1 vial) D5W/NSS upto 250 ml (1 mg/ml)',
         fluid:'NSS, D5W, LR',
         unit:'mcg_kg_min'
     },
@@ -2917,7 +2917,7 @@ const manualDrugDB = [
         conc:'100 mcg/ml',
         concVal: 100, concUnit: 'mcg_ml',
         stdMg: 10, stdVol: 100, initDoseVal: 0.375,
-        mix:'10 mg (10 ml) + สารน้ำ up to 100 ml (100 mcg/ml)',
+        mix:'10 mg (10 ml) NSS upto 100 ml (100 mcg/ml)',
         fluid:'NSS, D5W, LR',
         unit:'mcg_kg_min'
     },
@@ -2928,7 +2928,7 @@ const manualDrugDB = [
         conc:'4 mcg/ml',
         concVal: 4, concUnit: 'mcg_ml',
         stdMg: 2, stdVol: 500, initDoseVal: 2,
-        mix:'2 mg (10 ml) + D5W/NSS 490 ml up to 500 ml (4 mcg/ml)',
+        mix:'2 mg (10 ml) + D5W/NSS 490 ml upto 500 ml (4 mcg/ml)',
         fluid:'D5W, NSS, LR',
         unit:'mcg_min'
     },
@@ -2961,7 +2961,7 @@ const manualDrugDB = [
         conc:'1 mg/ml',
         concVal: 1, concUnit: 'mg_ml',
         stdMg: 200, stdVol: 200, initDoseVal: 0.5,
-        mix:'200 mg (40 ml) + NSS 160 ml up to 200 ml (1 mg/ml)',
+        mix:'200 mg (40 ml) NSS 160 ml upto 200 ml (1 mg/ml)',
         fluid:'NSS, D5W, LR',
         unit:'mg_hr'
     },
@@ -2972,7 +2972,7 @@ const manualDrugDB = [
         conc:'4 mg/ml',
         concVal: 4, concUnit: 'mg_ml',
         stdMg: 1000, stdVol: 250, initDoseVal: 1,
-        mix:'Lido 2% 50 ml (1000 mg) + D5W 200 ml up to 250 ml (4 mg/ml)',
+        mix:'Lido 2% 50 ml (1000 mg) D5W 200 ml upto 250 ml (4 mg/ml)',
         fluid:'D5W, NSS, LR',
         unit:'mg_hr'
     },
@@ -2983,7 +2983,7 @@ const manualDrugDB = [
         conc:'0.5–5 mg/ml',
         concVal: 0.5, concUnit: 'mg_ml',
         stdMg: 50, stdVol: 100, initDoseVal: 0.02,
-        mix:'50 mg + NSS up to 100 ml (0.5 mg/ml)',
+        mix:'50 mg NSS upto 100 ml (0.5 mg/ml)',
         fluid:'NSS, D5W',
         unit:'mg_kg_hr'
     },
@@ -3005,7 +3005,7 @@ const manualDrugDB = [
         conc:'4 mcg/ml',
         concVal: 4, concUnit: 'mcg_ml',
         stdMg: 0.2, stdVol: 50, initDoseVal: 0.2,
-        mix:'Dex 200 mcg (2 ml) + NSS 48 ml up to 50 ml (4 mcg/ml)',
+        mix:'Dex 200 mcg (2 ml) NSS 48 ml upto 50 ml (4 mcg/ml)',
         fluid:'NSS, D5W, LR',
         unit:'mcg_kg_hr'
     },
@@ -3918,7 +3918,7 @@ function calcDeferoxamine() {
                         </div>
                         ${p3capped ? '<div class="bg-red-50 p-2 border-t border-red-200 text-xs font-bold text-red-700"><i class="fas fa-exclamation-triangle mr-1"></i>15 mg/kg/hr &times; weight exceeds 1,000 mg/hr &mdash; dose capped at 1,000 mg/hr.</div>' : ''}
                         <div class="bg-slate-50 p-2 border-t border-slate-200 text-xs text-slate-700">
-                            <span class="font-bold text-slate-800">How to Mix/Dilute:</span> deferoxamine 500 mg + sterile water 5 ml (100 mg/ml), then mixed with NSS or Ringer up to 150 ml (final conc. &asymp;6.67 mg/ml).
+                            <span class="font-bold text-slate-800">How to Mix/Dilute:</span> deferoxamine 500 mg + sterile water 5 ml (100 mg/ml), then mixed with NSS or Ringer upto 150 ml (final conc. &asymp;6.67 mg/ml).
                         </div>
                     </div>
 
@@ -4216,7 +4216,7 @@ function calcDigoxinFab() {
             <div class="border border-slate-300 rounded-lg overflow-hidden shadow-sm">
                 <div class="bg-slate-800 text-white p-3 text-sm font-bold flex items-center gap-2">
                     <i class="fas fa-square-root-alt"></i>Digoxin-specific Fab dosing
-                    <span class="text-xs font-normal text-slate-300">(round up to whole vials)</span>
+                    <span class="text-xs font-normal text-slate-300">(round upto whole vials)</span>
                 </div>
                 <div class="p-3 bg-slate-50 text-sm text-slate-700 space-y-3">
                     <div class="bg-white border border-blue-200 rounded-lg p-3">
@@ -4239,7 +4239,7 @@ function calcDigoxinFab() {
                         </div>
                     </div>
                     <div class="text-xs text-slate-600 border-t border-slate-200 pt-2">
-                        SDC = serum digoxin concentration. If entered in nmol/L, it is converted to ng/ml before applying the serum-based formula. Results are rounded up to whole vials.
+                        SDC = serum digoxin concentration. If entered in nmol/L, it is converted to ng/ml before applying the serum-based formula. Results are rounded upto whole vials.
                     </div>
                 </div>
             </div>
@@ -5069,7 +5069,7 @@ function calcCalcium() {
                         </div>
                         
                         <div class="bg-orange-50 p-2 rounded border border-orange-100 text-orange-800">
-                            <b>Administration:</b> Infused over 5-10 minutes (unless in extremis-deliver over 60 seconds). Repeat every 10-20 minutes up to 3-4 doses as necessary.
+                            <b>Administration:</b> Infused over 5-10 minutes (unless in extremis-deliver over 60 seconds). Repeat every 10-20 minutes upto 3-4 doses as necessary.
                         </div>
                     </div>
                 </div>
@@ -5087,7 +5087,7 @@ function calcCalcium() {
                         </div>
                         
                         <div class="bg-orange-50 p-2 rounded border border-orange-100 text-orange-800">
-                            <b>Administration:</b> Infused over 10 minutes (unless in extremis-deliver over 60 seconds). Repeat every 10-20 minutes up to 3-4 doses as necessary.
+                            <b>Administration:</b> Infused over 10 minutes (unless in extremis-deliver over 60 seconds). Repeat every 10-20 minutes upto 3-4 doses as necessary.
                         </div>
                     </div>
                 </div>
