@@ -1556,6 +1556,8 @@ document.addEventListener('keydown', function (e) {
 });
 
 function setCalcWtMode(mode) {
+    if (mode === 'ibw' && P.ibw <= 0) return;
+    if (mode === 'lbw' && P.lbw <= 0) return;
     calcWtMode = mode;
     recalc();
 }
@@ -1627,21 +1629,26 @@ function recalc() {
     P.height = htVal ? parseFloat(htVal) : 0;
 
     let ibw = 0, lbw = 0;
-    if (P.height > 0 && P.tbw > 0) {
+    if (P.height > 0) {
         const h_in = P.height / 2.54;
+        if (h_in >= 60) {
+            ibw = (P.gender === 'M' ? 50 : 45.5) + 2.3 * (h_in - 60);
+        } else {
+            ibw = P.gender === 'M' ? (P.height - 100) : (P.height - 110);
+        }
+    }
+    if (P.height > 0 && P.tbw > 0) {
         if (P.gender === 'M') {
-            ibw = 50 + 2.3 * (h_in - 60);
             lbw = 0.407 * P.tbw + 0.267 * P.height - 19;
         } else {
-            ibw = 45.5 + 2.3 * (h_in - 60);
             lbw = 0.252 * P.tbw + 0.473 * P.height - 48.3;
         }
     }
-    P.ibw = ibw > 0 ? ibw : P.tbw;
-    P.lbw = lbw > 0 ? lbw : P.tbw;
+    P.ibw = ibw > 0 ? ibw : 0;
+    P.lbw = lbw > 0 ? lbw : 0;
 
-    document.getElementById('ibwDisplay').innerText = P.ibw > 0 && P.height > 0 ? (rnd(P.ibw) + ' kg') : '--';
-    document.getElementById('lbwDisplay').innerText = P.lbw > 0 && P.height > 0 ? (rnd(P.lbw) + ' kg') : '--';
+    document.getElementById('ibwDisplay').innerText = P.height <= 0 ? '--' : (P.ibw > 0 ? (rnd(P.ibw) + ' kg') : 'คำนวณไม่ได้');
+    document.getElementById('lbwDisplay').innerText = (P.height <= 0 || P.tbw <= 0) ? '--' : (P.lbw > 0 ? (rnd(P.lbw) + ' kg') : 'คำนวณไม่ได้');
     const banners = document.querySelectorAll('.est-weight-banner');
     banners.forEach(banner => {
         const textSpan = banner.querySelector('span');
@@ -1660,6 +1667,8 @@ function recalc() {
     });
 
     // Apply Calc Weight mode
+    if (calcWtMode === 'ibw' && P.ibw <= 0) calcWtMode = 'tbw';
+    if (calcWtMode === 'lbw' && P.lbw <= 0) calcWtMode = 'tbw';
     if (calcWtMode === 'tbw') P.calcWt = P.tbw;
     else if (calcWtMode === 'ibw') P.calcWt = P.ibw;
     else if (calcWtMode === 'lbw') P.calcWt = P.lbw;
